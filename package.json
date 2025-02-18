@@ -1,0 +1,15 @@
+{
+  "name": "feigniter",
+  "version": "0.0.1",
+  "description": "**\r Feigniter its mean to simplify the fron-end development, using mvc pattern and avoid dependencies issues.\r By default Feigniter uses Jquery, Jquery UI, bootstrap, fontawesome.\r **",
+  "main": "app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    
+  },
+  "keywords": ["front-end", "javascript", "mvc"],
+  "author": "Devehoper",
+  "license": "MIT"
+}
