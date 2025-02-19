@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1 class="text-center mb-4">Countdown Timer</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="timer-box">
+                <div class="form-group">
+                    <label for="countdownDate">Set Countdown Date and Time:</label>
+                    <input type="datetime-local" class="form-control" id="countdownDate">
+                </div>
+                <button class="btn btn-primary mt-2 w-100" onclick="startCountdown()">
+                    Start Countdown
+                </button>
+                <div class="countdown mt-4" id="countdown">
+                    <span id="days">00</span> :
+                    <span id="hours">00</span> :
+                    <span id="minutes">00</span> :
+                    <span id="seconds">00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

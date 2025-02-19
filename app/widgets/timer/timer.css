@@ -1,0 +1,14 @@
+.countdown {
+    display: none; /* Initially hide */
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+  }
+  .container {
+    padding-top: 50px;
+  }
+  .timer-box {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+  }

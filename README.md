@@ -29,3 +29,14 @@ base_path#controllerName?MethodName=arg1,arg2,arg3
 If a view its commun in several pages, Ex (header, footer...),
 then its javascript should be setted in that view
 **
+
+#### Controllers
+**
+Since the views are being added later in the DOM, according to user navigation,
+in controller to access the DOM must use this notation:
+**
+```
+$(document).on('click', '#btn-test', function() {
+    alert('Button clicked!');
+});
+``

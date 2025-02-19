@@ -1,14 +1,41 @@
 export default class HomeController extends Controller {
+    constructor() {
+        super();
+    }
     index() {
         console.log("HOME INDEX");
-        super.loadView(["app/view/header.html", "app/view/footer.html"]);
+        super.loadView(["app/view/header.html", "app/view/home/content.html","app/view/footer.html"]);
+        $(document).on('click', '#btn-test', function(e) {
+            e.preventDefault();
+            alert('Button clicked!');
+        });
+        this.search();
     }
 
-    login() {
-        super.loadView(["app/view/header.html","app/view/login.html"]);
+    about() {
+        super.loadView(["app/view/header.html", "app/view/home/about.html","app/view/footer.html"]);
+        this.search();
     }
 
-    MethodName(args) {
-        console.log(args);
+    features() {
+        super.loadView(["app/view/header.html", "app/view/home/features.html","app/view/footer.html"]);
+        this.search();
+    }
+
+    compatibility() {
+        super.loadView(["app/view/header.html", "app/view/home/compatibility.html","app/view/footer.html"]);
+        this.search();
+    }
+
+    faq() {
+        super.loadView(["app/view/header.html", "app/view/home/faq.html","app/view/footer.html"]);
+        this.search();
+    }
+
+    search() {
+        $(document).on('keyup', '#search', function(e) {
+            e.stopImmediatePropagation();
+            alert('Text changed');
+        });
     }
 }

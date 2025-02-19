@@ -1,5 +1,6 @@
 class Controller {
   constructor() {
+    console.log(this);
     this.viewCache = {}; // Cache for loaded views
   }
 
