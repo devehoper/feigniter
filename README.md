@@ -1,7 +1,7 @@
 # About
 **
 Feigniter its mean to simplify the fron-end development, using mvc pattern and avoid dependencies issues.
-By default Feigniter uses Jquery, Jquery UI, bootstrap, fontawesome.
+By default Feigniter uses Jquery, Jquery UI, bootstrap, fontawesome, DataTables 2.2.2.
 **
 
 # Mission
@@ -40,3 +40,7 @@ $(document).on('click', '#btn-test', function() {
     alert('Button clicked!');
 });
 ``
+#### DOM actions
+**
+data-feigniter-type="actionName"
+**

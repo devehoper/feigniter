@@ -6,6 +6,7 @@ class App {
     this.args = [];
     this.controllerCache = {}; // Cache for loaded controllers
     this.viewCache = {}; // Cache for loaded views
+    this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
   }
 
   // Function to validate and sanitize config.basePath
@@ -18,8 +19,6 @@ class App {
       throw new Error('Invalid basePath');
     }
   }
-
-
 
   // full url example: https://localhost/feigniter/#controllerName?MethodName=arg1,arg2,arg3
   routing() {
@@ -41,8 +40,8 @@ class App {
         // Securely using history.replaceState
         try {
           const sanitizedBasePath = config.useNavigationBar
-          ? this.sanitizeBasePath(config.basePath)
-          : this.sanitizeBasePath(this.url);
+            ? this.sanitizeBasePath(config.basePath)
+            : this.sanitizeBasePath(this.url);
           // Update the URL without triggering a page reload
           history.replaceState(null, null, sanitizedBasePath);
           this.url = `#${newController}?${newMethod}=${newArgs}`;
@@ -122,18 +121,52 @@ class App {
     }
   }
 
+  handleDOMActions() {
+    // Find elements with data-feigniter-actionName attribute and perform actions
+    $('[data-feigniter-action-type]').each((index, element) => {
+      const $element = $(element);
+      const actionName = $element.data('feigniter-action-type');
+      if (actionName && !$element.data('feigniter-processed')) {
+        this.actionRegistry.executeAction(actionName, element);
+        $element.data('feigniter-processed', true); // Mark the element as processed
+      }
+    });
+  }
+
+  observeDOMChanges() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' || mutation.type === 'attributes') {
+          this.handleDOMActions();
+        }
+      });
+    });
+  
+    observer.observe(document.body, {
+      childList: true,
+      attributes: true,
+      subtree: true,
+    });
+  }
+  
+
   init() {
     console.log("init");
     $(document).ready(() => {
-      //Set the Application wrapper
-      if($("#feigniter").length == 0) {
+      // Set the Application wrapper
+      if ($("#feigniter").length == 0) {
         $("body").prepend("<div id='feigniter'></div>");
       }
       this.routing();
       $(window).trigger("hashchange");
+      this.handleDOMActions();
+      this.observeDOMChanges();
     });
   }
 }
 
-var app = new App();
+// Example of registering actions
+const app = new App();
+app.actionRegistry.registerAction('test');
+app.actionRegistry.registerAction('table');
 app.init();
