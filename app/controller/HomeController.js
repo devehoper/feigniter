@@ -3,12 +3,7 @@ export default class HomeController extends Controller {
         super();
     }
     index() {
-        console.log("HOME INDEX");
-        super.loadView(["app/view/header.html", "app/view/home/content.html","app/view/footer.html"]);
-        $(document).on('click', '#btn-test', function(e) {
-            e.preventDefault();
-            alert('Button clicked!');
-        });
+        super.loadView(["app/view/header.html", "app/view/home/content.html","app/view/footer.html"], "#feigniter", "app/src/css/content.css");
         this.search();
     }
 

@@ -3,7 +3,7 @@ const config = {
     homeController:"HomeController",
     defaultMethod: "index",
     //if false url will be used in app.url
-    useNavigationBar: true,
+    useNavigationBar: false,
 
     basePath: "http://localhost/feigniter/",
     //external libs to be added

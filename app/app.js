@@ -15,10 +15,10 @@ class App {
     const validPathRegex = new RegExp(`(?:${config.basePath})[#?].*`);
     if (validPathRegex.test(basePath)) {
       return basePath;
-    } else {
-      throw new Error('Invalid basePath');
     }
   }
+  
+  
 
   // full url example: https://localhost/feigniter/#controllerName?MethodName=arg1,arg2,arg3
   routing() {
@@ -47,13 +47,14 @@ class App {
           this.url = `#${newController}?${newMethod}=${newArgs}`;
         } catch (error) {
           console.error('Error: ', error.message);
+          //this.url = `#HomeController?index`;
         }
       }
     });
 
     // Handle click events on <a> elements
     $(document).on("click", "a", (e) => {
-      if (!config.useNavigationBar && e.target.target !== "_blank") {
+      if (!config.useNavigationBar && (e.currentTarget.href !== "_blank" || e.target.target !== "_blank")) {
         e.preventDefault();
         const href = $(e.currentTarget).attr("href");
         this.url = href;
