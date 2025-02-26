@@ -17,8 +17,8 @@ class App {
       return basePath;
     }
   }
-  
-  
+
+
 
   // full url example: https://localhost/feigniter/#controllerName?MethodName=arg1,arg2,arg3
   routing() {
@@ -142,14 +142,14 @@ class App {
         }
       });
     });
-  
+
     observer.observe(document.body, {
       childList: true,
       attributes: true,
       subtree: true,
     });
   }
-  
+
 
   init() {
     console.log("init");
