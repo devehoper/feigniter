@@ -105,7 +105,7 @@ class App {
             console.error(`Error loading controller: ${controller}`, error);
           });
         };
-        document.head.appendChild(script);
+        document.body.appendChild(script);
       } catch (error) {
         console.error(`Error loading controller: ${controller}`, error);
       }
