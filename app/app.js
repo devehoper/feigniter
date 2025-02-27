@@ -95,7 +95,8 @@ class App {
       try {
         const script = document.createElement('script');
         script.src = `./app/controller/${controller}.js`;
-        script.type = 'text/javascript';
+        script.type = 'module';
+        script.nosniff;
         script.onload = () => {
           import(`./controller/${controller}.js`).then((module) => {
             this.controllerCache[controller] = module.default;
