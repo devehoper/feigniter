@@ -54,7 +54,7 @@ class App {
 
     // Handle click events on <a> elements
     $(document).on("click", "a", (e) => {
-      if (!config.useNavigationBar && (e.currentTarget.href !== "_blank" || e.target.target !== "_blank")) {
+      if (!config.useNavigationBar && $(e.currentTarget).attr("target") !== "_blank") {
         e.preventDefault();
         const href = $(e.currentTarget).attr("href");
         this.url = href;
