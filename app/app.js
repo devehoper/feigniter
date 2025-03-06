@@ -18,8 +18,6 @@ class App {
     }
   }
 
-
-
   // full url example: https://localhost/feigniter/#controllerName?MethodName=arg1,arg2,arg3
   routing() {
     $(window).on("hashchange", (e) => {
@@ -85,43 +83,43 @@ class App {
 
   async loadController(controller, method, args) {
     console.log(
-      `Loading controller: ${controller}, method: ${method}, with args: ${args}`
+        `Loading controller: ${controller}, method: ${method}, with args: ${args}`
     );
 
     if (this.controllerCache[controller]) {
-      console.log(`Using cached controller: ${controller}`);
-      this.executeMethod(this.controllerCache[controller], method, args);
+        console.log(`Using cached controller: ${controller}`);
+        this.executeMethod(this.controllerCache[controller], method, args);
     } else {
-      try {
-        const script = document.createElement('script');
-        script.src = `./app/controller/${controller}.js`;
-        script.type = 'module';
-        script.nosniff;
-        script.onload = () => {
-          import(`./controller/${controller}.js`).then((module) => {
-            this.controllerCache[controller] = module.default;
-            console.log(`Loaded controller: ${controller}`);
-            this.executeMethod(module.default, method, args);
-          }).catch((error) => {
+        try {
+            const script = document.createElement('script');
+            script.src = `./app/controller/${controller}.js`;
+            script.type = 'module';
+            script.nosniff;
+            script.onload = () => {
+                import(`./controller/${controller}.js`).then((module) => {
+                    const ControllerClass = module.default;
+                    const controllerInstance = new ControllerClass(); // Instantiate the controller
+                    this.controllerCache[controller] = controllerInstance;
+                    console.log(`Loaded controller: ${controller}`);
+                    this.executeMethod(controllerInstance, method, args);
+                }).catch((error) => {
+                    console.error(`Error loading controller: ${controller}`, error);
+                });
+            };
+            document.body.appendChild(script);
+        } catch (error) {
             console.error(`Error loading controller: ${controller}`, error);
-          });
-        };
-        document.body.appendChild(script);
-      } catch (error) {
-        console.error(`Error loading controller: ${controller}`, error);
-      }
+        }
     }
-  }
+}
 
-  executeMethod(controller, method, args) {
-    if (controller && typeof controller[method] === 'function') {
-      controller[method](...args);
-    } else if (typeof controller.prototype[method] == 'function') {
-      controller.prototype[method](...args);
+executeMethod(controllerInstance, method, args) {
+    if (controllerInstance && typeof controllerInstance[method] === 'function') {
+        controllerInstance[method](...args);
     } else {
-      console.error(`Method ${method} not found on controller ${controller}`);
+        console.error(`Method ${method} not found on controller instance`);
     }
-  }
+}
 
   handleDOMActions() {
     // Find elements with data-feigniter-actionName attribute and perform actions
@@ -150,7 +148,6 @@ class App {
       subtree: true,
     });
   }
-
 
   init() {
     console.log("init");
