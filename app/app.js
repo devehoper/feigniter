@@ -6,6 +6,7 @@ class App {
     this.args = [];
     this.controllerCache = {}; // Cache for loaded controllers
     this.viewCache = {}; // Cache for loaded views
+    this.cssCache = {}; // cache for loaded css files
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
   }
 
@@ -82,12 +83,12 @@ class App {
   }
 
   async loadController(controller, method, args) {
-    console.log(
+    this.log(
         `Loading controller: ${controller}, method: ${method}, with args: ${args}`
     );
 
     if (this.controllerCache[controller]) {
-        console.log(`Using cached controller: ${controller}`);
+        this.log(`Using cached controller: ${controller}`);
         this.executeMethod(this.controllerCache[controller], method, args);
     } else {
         try {
@@ -100,7 +101,7 @@ class App {
                     const ControllerClass = module.default;
                     const controllerInstance = new ControllerClass(); // Instantiate the controller
                     this.controllerCache[controller] = controllerInstance;
-                    console.log(`Loaded controller: ${controller}`);
+                    this.log(`Loaded controller: ${controller}`);
                     this.executeMethod(controllerInstance, method, args);
                 }).catch((error) => {
                     console.error(`Error loading controller: ${controller}`, error);
@@ -149,8 +150,14 @@ executeMethod(controllerInstance, method, args) {
     });
   }
 
+  log(text) {
+    if(config.debugMode) {
+      console.log(text);
+    }
+  }
+
   init() {
-    console.log("init");
+    this.log("init");
     $(document).ready(() => {
       // Set the Application wrapper
       if ($("#feigniter").length == 0) {
