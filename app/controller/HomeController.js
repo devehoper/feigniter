@@ -3,6 +3,7 @@ export default class HomeController extends Controller {
         super();
         this.communViews = ["app/view/header.html","app/view/footer.html"];
         this.search();
+        this.loadModel("UserModel");
 
     }
 
