@@ -1,103 +1,85 @@
 class Controller {
   constructor() {
-    console.log(this);
+    app.log(this);
+    this.viewCache = {}; // Cache for loaded views
+    app.cssCache = app.cssCache || {}; // Cache for loaded CSS files
   }
 
-  async loadView(viewUrl, jquerySelector="#feigniter", cssUrl) {
-    jquerySelector ?? "#feigniter";
-    if (typeof app.viewCache === 'undefined') {
-      app.viewCache = {};
+  loadSingleView = (url, selector, { append = false, insertAfter = null, insertBefore = null } = {}) => {
+    return new Promise((resolve, reject) => {
+      if (this.viewCache[url]) {
+        app.log(`Using cached view: ${url}`);
+        this.insertContent(selector, this.viewCache[url], append, insertAfter, insertBefore);
+        resolve();
+      } else {
+        $.get(url, (data) => {
+          this.viewCache[url] = data;
+          app.log(`Loaded view: ${url}`);
+          this.insertContent(selector, data, append, insertAfter, insertBefore);
+          resolve();
+        }).fail((jqXHR, textStatus, errorThrown) => {
+          app.log(`Error loading view: ${url}`, textStatus, errorThrown);
+          app.log(`Response: ${jqXHR.responseText}`);
+          reject(new Error(`Error loading view: ${url}`));
+        });
+      }
+    });
+  };
+
+  insertContent(selector, content, append, insertAfter, insertBefore) {
+    if (insertAfter && typeof insertAfter === "string") {
+      $(insertAfter).after(content);
+    } else if (insertBefore && typeof insertBefore === "string") {
+      $(insertBefore).before(content);
+    } else if (append) {
+      $(selector).append(content);
+    } else {
+      $(selector).html(content); // Changed from .html() to .append() to preserve existing content
     }
+  }
 
-    const loadSingleView = (url, selector, append = false) => {
-      return new Promise((resolve, reject) => {
-        if (app.viewCache[url]) {
-          console.log(`Using cached view: ${url}`);
-          if (append) {
-            $(selector).append(app.viewCache[url]);
-          } else {
-            $(selector).html(app.viewCache[url]);
-          }
-          resolve();
-        } else {
-          $.get(url, (data) => {
-            app.viewCache[url] = data;
-            console.log(`Loaded view: ${url}`);
-            if (append) {
-              $(selector).append(data);
-            } else {
-              $(selector).html(data);
-            }
-            resolve();
-          }).fail((jqXHR, textStatus, errorThrown) => {
-            console.error(`Error loading view: ${url}`, textStatus, errorThrown);
-            console.error(`Response: ${jqXHR.responseText}`);
-            reject(new Error(`Error loading view: ${url}`));
-          });
+  loadCss = (urls) => {
+    return new Promise((resolve, reject) => {
+      if (!urls) return resolve();
+      
+      const cssArray = Array.isArray(urls) ? urls : [urls];
+      const promises = cssArray.map(url => new Promise((res, rej) => {
+        if (app.cssCache[url]) {
+          app.log(`CSS already loaded: ${url}`);
+          return res();
         }
-      });
-    };
+        
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        link.onload = () => {
+          app.cssCache[url] = true;
+          res();
+        };
+        link.onerror = () => rej(new Error(`Error loading CSS: ${url}`));
+        document.head.appendChild(link);
+      }));
+      
+      Promise.all(promises).then(resolve).catch(reject);
+    });
+  };
 
-    const loadCss = (urls) => {
-      return new Promise((resolve, reject) => {
-        if (urls) {
-          if (!Array.isArray(urls)) {
-            urls = [urls];
-          }
-          const promises = urls.map(url => {
-            return new Promise((res, rej) => {
-              const link = document.createElement('link');
-              link.rel = 'stylesheet';
-              link.href = url;
-              link.onload = () => res();
-              link.onerror = () => rej(new Error(`Error loading CSS: ${url}`));
-              document.head.appendChild(link);
-            });
-          });
-          Promise.all(promises).then(resolve).catch(reject);
-        } else {
-          resolve();
-        }
-      });
-    };
-
+  // Updated to receive a single object as an argument
+  async loadView({ viewUrl, selector = "#feigniter", cssUrl = [], append = true, insertAfter = null, insertBefore = null } = {}) {
     $("#feigniter").html("");
-
     try {
-      await loadCss(cssUrl);
-
+      if (cssUrl) {
+        await this.loadCss(cssUrl);
+      }
       if (Array.isArray(viewUrl)) {
         for (const url of viewUrl) {
-          await loadSingleView(url, jquerySelector, true);
+          await this.loadSingleView(url, selector, { append: true, insertAfter, insertBefore });
         }
       } else {
-        await loadSingleView(viewUrl, jquerySelector);
+        await this.loadSingleView(viewUrl, selector, { append: true, insertAfter, insertBefore });
       }
     } catch (error) {
-      console.error(error);
+      app.log(error);
     }
   }
-
-  loadModel(modelName) {
-    return new Promise((resolve, reject) => {
-        try {
-            if (app.modelCache[modelName]) {
-                return resolve(`${modelName} is already loaded`);
-            }
-
-            const script = document.createElement('script');
-            modelName += modelName.indexOf(".js") == -1 ? ".js" : "";
-            script.src = `app/model/${modelName}`;
-            script.type = 'module';
-            script.onload = () => {
-                app.modelCache[modelName] = true;
-                resolve(`${modelName} loaded successfully`);
-            };
-            script.onerror = () => reject(new Error(`Failed to load model: ${modelName}`));
-            document.head.appendChild(script);
-        } catch (error) {
-            reject(new Error(`Error loading model: ${error.message}`));
-        }
-    });
-}
 }
