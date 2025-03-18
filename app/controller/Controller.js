@@ -82,4 +82,26 @@ class Controller {
       app.log(error);
     }
   }
+
+  loadModel(modelName) {
+    return new Promise((resolve, reject) => {
+        try {
+            if (app.modelCache[modelName]) {
+                return resolve(`${modelName} is already loaded`);
+            }
+
+            const script = document.createElement('script');
+            script.src = `models/${modelName}.js`;
+            script.type = 'text/javascript';
+            script.onload = () => {
+                app.modelCache[modelName] = true;
+                resolve(`${modelName} loaded successfully`);
+            };
+            script.onerror = () => reject(new Error(`Failed to load model: ${modelName}`));
+            document.head.appendChild(script);
+        } catch (error) {
+            reject(new Error(`Error loading model: ${error.message}`));
+        }
+    });
+  }
 }
