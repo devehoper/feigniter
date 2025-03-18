@@ -6,6 +6,7 @@ class App {
     this.args = [];
     this.controllerCache = {}; // Cache for loaded controllers
     this.viewCache = {}; // Cache for loaded views
+    this.modelCache = {};
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
   }
 

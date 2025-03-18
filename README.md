@@ -18,6 +18,12 @@ Keep it simple and clean
 
 # How to use
 
+#### File names
+**
+Controller name should be NameController and file name NameController.js
+Model name should be NameModel and file name NameModel.js
+**
+
 #### Routing system
 **
 The route will define the behavior of the app.
@@ -31,6 +37,16 @@ then its javascript should be setted in that view
 **
 
 #### Controllers
+Each controller should extend Controller and should add export default before the "class"
+Example:
+export default class HomeController extends Controller{...}
+
+#### DOM actions
+**
+data-feigniter-type="actionName"
+**
+
+#### NOTE.: Dom Events
 **
 Since the views are being added later in the DOM, according to user navigation,
 in controller to access the DOM must use this notation:
@@ -40,7 +56,3 @@ $(document).on('click', '#btn-test', function() {
     alert('Button clicked!');
 });
 ``
-#### DOM actions
-**
-data-feigniter-type="actionName"
-**

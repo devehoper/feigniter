@@ -1,6 +1,7 @@
 export default class HomeController extends Controller {
     constructor() {
         super();
+        super.loadModel("UserModel");
     }
     index() {
         super.loadView(["app/view/header.html", "app/view/home/content.html","app/view/footer.html"], "#feigniter", "app/src/css/content.css");

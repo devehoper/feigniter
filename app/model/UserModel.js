@@ -1,6 +1,7 @@
-export default class User {
-    constructor(email, loginToken) {
+export default class UserModel extends Model {
+    constructor(name, email, loginToken) {
         this.email = email;
         this.loginToken = loginToken;
+        this.name = name;
     }
 }

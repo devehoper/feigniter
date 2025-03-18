@@ -1,28 +1,27 @@
 class Controller {
   constructor() {
     console.log(this);
-    this.viewCache = {}; // Cache for loaded views
   }
 
   async loadView(viewUrl, jquerySelector="#feigniter", cssUrl) {
     jquerySelector ?? "#feigniter";
-    if (typeof this.viewCache === 'undefined') {
-      this.viewCache = {};
+    if (typeof app.viewCache === 'undefined') {
+      app.viewCache = {};
     }
 
     const loadSingleView = (url, selector, append = false) => {
       return new Promise((resolve, reject) => {
-        if (this.viewCache[url]) {
+        if (app.viewCache[url]) {
           console.log(`Using cached view: ${url}`);
           if (append) {
-            $(selector).append(this.viewCache[url]);
+            $(selector).append(app.viewCache[url]);
           } else {
-            $(selector).html(this.viewCache[url]);
+            $(selector).html(app.viewCache[url]);
           }
           resolve();
         } else {
           $.get(url, (data) => {
-            this.viewCache[url] = data;
+            app.viewCache[url] = data;
             console.log(`Loaded view: ${url}`);
             if (append) {
               $(selector).append(data);
@@ -78,4 +77,27 @@ class Controller {
       console.error(error);
     }
   }
+
+  loadModel(modelName) {
+    return new Promise((resolve, reject) => {
+        try {
+            if (app.modelCache[modelName]) {
+                return resolve(`${modelName} is already loaded`);
+            }
+
+            const script = document.createElement('script');
+            modelName += modelName.indexOf(".js") == -1 ? ".js" : "";
+            script.src = `app/model/${modelName}`;
+            script.type = 'module';
+            script.onload = () => {
+                app.modelCache[modelName] = true;
+                resolve(`${modelName} loaded successfully`);
+            };
+            script.onerror = () => reject(new Error(`Failed to load model: ${modelName}`));
+            document.head.appendChild(script);
+        } catch (error) {
+            reject(new Error(`Error loading model: ${error.message}`));
+        }
+    });
+}
 }
