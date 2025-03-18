@@ -91,7 +91,7 @@ class Controller {
             }
 
             const script = document.createElement('script');
-            script.src = `model/${modelName}.js`;
+            script.src = `app/model/${modelName}.js`;
             script.type = 'module';
             script.onload = () => {
                 app.modelCache[modelName] = true;
