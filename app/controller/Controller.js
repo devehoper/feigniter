@@ -1,5 +1,5 @@
 class Controller {
-  constructor() {
+  constructor(modelName) {
     app.log(this);
     this.viewCache = {}; // Cache for loaded views
     app.cssCache = app.cssCache || {}; // Cache for loaded CSS files
@@ -85,23 +85,23 @@ class Controller {
 
   loadModel(modelName) {
     return new Promise((resolve, reject) => {
-        try {
-            if (app.modelCache[modelName]) {
-                return resolve(`${modelName} is already loaded`);
-            }
-
-            const script = document.createElement('script');
-            script.src = `app/model/${modelName}.js`;
-            script.type = 'module';
-            script.onload = () => {
-                app.modelCache[modelName] = true;
-                resolve(`${modelName} loaded successfully`);
-            };
-            script.onerror = () => reject(new Error(`Failed to load model: ${modelName}`));
-            document.head.appendChild(script);
-        } catch (error) {
-            reject(new Error(`Error loading model: ${error.message}`));
+        if (!$.isEmptyObject(app.models)) {
+            return resolve(app.models[modelName]); // Class is already loaded
         }
+
+        const script = document.createElement("script");
+        script.src = `app/model/${modelName}.js`;
+        script.onload = () => {
+            // Ensure the class is fully loaded before resolving
+            if (app.models[modelName]) {
+                resolve(app.models[modelName]); // Return the loaded class
+            } else {
+                reject(new Error(`Model ${modelName} is not defined after loading`));
+            }
+        };
+        script.onerror = () => reject(new Error(`Failed to load model: ${modelName}`));
+
+        document.head.appendChild(script);
     });
   }
 }

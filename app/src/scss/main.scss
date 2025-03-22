@@ -1,3 +1,13 @@
+@use "variables.scss";
+@use "light.scss" as light;
+//@use "dark.scss" as dark;
+
+@if variables.$default-theme == "light" {
+  @include light.theme();
+} @else if variables.$default-theme == "dark" {
+  //@include dark.theme();
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;

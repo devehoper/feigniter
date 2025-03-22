@@ -1,0 +1,9 @@
+$background: #68adf1 !default;
+$text: #5fff02 !default;
+
+@mixin theme() {
+  body {
+    background-color: $background;
+    color: $text;
+  }
+}

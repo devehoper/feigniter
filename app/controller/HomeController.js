@@ -3,8 +3,11 @@ export default class HomeController extends Controller {
         super();
         this.communViews = ["app/view/header.html","app/view/footer.html"];
         this.search();
-        this.loadModel("UserModel");
-
+        super.loadModel("UserModel").then((ModelClass) => {
+            if (!ModelClass) {
+                throw new Error("Model class failed to load.");
+            }
+        }).catch(console.error);
     }
 
     index() {

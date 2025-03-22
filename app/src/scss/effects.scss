@@ -1,0 +1,76 @@
+@use "variables.scss";
+
+/* ==========================
+   MIXINS
+========================== */
+
+// Mixin for transition
+@mixin transition($time: 0.3s) {
+    transition: all $time ease-in-out;
+  }
+  
+  // Mixin for gradient background
+  @mixin gradient($from, $to) {
+    background: linear-gradient(135deg, $from, $to);
+  }
+  
+  // Mixin for flex center
+  @mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+/* ==========================
+   EFFECTS
+========================== */
+
+// Hover Effect
+.hover-effect {
+    position: relative;
+    @include transition;
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  // Neon Glow
+  .neon {
+    color: map-get(variables.$colors, primary);
+    text-shadow: 0 0 5px map-get(variables.$colors, primary), 0 0 10px map-get(variables.$colors, primary);
+  }
+  
+  // Glitch Effect
+  .glitch {
+    position: relative;
+    color: map-get(variables.$colors, danger);
+    &::before,
+    &::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0.8;
+    }
+    &::before {
+      color: map-get(variables.$colors, success);
+      left: 2px;
+      animation: glitch 0.3s infinite;
+    }
+    &::after {
+      color: map-get(variables.$colors, warning);
+      left: -2px;
+      animation: glitch 0.3s infinite reverse;
+    }
+  }
+  
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(-2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+  }
