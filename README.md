@@ -41,6 +41,11 @@ Each controller should extend Controller and should add export default before th
 Example:
 export default class HomeController extends Controller{...}
 
+#### Models
+Example:
+class UserModel extends Model{...}
+app.models.UserModel = new UserModel();
+
 #### DOM actions
 **
 data-feigniter-type="actionName"

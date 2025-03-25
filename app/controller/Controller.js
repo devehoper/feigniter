@@ -1,19 +1,20 @@
 class Controller {
   constructor(modelName) {
     app.log(this);
-    this.viewCache = {}; // Cache for loaded views
     app.cssCache = app.cssCache || {}; // Cache for loaded CSS files
   }
 
   loadSingleView = (url, selector, { append = false, insertAfter = null, insertBefore = null } = {}) => {
     return new Promise((resolve, reject) => {
-      if (this.viewCache[url]) {
+      if (app.viewCache[url]) {
         app.log(`Using cached view: ${url}`);
-        this.insertContent(selector, this.viewCache[url], append, insertAfter, insertBefore);
+        this.insertContent(selector, app.viewCache[url], append, insertAfter, insertBefore);
         resolve();
       } else {
         $.get(url, (data) => {
-          this.viewCache[url] = data;
+          if(config.useCache) {
+            app.viewCache[url] = data;
+          }
           app.log(`Loaded view: ${url}`);
           this.insertContent(selector, data, append, insertAfter, insertBefore);
           resolve();
@@ -44,7 +45,7 @@ class Controller {
       
       const cssArray = Array.isArray(urls) ? urls : [urls];
       const promises = cssArray.map(url => new Promise((res, rej) => {
-        if (app.cssCache[url]) {
+        if (app.cssCache[url] && config.useCache) {
           app.log(`CSS already loaded: ${url}`);
           return res();
         }
@@ -65,7 +66,8 @@ class Controller {
   };
 
   // Updated to receive a single object as an argument
-  async loadView({ viewUrl, selector = "#feigniter", cssUrl = [], append = true, insertAfter = null, insertBefore = null } = {}) {
+  async loadView({ viewUrl, selector = "#feigniter", cssUrl = [],
+    append = true, insertAfter = null, insertBefore = null } = {}) {
     $("#feigniter").html("");
     try {
       if (cssUrl) {

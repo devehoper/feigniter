@@ -3,6 +3,7 @@ const config = {
     homeController:"HomeController",
     defaultMethod: "index",
     debugMode: true,
+    useCache: false,
     //if false url will be used in app.url
     useNavigationBar: false,
 

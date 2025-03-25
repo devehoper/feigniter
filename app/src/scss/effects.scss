@@ -74,3 +74,13 @@
     80% { transform: translate(2px, -2px); }
     100% { transform: translate(0); }
   }
+
+  .effect-hide {
+    display: block;
+    animation: effect-hide 15s forwards;
+  }
+
+  @keyframes effect-hide {
+    0% {transform: display block; }
+    100% {transform: display none; }
+  }

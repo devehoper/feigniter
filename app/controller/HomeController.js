@@ -3,11 +3,7 @@ export default class HomeController extends Controller {
         super();
         this.communViews = ["app/view/header.html","app/view/footer.html"];
         this.search();
-        super.loadModel("UserModel").then((ModelClass) => {
-            if (!ModelClass) {
-                throw new Error("Model class failed to load.");
-            }
-        }).catch(console.error);
+        super.loadModel("UserModel");
     }
 
     index() {
@@ -48,4 +44,4 @@ export default class HomeController extends Controller {
             app.log('Text changed');
         });
     }
-}
+    }

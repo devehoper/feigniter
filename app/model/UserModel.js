@@ -1,13 +1,10 @@
 class UserModel extends Model {
-    constructor(name, email, loginToken) {
+    email = "";
+    loginToken = "";
+    name ="";
+    constructor() {
         super();
-        this.email = email;
-        this.loginToken = loginToken??null;
-        this.name = name;
-    }
-
-    sayHello() {
-        alert("Hello");
+  
     }
 }
 
