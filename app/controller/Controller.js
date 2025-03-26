@@ -117,6 +117,14 @@ class Controller {
     }
   }
 
+  loadPage(viewName, cssUrl = null, insertAfter = false) {
+    this.loadView({
+        viewUrl: ["app/view/header.html", `app/view/home/${viewName}.html`, "app/view/footer.html"],
+        cssUrl,
+        insertAfter
+    });
+}
+
   loadModel(modelName) {
     return new Promise((resolve, reject) => {
       if (app.modelCache[modelName]) {

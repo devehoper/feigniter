@@ -6,35 +6,23 @@ export default class HomeController extends Controller {
     }
 
     index() {
-        super.loadView({
-            viewUrl: ["app/view/header.html", "app/view/home/content.html", "app/view/footer.html"],
-            cssUrl: "app/src/css/content.css"
-        });
+        super.loadPage("content", "app/src/css/content.css");
     }
 
     about() {
-        super.loadView({
-            viewUrl: ["app/view/header.html", "app/view/home/about.html", "app/view/footer.html"],
-        });
+        super.loadPage("about");
     }
 
     features() {
-        super.loadView({
-            viewUrl: ["app/view/header.html", "app/view/home/features.html", "app/view/footer.html"],
-        });
+        super.loadPage("features");
     }
 
     compatibility() {
-        super.loadView({
-            viewUrl: ["app/view/header.html", "app/view/home/compatibility.html", "app/view/footer.html"],
-        });
+        super.loadPage("compatibility");
     }
 
     faq() {
-        super.loadView({
-            insertAfter: true,
-            viewUrl: ["app/view/header.html", "app/view/home/faq.html", "app/view/footer.html"],
-        });
+        super.loadPage("faq", null, true);
     }
 
     search() {
