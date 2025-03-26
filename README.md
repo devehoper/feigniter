@@ -6,7 +6,7 @@ By default Feigniter uses Jquery, Jquery UI, bootstrap, fontawesome, DataTables 
 
 # Mission
 **
-Keep it simple and clean
+Keep it simple, clean and easy to use
 **
 
 # Why use this lib?
@@ -14,7 +14,9 @@ Keep it simple and clean
 1. Avoid dependencies
 2. Simple to use
 3. Its open source, everyone can contribute to improve this lib
-4. **
+4. Ideal for micro websites
+5. Also can be used in more complex websites if functionalities are separated in subdomains
+6. **
 
 # How to use
 

@@ -23,46 +23,54 @@ class App {
 
   // full url example: https://localhost/feigniter/#controllerName?MethodName=arg1,arg2,arg3
   routing() {
-    $(window).on("hashchange", (e) => {
-      let url = config.useNavigationBar ? window.location.hash : this.url;
-      const { controller, method, args } = this.parseURL(url);
-
-      this.controller = controller || config.homeController;
-      this.method = method || config.defaultMethod;
-      this.args = args;
-      this.loadController(this.controller, this.method, this.args);
-
-      if (!config.useNavigationBar) {
-        // Ensure controller and method are not null before updating the URL
-        const newController = controller || config.homeController;
-        const newMethod = method || config.defaultMethod;
-        const newArgs = args.length > 0 ? args.join(",") : "";
-
-        // Securely using history.replaceState
-        try {
-          const sanitizedBasePath = config.useNavigationBar
-            ? this.sanitizeBasePath(config.basePath)
-            : this.sanitizeBasePath(this.url);
-          // Update the URL without triggering a page reload
-          history.replaceState(null, null, sanitizedBasePath);
-          this.url = `#${newController}?${newMethod}=${newArgs}`;
-        } catch (error) {
-          console.error('Error: ', error.message);
-          //this.url = `#HomeController?index`;
-        }
-      }
-    });
-
-    // Handle click events on <a> elements
-    $(document).on("click", "a", (e) => {
-      if (!config.useNavigationBar && $(e.currentTarget).attr("target") !== "_blank") {
-        e.preventDefault();
-        const href = $(e.currentTarget).attr("href");
-        this.url = href;
-        $(window).trigger("hashchange");
-      }
-    });
+    $(window).on("hashchange", this.handleHashChange.bind(this));
+    $(document).on("click", "a", this.handleAnchorClick.bind(this));
   }
+  
+  handleHashChange() {
+    let url = config.useNavigationBar ? window.location.hash : this.url;
+    const { controller, method, args } = this.parseURL(url);
+  
+    this.controller = controller || config.homeController;
+    this.method = method || config.defaultMethod;
+    this.args = args;
+  
+    // Load the controller and method based on URL
+    this.loadController(this.controller, this.method, this.args);
+  
+    if (!config.useNavigationBar) {
+      // Ensure controller and method are not null before updating the URL
+      const newController = controller || config.homeController;
+      const newMethod = method || config.defaultMethod;
+      const newArgs = args.length > 0 ? args.join(",") : "";
+  
+      // Securely using history.replaceState
+      try {
+        const sanitizedBasePath = this.sanitizeBasePath(config.useNavigationBar
+          ? config.basePath
+          : this.url);
+        history.replaceState(null, null, sanitizedBasePath);
+  
+        this.url = `#${newController}?${newMethod}=${newArgs}`;
+      } catch (error) {
+        console.error('Error updating URL:', error.message);
+        // Optionally handle the error, e.g., show a notification
+      }
+    }
+  }
+  
+  handleAnchorClick(e) {
+    if (!config.useNavigationBar && $(e.currentTarget).attr("target") !== "_blank") {
+      e.preventDefault();
+  
+      const href = $(e.currentTarget).attr("href");
+      this.url = href;
+  
+      // Trigger hashchange event for navigation
+      $(window).trigger("hashchange");
+    }
+  }
+  
 
   parseURL(url) {
     const controllerStrPosition = url.indexOf("#");
