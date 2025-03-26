@@ -2,6 +2,7 @@ class Controller {
   constructor(modelName) {
     app.log(this);
     app.cssCache = app.cssCache || {}; // Cache for loaded CSS files
+    app.modelCache = app.modelCache || {}; // Cache for loaded models
   }
 
   loadSingleView = (url, selector, { append = false, insertAfter = null, insertBefore = null } = {}) => {
@@ -19,9 +20,9 @@ class Controller {
           this.insertContent(selector, data, append, insertAfter, insertBefore);
           resolve();
         }).fail((jqXHR, textStatus, errorThrown) => {
-          app.log(`Error loading view: ${url}`, textStatus, errorThrown);
-          app.log(`Response: ${jqXHR.responseText}`);
-          reject(new Error(`Error loading view: ${url}`));
+          const errorMsg = `Error loading view: ${url} - ${textStatus}`;
+          ErrorHandler.logError(errorMsg);
+          reject(new Error(errorMsg));
         });
       }
     });
@@ -35,12 +36,12 @@ class Controller {
     } else if (append) {
       $(selector).append(content);
     } else {
-      $(selector).html(content); // Changed from .html() to .append() to preserve existing content
+      $(selector).html(content);
     }
   }
 
   loadCss = (urls) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (!urls) return resolve();
       
       const cssArray = Array.isArray(urls) ? urls : [urls];
@@ -57,22 +58,53 @@ class Controller {
           app.cssCache[url] = true;
           res();
         };
-        link.onerror = () => rej(new Error(`Error loading CSS: ${url}`));
+        link.onerror = () => {
+          ErrorHandler.logError(`Error loading CSS: ${url}`);
+          rej(new Error(`Error loading CSS: ${url}`));
+        };
         document.head.appendChild(link);
       }));
       
-      Promise.all(promises).then(resolve).catch(reject);
+      Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
     });
   };
 
-  // Updated to receive a single object as an argument
-  async loadView({ viewUrl, selector = "#feigniter", cssUrl = [],
-    append = true, insertAfter = null, insertBefore = null } = {}) {
-    $("#feigniter").html("");
+  loadJs = (urls) => {
+    return new Promise((resolve) => {
+      if (!urls) return resolve();
+      
+      const jsArray = Array.isArray(urls) ? urls : [urls];
+      const promises = jsArray.map(url => new Promise((res, rej) => {
+        if (app.jsCache[url] && config.useCache) {
+          app.log(`js already loaded: ${url}`);
+          return res();
+        }
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = () => {
+          app.jsCache[url] = true;
+          res();
+        }
+        script.onerror = () => {
+          ErrorHandler.logError(`Error loading JS: ${url}`);
+          rej(new Error(`Error loading JS: ${url}`));
+        };
+        document.head.appendChild(script);
+      }));
+      
+      Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
+    });
+  };
+
+  async loadView({ viewUrl, selector = "#feigniter", cssUrl = [], jsUrl = [],
+    append = false, insertAfter = null, insertBefore = null, overwrite = true } = {}) {
+    if (overwrite) {
+      $(selector).empty();
+    }
     try {
-      if (cssUrl) {
-        await this.loadCss(cssUrl);
-      }
+      await this.loadCss(cssUrl).catch(ErrorHandler.logError);
+      await this.loadJs(jsUrl).catch(ErrorHandler.logError);
+      
       if (Array.isArray(viewUrl)) {
         for (const url of viewUrl) {
           await this.loadSingleView(url, selector, { append: true, insertAfter, insertBefore });
@@ -81,29 +113,34 @@ class Controller {
         await this.loadSingleView(viewUrl, selector, { append: true, insertAfter, insertBefore });
       }
     } catch (error) {
-      app.log(error);
+      ErrorHandler.logError(error);
     }
   }
 
   loadModel(modelName) {
     return new Promise((resolve, reject) => {
-        if (!$.isEmptyObject(app.models)) {
-            return resolve(app.models[modelName]); // Class is already loaded
+      if (app.modelCache[modelName]) {
+        return resolve(app.modelCache[modelName]);
+      }
+
+      const script = document.createElement("script");
+      script.src = `app/model/${modelName}.js`;
+      script.onload = () => {
+        if (app.models[modelName]) {
+          app.modelCache[modelName] = app.models[modelName];
+          resolve(app.models[modelName]);
+        } else {
+          const errorMsg = `Model ${modelName} is not defined after loading`;
+          ErrorHandler.logError(errorMsg);
+          reject(new Error(errorMsg));
         }
-
-        const script = document.createElement("script");
-        script.src = `app/model/${modelName}.js`;
-        script.onload = () => {
-            // Ensure the class is fully loaded before resolving
-            if (app.models[modelName]) {
-                resolve(app.models[modelName]); // Return the loaded class
-            } else {
-                reject(new Error(`Model ${modelName} is not defined after loading`));
-            }
-        };
-        script.onerror = () => reject(new Error(`Failed to load model: ${modelName}`));
-
-        document.head.appendChild(script);
+      };
+      script.onerror = () => {
+        const errorMsg = `Failed to load model: ${modelName}`;
+        ErrorHandler.logError(errorMsg);
+        reject(new Error(errorMsg));
+      };
+      document.head.appendChild(script);
     });
   }
 }

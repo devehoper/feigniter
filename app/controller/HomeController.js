@@ -1,7 +1,6 @@
 export default class HomeController extends Controller {
     constructor() {
         super();
-        this.communViews = ["app/view/header.html","app/view/footer.html"];
         this.search();
         super.loadModel("UserModel");
     }
@@ -44,4 +43,4 @@ export default class HomeController extends Controller {
             app.log('Text changed');
         });
     }
-    }
+}
