@@ -117,13 +117,25 @@ class Controller {
     }
   }
 
-  loadPage(viewName, cssUrl = null, insertAfter = false) {
+  loadPage(viewName, cssUrl = null, jsUrl = null, insertAfter = false) {
+    let resultJs;
+    if(jsUrl != null) {
+      if(jsUrl instanceof Array) {
+        jsArray.append("app/src/js/header.js");
+        resultJs = jsUrl;
+      } else {
+        resultJs = ["app/src/js/header.js", jsUrl];
+      }
+    } else {
+      resultJs = ["app/src/js/header.js"]
+    }
     this.loadView({
         viewUrl: ["app/view/header.html", `app/view/home/${viewName}.html`, "app/view/footer.html"],
         cssUrl,
+        resultJs,
         insertAfter
     });
-}
+  }
 
   loadModel(modelName) {
     return new Promise((resolve, reject) => {

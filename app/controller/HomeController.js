@@ -6,7 +6,7 @@ export default class HomeController extends Controller {
     }
 
     index() {
-        super.loadPage("content", "app/src/css/content.css");
+        super.loadPage("content","app/src/css/content.css");
     }
 
     about() {
@@ -22,7 +22,7 @@ export default class HomeController extends Controller {
     }
 
     faq() {
-        super.loadPage("faq", null, true);
+        super.loadPage("faq", null, null, true);
     }
 
     search() {

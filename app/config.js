@@ -3,12 +3,12 @@ const config = {
     homeController:"HomeController",
     defaultMethod: "index",
     debugMode: true,
-    useCache: false,
+    useCache: true,
     //if false url will be used in app.url
     useNavigationBar: false,
 
     basePath: "http://localhost/feigniter/",
-    //external libs to be added
+    //@todo external libs to be added
     libs: [
         {
             "name": "",

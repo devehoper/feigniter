@@ -34,14 +34,14 @@ base_path#controllerName?MethodName=arg1,arg2,arg3
 
 #### Views
 **
-If a view its commun in several pages, Ex (header, footer...),
-then its javascript should be setted in that view
+
 **
 
 #### Controllers
 Each controller should extend Controller and should add export default before the "class"
 Example:
 export default class HomeController extends Controller{...}
+loadView();
 
 #### Models
 Example:
@@ -59,7 +59,7 @@ Since the views are being added later in the DOM, according to user navigation,
 in controller to access the DOM must use this notation:
 **
 ```
-$(document).on('click', '#btn-test', function() {
-    alert('Button clicked!');
+$(document).on('click', '#elementId', function() {
+    alert('clicked');
 });
 ``
