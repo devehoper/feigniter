@@ -117,7 +117,8 @@ class Controller {
     }
   }
 
-  loadPage(viewName, cssUrl = null, jsUrl = null, insertAfter = false) {
+  loadPage(viewUrl, cssUrl = null, jsUrl = null, insertAfter = false) {
+    viewUrl += viewUrl.indexOf(".html") == -1 ? ".html" : "";
     let resultJs;
     if(jsUrl != null) {
       if(jsUrl instanceof Array) {
@@ -130,7 +131,7 @@ class Controller {
       resultJs = ["app/src/js/header.js"]
     }
     this.loadView({
-        viewUrl: ["app/view/header.html", `app/view/home/${viewName}.html`, "app/view/footer.html"],
+        viewUrl: config.loadTemplate.toSpliced(config.templateIndexToLoad, 0, viewUrl),
         cssUrl,
         resultJs,
         insertAfter

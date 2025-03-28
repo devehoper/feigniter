@@ -76,11 +76,20 @@
     transform: display none;
   }
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure the body fills the viewport */
+}
+
 body {
   background-color: #ffffff;
   color: #5fff02;
+  display: flex;
+  flex-direction: column; /* Align items vertically */
 }
-body #landing-page {
+
+#landing-page {
   position: absolute;
   display: block;
   background-color: chartreuse;
@@ -91,9 +100,12 @@ body #landing-page {
   z-index: 999;
 }
 
+main {
+  flex: 1; /* Allows content to expand while pushing the footer down */
+}
+
 footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 15px;
 }
