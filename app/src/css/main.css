@@ -16,28 +16,28 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.neon {
+.neon-effect {
   color: #007bff;
   text-shadow: 0 0 5px #007bff, 0 0 10px #007bff;
 }
 
-.glitch {
+.glitch-effect {
   position: relative;
   color: #dc3545;
 }
-.glitch::before, .glitch::after {
+.glitch-effect::before, .glitch-effect::after {
   content: attr(data-text);
   position: absolute;
   left: 0;
   top: 0;
   opacity: 0.8;
 }
-.glitch::before {
+.glitch-effect::before {
   color: #28a745;
   left: 2px;
   animation: glitch 0.3s infinite;
 }
-.glitch::after {
+.glitch-effect::after {
   color: #ffc107;
   left: -2px;
   animation: glitch 0.3s infinite reverse;
@@ -63,17 +63,83 @@
     transform: translate(0);
   }
 }
-.effect-hide {
-  display: block;
-  animation: effect-hide 15s forwards;
+.hide-effect {
+  display: none;
+  animation: hide 2s forwards;
 }
 
-@keyframes effect-hide {
+@keyframes hide {
   0% {
-    transform: display block;
+    opacity: 0.7;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0.2;
   }
   100% {
     transform: display none;
+    transform: opacity 0;
+  }
+}
+@keyframes glow {
+  0% {
+    background: #0ff;
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+  }
+  100% {
+    background: #08f;
+    box-shadow: 0 0 20px #08f, 0 0 40px #08f;
+  }
+}
+@keyframes glow-hover {
+  0%, 100% {
+    background: #f0f;
+    box-shadow: 0 0 10px #f0f, 0 0 20px #f0f;
+  }
+  50% {
+    background: #0ff;
+    box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+  }
+}
+.pulse-effect {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #222, #000);
+  overflow: hidden;
+}
+
+.pulse-effect::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(120deg, #0ff, #08f, #0ff);
+  animation: pulse 5s forwards;
+  filter: blur(100px);
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
   }
 }
 html, body {
@@ -83,21 +149,44 @@ html, body {
 }
 
 body {
-  background-color: #ffffff;
-  color: #5fff02;
-  display: flex;
-  flex-direction: column; /* Align items vertically */
+  font-family: "Arial", sans-serif;
+  color: #fff;
+  background: #000; /* Dark theme for electronic vibes */
+  overflow: hidden;
 }
 
-#landing-page {
-  position: absolute;
-  display: block;
-  background-color: chartreuse;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
+h1 {
+  font-size: 3rem;
+  text-shadow: 0 0 20px #0ff, 0 0 40px #08f;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 1.5;
+}
+
+.btn {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  color: #000;
+  background: linear-gradient(90deg, #0ff, #08f);
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #08f;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, #08f, #0ff);
+  box-shadow: 0 0 20px #0ff, 0 0 40px #08f;
 }
 
 main {

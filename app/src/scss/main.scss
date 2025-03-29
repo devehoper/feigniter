@@ -1,8 +1,10 @@
 @use "variables.scss";
 @use "effects.scss";
+// import the themes to be generated
 @use "themes/default/default.scss" as default;
 //@use "dark.scss" as dark;
 
+//generates the theme difined in variables.$default-theme
 @if variables.$default-theme == "default" {
   @include default.theme();
 } @else if variables.$default-theme == "dark" {
