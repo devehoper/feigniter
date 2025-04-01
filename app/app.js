@@ -166,6 +166,45 @@ executeMethod(controllerInstance, method, args) {
     }
   }
 
+  translate () {
+    $('[data-translate]').each(function () {
+      const key = $(this).data('translate');
+      $(this).text(i18next.t(key));
+    });
+  }
+
+  setLanguage() {
+    i18next.use(i18nextHttpBackend).init({
+      fallbackLng: 'en',
+      lng: 'en', // Default language
+      backend: {
+        loadPath: 'app/locales/{{lng}}.json' // Path to your JSON translation files
+      }
+    }, function(err, t) {
+      if (err) console.error('Error initializing i18next:', err);
+  
+      // Update text on the page with translations
+      updateContent();
+    });
+  
+    // Function to update content
+    const updateContent = () => {
+      $('[data-translate]').each(function() {
+        const key = $(this).data('translate');
+        $(this).text(i18next.t(key)); // Fetch translation for each key
+      });
+    };
+
+    // Language change buttons
+    // $('#lang-en').click(function() {
+    //   i18next.changeLanguage('en', updateContent); // Change to English
+    // });
+
+    // $('#lang-pt').click(function() {
+    //   i18next.changeLanguage('pt', updateContent); // Change to Portuguese
+    // });
+  }
+
   init() {
     this.log("init");
     $(document).ready(() => {
@@ -177,6 +216,7 @@ executeMethod(controllerInstance, method, args) {
       $(window).trigger("hashchange");
       this.handleDOMActions();
       this.observeDOMChanges();
+      this.setLanguage();
     });
   }
 }

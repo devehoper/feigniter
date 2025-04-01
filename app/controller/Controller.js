@@ -114,6 +114,7 @@ class Controller {
         viewUrl += viewUrl.indexOf(".html") === -1 ? ".html" : "";
         await this.loadSingleView(viewUrl, selector, { append: true, insertAfter, insertBefore });
       }
+      app.translate();
     } catch (error) {
       ErrorHandler.logError(error);
     }
