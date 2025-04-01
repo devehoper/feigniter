@@ -104,12 +104,14 @@ class Controller {
     try {
       await this.loadCss(cssUrl).catch(ErrorHandler.logError);
       await this.loadJs(jsUrl).catch(ErrorHandler.logError);
-      
+
       if (Array.isArray(viewUrl)) {
-        for (const url of viewUrl) {
+        for (let url of viewUrl) {
+          url += url.indexOf(".html") === -1 ? ".html" : "";
           await this.loadSingleView(url, selector, { append: true, insertAfter, insertBefore });
         }
       } else {
+        viewUrl += viewUrl.indexOf(".html") === -1 ? ".html" : "";
         await this.loadSingleView(viewUrl, selector, { append: true, insertAfter, insertBefore });
       }
     } catch (error) {
@@ -118,32 +120,44 @@ class Controller {
   }
 
   loadPage(viewUrl, cssUrl = null, jsUrl = null, insertAfter = false) {
-    viewUrl += viewUrl.indexOf(".html") == -1 ? ".html" : "";
     let resultJs;
-    if(jsUrl != null) {
-      if(jsUrl instanceof Array) {
-        jsArray.append("app/src/js/header.js");
-        resultJs = jsUrl;
-      } else {
-        resultJs = ["app/src/js/header.js", jsUrl];
-      }
+    let viewUrlResult = [];
+
+        // if(jsUrl != null) {
+    //   if(jsUrl instanceof Array) {
+    //     jsArray.append("app/src/js/header.js");
+    //     resultJs = jsUrl;
+    //   } else {
+    //     resultJs = ["app/src/js/header.js", jsUrl];
+    //   }
+    // } else {
+    //   resultJs = ["app/src/js/header.js"]
+    // }
+
+    if (viewUrl instanceof Array) {
+        viewUrlResult = [...config.loadTemplate]; // Create a shallow copy
+        viewUrlResult.splice(config.templateIndexToLoad, 0, ...viewUrl);
     } else {
-      resultJs = ["app/src/js/header.js"]
+        viewUrl += viewUrl.indexOf(".html") == -1 ? ".html" : "";
+        viewUrlResult = [...config.loadTemplate]; // Create a shallow copy
+        viewUrlResult.splice(config.templateIndexToLoad, 0, viewUrl);
     }
+    
     this.loadView({
-        viewUrl: config.loadTemplate.toSpliced(config.templateIndexToLoad, 0, viewUrl),
+        viewUrl: viewUrlResult,
         cssUrl,
-        resultJs,
+        jsUrl,
         insertAfter
     });
-  }
+}
+
 
   loadModel(modelName) {
+    modelName = modelName.indexOf(".js") === -1 ? modelName : modelName.slice(0,modelName.length -3);
     return new Promise((resolve, reject) => {
       if (app.modelCache[modelName]) {
         return resolve(app.modelCache[modelName]);
       }
-
       const script = document.createElement("script");
       script.src = `app/model/${modelName}.js`;
       script.onload = () => {

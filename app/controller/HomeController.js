@@ -6,7 +6,7 @@ export default class HomeController extends Controller {
     }
 
     index() {
-        super.loadPage("app/view/home/content","app/src/css/content.css");
+        super.loadPage(["app/view/home/content", "app/view/test"],"app/src/css/content.css");
     }
 
     about() {

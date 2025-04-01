@@ -5,7 +5,7 @@ const config = {
     debugMode: true,
     useCache: true,
     //if false url will be used in app.url
-    useNavigationBar: false,
+    useNavigationBar: true,
 
     loadTemplate: ["app/view/header.html", "app/view/footer.html"],
     templateIndexToLoad: 1,
