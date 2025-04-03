@@ -2,6 +2,7 @@ const config = {
     appName: "Feigniter",
     homeController:"HomeController",
     defaultMethod: "index",
+    defaultLanguage: "pt",
     debugMode: true,
     useCache: true,
     //if false url will be used in app.url

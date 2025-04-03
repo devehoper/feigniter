@@ -167,6 +167,7 @@ executeMethod(controllerInstance, method, args) {
   }
 
   translate () {
+    i18next.changeLanguage($("#language-selector").find(":selected").val() ?? config.defaultLanguage);
     $('[data-translate]').each(function () {
       const key = $(this).data('translate');
       $(this).text(i18next.t(key));
@@ -175,10 +176,13 @@ executeMethod(controllerInstance, method, args) {
 
   setLanguage() {
     i18next.use(i18nextHttpBackend).init({
-      fallbackLng: 'en',
-      lng: 'en', // Default language
+      fallbackLng: config.defaultLanguage,
+      lng: config.defaultLanguage, // Default language
       backend: {
         loadPath: 'app/locales/{{lng}}.json' // Path to your JSON translation files
+      },
+      cache: {
+        enabled: false
       }
     }, function(err, t) {
       if (err) console.error('Error initializing i18next:', err);

@@ -6,11 +6,17 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li class="header-item"><a href="/feigniter/#HomeController" class="nav-link px-2 text-secondary">Home</a></li>
-          <li class="header-item"><a href="/feigniter/#HomeController?features" class="nav-link px-2 text-white">Features</a></li>
-          <li class="header-item"><a href="/feigniter/#HomeController?compatibility" class="nav-link px-2 text-white">Browsers compatibility</a></li>
+          <li class="header-item"><a href="/feigniter/#HomeController" class="nav-link px-2 text-secondary" data-translate="home"></a></li>
+          <li class="header-item"><a href="/feigniter/#HomeController?features" class="nav-link px-2 text-white" data-translate="features"></a></li>
+          <li class="header-item"><a href="/feigniter/#HomeController?compatibility" class="nav-link px-2 text-white" data-translate="browsers compatibility"></a></li>
           <li class="header-item"><a href="/feigniter/#HomeController?faq" class="nav-link px-2 text-white">FAQs</a></li>
-          <li class="header-item"><a href="/feigniter/#HomeController?about" class="nav-link px-2 text-white">About</a></li>
+          <li class="header-item"><a href="/feigniter/#HomeController?about" class="nav-link px-2 text-white" data-translate="about"></a></li>
+          <li class="header-item">
+            <select id="language-selector" name="language-selector" onchange=`${app.translate()}`>
+              <option value="en" data-flag="🇺🇸" selected>English</option>
+              <option value="pt" data-flag="🇵🇹">Português</option>
+            </select>
+          </li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">

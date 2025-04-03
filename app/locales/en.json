@@ -1,1 +1,12 @@
-{ "welcome": "Welcome", "about": "About" }
+{
+    "welcome": "Welcome",
+    "about": "About",
+    "home": "Home",
+    "features": "Features",
+    "browsers compatibility": "Browsers compatibility",
+    "version": "Version",
+    "search": "Search",
+    "external resources": "External resources",
+    "where to find us": "Where to find us",
+    "contact": "Contact"
+}

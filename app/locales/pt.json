@@ -1,1 +1,12 @@
-{ "welcome": "Bem vindo(a)", "about": "Sobre" }
+{
+    "welcome": "Bem vindo(a)",
+    "about": "Sobre",
+    "home": "Inicio",
+    "features": "Funcionalidades",
+    "browsers compatibility": "Compatibilidade com os browsers",
+    "version": "Versão",
+    "search": "Pesquisa",
+    "external resources": "Fontes externas",
+    "where to find us": "Onde encontrar-nos",
+    "contact": "Contato"
+}

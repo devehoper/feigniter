@@ -1,5 +1,6 @@
 class Controller {
   constructor(modelName) {
+    this.loadModel("AppModel");
     app.log(this);
     app.cssCache = app.cssCache || {}; // Cache for loaded CSS files
     app.modelCache = app.modelCache || {}; // Cache for loaded models
@@ -38,6 +39,7 @@ class Controller {
     } else {
       $(selector).html(content);
     }
+    app.translate();
   }
 
   loadCss = (urls) => {
@@ -114,7 +116,6 @@ class Controller {
         viewUrl += viewUrl.indexOf(".html") === -1 ? ".html" : "";
         await this.loadSingleView(viewUrl, selector, { append: true, insertAfter, insertBefore });
       }
-      app.translate();
     } catch (error) {
       ErrorHandler.logError(error);
     }

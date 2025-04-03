@@ -1,10 +1,16 @@
 class UserModel extends Model {
     email = "";
     loginToken = "";
-    name ="";
+    name = "";
     constructor() {
         super();
   
+    }
+    toJson() {
+        return {
+            name: this.name,
+            email: this.email
+        };
     }
 }
 
