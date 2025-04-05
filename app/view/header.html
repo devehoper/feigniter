@@ -1,27 +1,43 @@
 <header class="p-3 bg-dark text-white" id="header">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-        </a>
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <!-- Logo Section -->
+      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+      </a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li class="header-item"><a href="/feigniter/#HomeController" class="nav-link px-2 text-secondary" data-translate="home"></a></li>
-          <li class="header-item"><a href="/feigniter/#HomeController?features" class="nav-link px-2 text-white" data-translate="features"></a></li>
-          <li class="header-item"><a href="/feigniter/#HomeController?compatibility" class="nav-link px-2 text-white" data-translate="browsers compatibility"></a></li>
-          <li class="header-item"><a href="/feigniter/#HomeController?faq" class="nav-link px-2 text-white">FAQs</a></li>
-          <li class="header-item"><a href="/feigniter/#HomeController?about" class="nav-link px-2 text-white" data-translate="about"></a></li>
-          <li class="header-item">
-            <select id="language-selector" name="language-selector">
-              <option value="en" data-flag="🇺🇸" >English</option>
-              <option value="pt" data-flag="🇵🇹" selected >Português</option>
-            </select>
-          </li>
-        </ul>
+      <!-- Navigation Menu -->
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li class="header-item">
+          <a href="/feigniter/#HomeController" class="nav-link px-2 text-secondary" data-translate="home">Home</a>
+        </li>
+        <li class="header-item">
+          <a href="/feigniter/#HomeController?features" class="nav-link px-2 text-white" data-translate="features">Features</a>
+        </li>
+        <li class="header-item">
+          <a href="/feigniter/#HomeController?compatibility" class="nav-link px-2 text-white" data-translate="browsers compatibility">Compatibility</a>
+        </li>
+        <li class="header-item">
+          <a href="/feigniter/#HomeController?faq" class="nav-link px-2 text-white">FAQs</a>
+        </li>
+        <li class="header-item">
+          <a href="/feigniter/#HomeController?about" class="nav-link px-2 text-white" data-translate="about">About</a>
+        </li>
+        <li class="header-item">
+          <!-- Language Selector -->
+          <select id="language-selector" name="language-selector" class="form-select text-white bg-dark" title="Select language">
+            <option value="en" data-flag="🇺🇸">🇺🇸 English</option>
+            <option value="pt" data-flag="🇵🇹" selected>🇵🇹 Português</option>
+          </select>
+        </li>
+      </ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-          <input type="search" id="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-        </form>
-      </div>
+      <!-- Search Form -->
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+        <input type="search" id="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+      </form>
     </div>
-  </header>
+  </div>
+</header>

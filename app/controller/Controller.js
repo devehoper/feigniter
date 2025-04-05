@@ -32,16 +32,17 @@ class Controller {
   insertContent(selector, content, append, insertAfter, insertBefore) {
     return new Promise((resolve, reject) => {
       try {
-        if (insertAfter && typeof insertAfter === "string") {
-          $(insertAfter).after(content);
-        } else if (insertBefore && typeof insertBefore === "string") {
-          $(insertBefore).before(content);
-        } else if (append) {
-          $(selector).append(content);
-        } else {
-          $(selector).html(content);
-        }
-  
+        $(document).ready(() => {
+          if (insertAfter && typeof insertAfter === "string") {
+            $(insertAfter).after(content);
+          } else if (insertBefore && typeof insertBefore === "string") {
+            $(insertBefore).before(content);
+          } else if (append) {
+            $(selector).append(content);
+          } else {
+            $(selector).html(content);
+          }
+        });
         resolve(); // Resolve the promise once the content is inserted
       } catch (error) {
         reject(error); // Reject the promise if an error occurs

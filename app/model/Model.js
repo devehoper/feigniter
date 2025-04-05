@@ -4,12 +4,31 @@ class Model {
     }
 
     static setLocalData(data) {
-        localStorage.setItem(config.localStorage, JSON.stringify(data));
+        try {
+            localStorage.setItem(config.localStorage, JSON.stringify(data));
+        } catch (error) {
+            console.error("Error setting local data:", error);
+        }
     }
 
     static getLocalData() {
-        return JSON.parse(localStorage.getItem(config.localStorage));
+        try {
+            const data = localStorage.getItem(config.localStorage);
+            return data ? JSON.parse(data) : {};
+        } catch (error) {
+            console.error("Error getting local data:", error);
+            return {};
+        }
     }
+
+    static clearLocalData() {
+        try {
+            localStorage.removeItem(config.localStorage);
+        } catch (error) {
+            console.error("Error clearing local data:", error);
+        }
+    }
+    
 
     validateData(formData, rules) {
         const errors = {};

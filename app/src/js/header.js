@@ -1,14 +1,8 @@
-// $(".header-item").on('click', (e) => {
-//     e.preventDefault();
-//     alert("clicked");
-//     app.log(e);
-// });
 $(document).ready(() => {
-// //alert("teste");
-    $("#language-selector").on('change', (e) => {
-        app.log("changed");
+    $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
+    $(document).on('change', '#' + config.translationElementId, (e) => {
+        e.preventDefault();
+        app.log("changed language");
         app.translate();
     });
-    $("#language-selector").val(Model.getLocalData().language);
-    // app.log("teste");
-})
+});

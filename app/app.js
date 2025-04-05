@@ -1,6 +1,6 @@
 class App {
   constructor() {
-    this.url = "#HomeController?index";
+    this.url = "#" + config.homeController + "?" + config.defaultMethod;
     this.controller = config.homeController;
     this.method = config.defaultMethod;
     this.args = [];
@@ -168,12 +168,21 @@ executeMethod(controllerInstance, method, args) {
   }
 
   translate () {
-    this.models.AppModel.language = $("#language-selector").find(":selected").val();
-    Model.setLocalData({language: this.models.AppModel.language});
-    i18next.changeLanguage(Model.getLocalData().language??config.defaultLanguage);
-    $('[data-translate]').each(function () {
-      const key = $(this).data('translate');
-      $(this).text(i18next.t(key));
+    $(document).ready(() => {
+      this.log("translate");
+      if(config.useTranslation) {
+        this.models.AppModel.language = $("#" + config.translationElementId).find(":selected").val();
+        Model.setLocalData({language: this.models.AppModel.language});
+        i18next.changeLanguage(Model.getLocalData().language??config.defaultLanguage).then(
+          () => {
+            this.log("Current language in i18next:", i18next.language);
+            $('[data-translate]').each(function () {
+              const key = $(this).data('translate');
+              $(this).text(i18next.t(key));
+            });
+          }
+        );
+      }
     });
   }
 
@@ -214,7 +223,7 @@ executeMethod(controllerInstance, method, args) {
       $(window).trigger("hashchange");
       this.handleDOMActions();
       this.observeDOMChanges();
-      this.setLanguage();
+      config.useTranslation && this.setLanguage();
     });
   }
 }

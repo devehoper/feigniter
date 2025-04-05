@@ -1,3 +1,5 @@
+// In the config file there're setted the default settings
+// Check Model/AppModel.js that contains a global scope for app state
 const config = {
     appName: "Feigniter",
     homeController:"HomeController",
@@ -6,6 +8,10 @@ const config = {
     localStorage: "feigniter",
     debugMode: true,
     useCache: true,
+    useTranslation: true,
+    //select that contains available language list
+    translationElementId: "language-selector",
+    availableLanguages : ["pt", "en"],
     //if false url will be used in app.url
     useNavigationBar: false,
 
