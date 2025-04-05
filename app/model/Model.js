@@ -1,4 +1,16 @@
 class Model {
+    constructor() {
+
+    }
+
+    static setLocalData(data) {
+        localStorage.setItem(config.localStorage, JSON.stringify(data));
+    }
+
+    static getLocalData() {
+        return JSON.parse(localStorage.getItem(config.localStorage));
+    }
+
     validateData(formData, rules) {
         const errors = {};
     

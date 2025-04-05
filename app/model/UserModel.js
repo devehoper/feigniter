@@ -14,4 +14,4 @@ class UserModel extends Model {
     }
 }
 
-app.models.UserModel = new UserModel();
+app.models["UserModel"] = new UserModel();

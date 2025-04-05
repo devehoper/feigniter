@@ -10,6 +10,7 @@ class App {
     this.cssCache = {}; // cache for loaded css files
     this.models = {};
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
+    this.data = Model.getLocalData();
   }
 
   // Function to validate and sanitize config.basePath
@@ -167,7 +168,9 @@ executeMethod(controllerInstance, method, args) {
   }
 
   translate () {
-    i18next.changeLanguage($("#language-selector").find(":selected").val() ?? config.defaultLanguage);
+    this.models.AppModel.language = $("#language-selector").find(":selected").val();
+    Model.setLocalData({language: this.models.AppModel.language});
+    i18next.changeLanguage(Model.getLocalData().language??config.defaultLanguage);
     $('[data-translate]').each(function () {
       const key = $(this).data('translate');
       $(this).text(i18next.t(key));
@@ -191,22 +194,13 @@ executeMethod(controllerInstance, method, args) {
       updateContent();
     });
   
-    // Function to update content
+    //Function to update content
     const updateContent = () => {
       $('[data-translate]').each(function() {
         const key = $(this).data('translate');
         $(this).text(i18next.t(key)); // Fetch translation for each key
       });
     };
-
-    // Language change buttons
-    // $('#lang-en').click(function() {
-    //   i18next.changeLanguage('en', updateContent); // Change to English
-    // });
-
-    // $('#lang-pt').click(function() {
-    //   i18next.changeLanguage('pt', updateContent); // Change to Portuguese
-    // });
   }
 
   init() {

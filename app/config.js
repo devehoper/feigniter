@@ -3,6 +3,7 @@ const config = {
     homeController:"HomeController",
     defaultMethod: "index",
     defaultLanguage: "pt",
+    localStorage: "feigniter",
     debugMode: true,
     useCache: true,
     //if false url will be used in app.url

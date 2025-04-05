@@ -30,17 +30,27 @@ class Controller {
   };
 
   insertContent(selector, content, append, insertAfter, insertBefore) {
-    if (insertAfter && typeof insertAfter === "string") {
-      $(insertAfter).after(content);
-    } else if (insertBefore && typeof insertBefore === "string") {
-      $(insertBefore).before(content);
-    } else if (append) {
-      $(selector).append(content);
-    } else {
-      $(selector).html(content);
-    }
-    app.translate();
+    return new Promise((resolve, reject) => {
+      try {
+        if (insertAfter && typeof insertAfter === "string") {
+          $(insertAfter).after(content);
+        } else if (insertBefore && typeof insertBefore === "string") {
+          $(insertBefore).before(content);
+        } else if (append) {
+          $(selector).append(content);
+        } else {
+          $(selector).html(content);
+        }
+  
+        resolve(); // Resolve the promise once the content is inserted
+      } catch (error) {
+        reject(error); // Reject the promise if an error occurs
+      }
+    }).then(() => {
+      app.translate();
+    });
   }
+  
 
   loadCss = (urls) => {
     return new Promise((resolve) => {
@@ -157,8 +167,8 @@ class Controller {
   loadModel(modelName) {
     modelName = modelName.indexOf(".js") === -1 ? modelName : modelName.slice(0,modelName.length -3);
     return new Promise((resolve, reject) => {
-      if (app.modelCache[modelName]) {
-        return resolve(app.modelCache[modelName]);
+      if (typeof app.models[modelName] !== 'undefined') {
+        return resolve(app.models[modelName]);
       }
       const script = document.createElement("script");
       script.src = `app/model/${modelName}.js`;

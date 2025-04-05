@@ -1,7 +1,7 @@
 # About
 **
-Feigniter its mean to simplify the fron-end development, using mvc pattern and avoid dependencies issues.
-By default Feigniter uses Jquery, Jquery UI, bootstrap, fontawesome, DataTables 2.2.2.
+Feigniter its meant to simplify the front-end development, using mvc pattern and avoid dependencies issues.
+By default Feigniter uses Jquery, Jquery UI, bootstrap, fontawesome, DataTables 2.2.2, i18next
 **
 
 # Mission
