@@ -6,23 +6,23 @@ export default class HomeController extends Controller {
     }
 
     index() {
-        super.loadPage(["app/view/home/content", "app/view/test"],"app/src/css/content.css", "app/src/js/header.js");
+        super.loadView(["app/view/home/content", "app/view/test"],"app/src/css/content.css", "app/src/js/header.js");
     }
 
     about() {
-        super.loadPage("app/view/home/about");
+        super.loadView("app/view/home/about");
     }
 
     features() {
-        super.loadPage("app/view/home/features");
+        super.loadView("app/view/home/features");
     }
 
     compatibility() {
-        super.loadPage("app/view/home/compatibility");
+        super.loadView("app/view/home/compatibility");
     }
 
     faq() {
-        super.loadPage("app/view/home/faq", null, null, true);
+        super.loadView("app/view/home/faq", null, null, true);
     }
 
     search() {

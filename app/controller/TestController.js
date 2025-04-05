@@ -3,9 +3,7 @@ export default class TestController extends Controller {
         super();
     }
     index() {
-        super.loadView({
-            viewUrl: ["app/view/header.html", "app/view/test.html", "app/view/footer.html"],
 
-        });
+        super.loadView("app/view/test.html");
     }
 }

@@ -42,13 +42,15 @@ class Controller {
           } else {
             $(selector).html(content);
           }
+          if(config.useTranslation) {
+            $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
+            app.translate();
+          }
         });
         resolve(); // Resolve the promise once the content is inserted
       } catch (error) {
         reject(error); // Reject the promise if an error occurs
       }
-    }).then(() => {
-      app.translate();
     });
   }
   
@@ -109,7 +111,7 @@ class Controller {
     });
   };
 
-  async loadView({ viewUrl, selector = "#feigniter", cssUrl = [], jsUrl = [],
+  async loadContentIntoView({ viewUrl, selector = "#feigniter", cssUrl = [], jsUrl = [],
     append = false, insertAfter = null, insertBefore = null, overwrite = true } = {}) {
     if (overwrite) {
       $(selector).empty();
@@ -132,7 +134,7 @@ class Controller {
     }
   }
 
-  loadPage(viewUrl, cssUrl = null, jsUrl = null, insertAfter = false) {
+  loadView(viewUrl, cssUrl = null, jsUrl = null, insertAfter = false) {
     let resultJs;
     let viewUrlResult = [];
 
@@ -156,7 +158,7 @@ class Controller {
         viewUrlResult.splice(config.templateIndexToLoad, 0, viewUrl);
     }
     
-    this.loadView({
+    this.loadContentIntoView({
         viewUrl: viewUrlResult,
         cssUrl,
         jsUrl,
