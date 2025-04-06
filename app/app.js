@@ -1,78 +1,96 @@
 class App {
   constructor() {
+    // Initialize application state and caches
     this.url = "#" + config.homeController + "?" + config.defaultMethod;
     this.controller = config.homeController;
     this.method = config.defaultMethod;
     this.args = [];
     this.controllerCache = {}; // Cache for loaded controllers
     this.viewCache = {}; // Cache for loaded views
-    this.jsCache = {}
-    this.cssCache = {}; // cache for loaded css files
-    this.models = {};
+    this.jsCache = {}; // Cache for loaded JavaScript files
+    this.cssCache = {}; // Cache for loaded CSS files
+    this.models = {}; // Models used in the application
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
-    this.data = Model.getLocalData();
+    this.data = Model.getLocalData(); // Load local data
+    this.cacheManager = {
+      // Cache management utility
+      clearAll: () => {
+        this.controllerCache = {};
+        this.viewCache = {};
+        this.jsCache = {};
+        this.cssCache = {};
+        console.log("All caches cleared.");
+      },
+    };
   }
 
   // Function to validate and sanitize config.basePath
   sanitizeBasePath(basePath) {
-    // Basic validation for a path
-    const validPathRegex = new RegExp(`(?:${config.basePath})[#?].*`);
-    if (validPathRegex.test(basePath)) {
-      return basePath;
+    try {
+      const validPathRegex = new RegExp(`(?:${config.basePath})[#?].*`);
+      if (validPathRegex.test(basePath)) {
+        return basePath;
+      } else {
+        throw new Error(`Invalid base path: ${basePath}`);
+      }
+    } catch (error) {
+      ErrorHandler.logError(error.message);
+      return config.basePath; // Fallback to default base path
     }
   }
 
-  // full url example: https://localhost/feigniter/#controllerName?MethodName=arg1,arg2,arg3
+  // Set up routing for the application
   routing() {
     $(window).on("hashchange", this.handleHashChange.bind(this));
     $(document).on("click", "a", this.handleAnchorClick.bind(this));
   }
-  
+
+  // Handle changes in the URL hash
   handleHashChange() {
-    let url = config.useNavigationBar ? window.location.hash : this.url;
+    let url = config.useNavigationBar ? window.location.hash : this.url; // Use app.url if navigation bar is disabled
     const { controller, method, args } = this.parseURL(url);
-  
+
     this.controller = controller || config.homeController;
     this.method = method || config.defaultMethod;
     this.args = args;
-  
+
     // Load the controller and method based on URL
     this.loadController(this.controller, this.method, this.args);
-  
-    if (!config.useNavigationBar) {
+
+    if (config.useNavigationBar) {
       // Ensure controller and method are not null before updating the URL
       const newController = controller || config.homeController;
       const newMethod = method || config.defaultMethod;
       const newArgs = args.length > 0 ? args.join(",") : "";
-  
+
       // Securely using history.replaceState
       try {
-        const sanitizedBasePath = this.sanitizeBasePath(config.useNavigationBar
+        // Ensure basePath ends with a slash
+        const sanitizedBasePath = config.basePath.endsWith("/")
           ? config.basePath
-          : this.url);
-        history.replaceState(null, null, sanitizedBasePath);
-  
-        this.url = `#${newController}?${newMethod}=${newArgs}`;
+          : config.basePath + "/";
+        const newUrl = `${sanitizedBasePath}#${newController}?${newMethod}=${newArgs}`;
+        history.replaceState(null, null, newUrl);
       } catch (error) {
-        console.error('Error updating URL:', error.message);
-        // Optionally handle the error, e.g., show a notification
+        ErrorHandler.logError("Error updating URL:", error.message);
       }
     }
   }
-  
+
+  // Handle anchor click events
   handleAnchorClick(e) {
     if (!config.useNavigationBar && $(e.currentTarget).attr("target") !== "_blank") {
       e.preventDefault();
-  
+
       const href = $(e.currentTarget).attr("href");
       this.url = href;
-  
+
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }
   }
-  
 
+  // Parse the URL into controller, method, and arguments
   parseURL(url) {
     const controllerStrPosition = url.indexOf("#");
     const methodStrPosition = url.indexOf("?");
@@ -93,6 +111,7 @@ class App {
     return { controller, method, args };
   }
 
+  // Load a controller and execute a method with arguments
   async loadController(controller, method, args) {
     this.log(
         `Loading controller: ${controller}, method: ${method}, with args: ${args}`
@@ -123,18 +142,19 @@ class App {
             console.error(`Error loading controller: ${controller}`, error);
         }
     }
-}
+  }
 
-executeMethod(controllerInstance, method, args) {
+  // Execute a method on a controller instance
+  executeMethod(controllerInstance, method, args) {
     if (controllerInstance && typeof controllerInstance[method] === 'function') {
         controllerInstance[method](...args);
     } else {
         console.error(`Method ${method} not found on controller instance`);
     }
-}
+  }
 
+  // Handle DOM actions based on data attributes
   handleDOMActions() {
-    // Find elements with data-feigniter-actionName attribute and perform actions
     $('[data-feigniter-action-type]').each((index, element) => {
       const $element = $(element);
       const actionName = $element.data('feigniter-action-type');
@@ -145,6 +165,7 @@ executeMethod(controllerInstance, method, args) {
     });
   }
 
+  // Observe DOM changes and handle actions dynamically
   observeDOMChanges() {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
@@ -161,12 +182,14 @@ executeMethod(controllerInstance, method, args) {
     });
   }
 
+  // Log messages in debug mode
   log(text) {
     if(config.debugMode) {
       console.log(text);
     }
   }
 
+  // Translate the application based on the selected language
   translate () {
     $(document).ready(() => {
       this.log("translate");
@@ -186,44 +209,97 @@ executeMethod(controllerInstance, method, args) {
     });
   }
 
+  // Initialize the translation library
   setLanguage() {
-    i18next.use(i18nextHttpBackend).init({
-      fallbackLng: config.defaultLanguage,
-      lng: config.defaultLanguage, // Default language
-      backend: {
-        loadPath: 'app/locales/{{lng}}.json' // Path to your JSON translation files
-      },
-      cache: {
-        enabled: false
-      }
-    }, function(err, t) {
-      if (err) console.error('Error initializing i18next:', err);
-  
-      // Update text on the page with translations
-      updateContent();
-    });
-  
-    //Function to update content
-    const updateContent = () => {
-      $('[data-translate]').each(function() {
-        const key = $(this).data('translate');
-        $(this).text(i18next.t(key)); // Fetch translation for each key
-      });
-    };
+    i18next
+      .use(i18nextHttpBackend)
+      .init(
+        {
+          fallbackLng: config.defaultLanguage,
+          lng: config.defaultLanguage,
+          backend: {
+            loadPath: 'app/locales/{{lng}}.json',
+          },
+        },
+        (err, t) => {
+          if (err) {
+            ErrorHandler.logError('Error initializing i18next:', err);
+          } else {
+            this.updateTranslations();
+          }
+        }
+      );
   }
 
+  // Update translations for elements with data-translate attributes
+  updateTranslations() {
+    $('[data-translate]').each(function () {
+      const key = $(this).data('translate');
+      $(this).text(i18next.t(key));
+    });
+  }
+
+  // Initialize the application
   init() {
     this.log("init");
-    $(document).ready(() => {
+    $(document).ready(async () => {
       // Set the Application wrapper
       if ($("#feigniter").length == 0) {
         $("body").prepend("<div id='feigniter'></div>");
       }
+
+      // Dynamically load translation scripts if useTranslation is enabled
+      if (config.useTranslation) {
+        try {
+          await this.loadJs([
+            "app/src/js/lib/i18next.js",
+            "app/src/js/lib/i18nextbackend.js"
+          ]);
+          this.setLanguage(); // Initialize translation after scripts are loaded
+        } catch (error) {
+          ErrorHandler.logError("Failed to load translation scripts", error);
+        }
+      }
+
       this.routing();
       $(window).trigger("hashchange");
       this.handleDOMActions();
       this.observeDOMChanges();
-      config.useTranslation && this.setLanguage();
+
+      // Add a button to clear cache for debugging
+      if (config.debugMode) {
+        $("body").append('<button id="clearCache">Clear Cache</button>');
+        $("#clearCache").on("click", () => this.cacheManager.clearAll());
+      }
+    });
+  }
+
+  // Dynamically load JavaScript files
+  loadJs(urls) {
+    return new Promise((resolve, reject) => {
+      if (!urls) return resolve();
+
+      const jsArray = Array.isArray(urls) ? urls : [urls];
+      const promises = jsArray.map((url) => new Promise((res, rej) => {
+        if (app.jsCache[url] && config.useCache) {
+          this.log(`JS already loaded: ${url}`);
+          return res();
+        }
+        const script = document.createElement("script");
+        script.src = url;
+        script.defer = true;
+        script.onload = () => {
+          app.jsCache[url] = true;
+          res();
+        };
+        script.onerror = () => {
+          ErrorHandler.logError(`Error loading JS: ${url}`);
+          rej(new Error(`Error loading JS: ${url}`));
+        };
+        document.head.appendChild(script);
+      }));
+
+      Promise.all(promises).then(resolve).catch(reject);
     });
   }
 }

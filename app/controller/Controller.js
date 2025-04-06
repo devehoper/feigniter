@@ -193,4 +193,13 @@ class Controller {
       document.head.appendChild(script);
     });
   }
+
+  clearViewCache(url) {
+    if (app.viewCache[url]) {
+      delete app.viewCache[url];
+      app.log(`Cleared cache for view: ${url}`);
+    } else {
+      app.log(`No cache found for view: ${url}`);
+    }
+  }
 }

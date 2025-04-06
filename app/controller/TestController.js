@@ -3,7 +3,6 @@ export default class TestController extends Controller {
         super();
     }
     index() {
-
         super.loadView("app/view/test.html");
     }
 }
