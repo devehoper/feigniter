@@ -1,0 +1,10 @@
+@mixin content() {
+    #content {
+        background-color: white;
+        padding: 20px;
+    }
+  }
+  
+  // Apply the mixin to generate output
+  @include content();
+  

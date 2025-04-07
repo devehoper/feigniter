@@ -245,7 +245,7 @@ class App {
     $(document).ready(async () => {
       // Set the Application wrapper
       if ($("#feigniter").length == 0) {
-        $("body").prepend("<div id='feigniter'></div>");
+        $("body").prepend(`<div id='feigniter' class='${config.defaultTheme}'></div>`);
       }
 
       // Dynamically load translation scripts if useTranslation is enabled

@@ -1,12 +1,56 @@
 @use "variables.scss";
 @use "effects.scss";
-// import the themes to be generated
-@use "themes/default/default.scss" as default;
-//@use "dark.scss" as dark;
 
-//generates the theme difined in variables.$default-theme
-@if variables.$default-theme == "default" {
-  @include default.theme();
-} @else if variables.$default-theme == "dark" {
-  //@include dark.theme();
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure the body fills the viewport */
 }
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+#feigniter {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// // Import default theme
+// @use "themes/default/default.scss" as default;
+// @use "themes/default/pages/header.scss" as defaultHeader;
+// @use "themes/default/pages/footer.scss" as defaultFooter;
+// @use "themes/default/pages/content.scss" as defaultContent;
+
+// // Import dark theme
+// @use "themes/dark/dark.scss" as dark;
+// @use "themes/dark/pages/header.scss" as darkHeader;
+// @use "themes/dark/pages/footer.scss" as darkFooter;
+// @use "themes/dark/pages/content.scss" as darkContent;
+
+// @if variables.$default-theme == "default" {
+//   // Apply styles for the default theme
+//   .theme-default {
+//     @include default.theme();
+//     @include defaultHeader.header();
+//     @include defaultFooter.footer();
+//     @include defaultContent.content();
+//   }
+// } @else if variables.$default-theme == "dark" {
+//   // Apply styles for the dark theme
+//   .theme-dark {
+//     @include dark.theme();
+//     @include darkHeader.header();
+//     @include darkFooter.footer();
+//     @include darkContent.content();
+//   }
+// } @else {
+//     @include default.theme();
+//     @include defaultHeader.header();
+//     @include defaultFooter.footer();
+//     @include defaultContent.content();
+//     @include dark.theme();
+//     @include darkHeader.header();
+//     @include darkFooter.footer();
+//     @include darkContent.content();
+// }

@@ -1,0 +1,9 @@
+@mixin footer() {
+    footer {
+      background-color: var(--background-color);
+      color: var(--primary-color);
+      // Default theme-specific footer styles
+    }
+  }
+  
+  @include footer();

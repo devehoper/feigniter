@@ -14,6 +14,13 @@ const config = {
     loadTemplate: ["app/view/header.html", "app/view/footer.html"], // Templates to load
     templateIndexToLoad: 1, // Index to insert additional templates
     basePath: "https://localhost/feigniter/", // Base path for the application
+    
+    //Begin Of Styling configs
+    defaultTheme: "theme-default", // Default theme
+    themes: ["theme-default", "theme-dark"], // Available themes
+    themePath: "app/view/themes/", // Path to theme files
+    //End Of Styling Configs
+
     libs: [ // External libraries to include
         {
             "name": "", // Library name

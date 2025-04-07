@@ -2,8 +2,6 @@ class Controller {
   constructor(modelName) {
     this.loadModel("AppModel");
     app.log(this);
-    app.cssCache = app.cssCache || {}; // Cache for loaded CSS files
-    app.modelCache = app.modelCache || {}; // Cache for loaded models
   }
 
   loadSingleView = (url, selector, { append = false, insertAfter = null, insertBefore = null } = {}) => {
@@ -177,7 +175,6 @@ class Controller {
       script.src = `app/model/${modelName}.js`;
       script.onload = () => {
         if (app.models[modelName]) {
-          app.modelCache[modelName] = app.models[modelName];
           resolve(app.models[modelName]);
         } else {
           const errorMsg = `Model ${modelName} is not defined after loading`;

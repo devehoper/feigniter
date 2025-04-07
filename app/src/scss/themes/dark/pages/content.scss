@@ -1,0 +1,13 @@
+@use "app/src/scss/themes/dark/dark.scss";
+@mixin content() {
+    .theme-dark {
+        #content {
+            background-color: $background;
+            padding: 20px;
+        }
+    }
+  }
+  
+  // Apply the mixin to generate output
+  @include content();
+  

@@ -1,8 +1,0 @@
-@use "variables.scss";
-
-// Theme mixin
-@mixin theme($mode) {
-    $theme: map-get($themes, $mode);
-    background-color: map-get($theme, background);
-    color: map-get($theme, text);
-  }

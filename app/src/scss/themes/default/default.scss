@@ -1,18 +1,9 @@
 $background: #ffffff !default;
 $text: #5fff02 !default;
 
-@mixin theme() {
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%; /* Ensure the body fills the viewport */
-  }
-  body {
-    font-family: 'Arial', sans-serif;
-    color: #fff;
-    background: #000; /* Dark theme for electronic vibes */
-  }
-
+.theme-default {
+  background-color: $background;
+  color: $text;
   h1 {
     font-size: 3rem;
     text-align: center;
@@ -48,10 +39,5 @@ $text: #5fff02 !default;
 
   main {
     flex: 1; /* Allows content to expand while pushing the footer down */
-  }
-  footer {
-      background-color: #f1f1f1;
-      text-align: center;
-      padding: 15px;
   }
 }

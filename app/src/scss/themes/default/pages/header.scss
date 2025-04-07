@@ -1,0 +1,10 @@
+@mixin header() {
+  header {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    // Default theme-specific header styles
+  }
+}
+
+// Apply the mixin to generate output
+@include header();

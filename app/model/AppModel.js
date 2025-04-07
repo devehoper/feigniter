@@ -4,11 +4,27 @@ class AppModel extends Model {
     version = "0.0.1";
     language = config.defaultLanguage;
     termsAndConditions = false;
+    theme = config.defaultTheme;
+    data = {};
 
     constructor() {
         super();
         this.data = Model.getLocalData();
         this.setLanguage();
+        //this.setTheme(this.theme);
+    }
+
+    setTheme(theme) {
+        let element = $('#feigniter');
+        if(config.themes.includes(theme)) {
+            this.theme = theme;
+            element.removeClass();
+            element.addClass(theme); // Set the theme class on the body element
+            this.data.theme = theme; // Update the theme in the data object
+            Model.setLocalData('feigniter', this.data); // Save the updated data to local storage
+        } else {
+            app.log(`Theme ${theme} is not available.`);
+        }
     }
 
     setLanguage() {
@@ -25,7 +41,12 @@ class AppModel extends Model {
 
     toJson() {
         return {
-            version: this.version
+            name: this.name,
+            version: this.version,
+            language: this.language,
+            termsAndConditions: this.termsAndConditions,
+            theme: this.theme,
+            data: this.data
         };
     }
 }
