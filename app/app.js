@@ -40,7 +40,7 @@ class App {
   }
 
   // Set up routing for the application
-  routing() {
+  async routing() {
     $(window).on("hashchange", this.handleHashChange.bind(this));
     $(document).on("click", "a", this.handleAnchorClick.bind(this));
   }
@@ -84,7 +84,7 @@ class App {
 
       const href = $(e.currentTarget).attr("href");
       this.url = href;
-
+      $("#feigniter").empty();
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }
@@ -238,6 +238,9 @@ class App {
       $(this).text(i18next.t(key));
     });
   }
+  async start() {
+    
+  }
 
   // Initialize the application
   init() {
@@ -245,13 +248,13 @@ class App {
     $(document).ready(async () => {
       // Set the Application wrapper
       if ($("#feigniter").length == 0) {
-        $("body").prepend(`<div id='feigniter' class='${config.defaultTheme}'></div>`);
+        await $("body").prepend(`<div id='feigniter' class='${config.defaultTheme}'></div>`);
       }
 
       // Dynamically load translation scripts if useTranslation is enabled
       if (config.useTranslation) {
         try {
-          await this.loadJs([
+          await Controller.loadJs([
             "app/src/js/lib/i18next.js",
             "app/src/js/lib/i18nextbackend.js"
           ]);
@@ -261,10 +264,10 @@ class App {
         }
       }
 
-      this.routing();
-      $(window).trigger("hashchange");
-      this.handleDOMActions();
-      this.observeDOMChanges();
+      await this.routing();
+      await $(window).trigger("hashchange");
+      await this.handleDOMActions();
+      await this.observeDOMChanges();
 
       // Add a button to clear cache for debugging
       if (config.debugMode) {
@@ -274,38 +277,40 @@ class App {
     });
   }
 
-  // Dynamically load JavaScript files
-  loadJs(urls) {
-    return new Promise((resolve, reject) => {
-      if (!urls) return resolve();
+  // // Dynamically load JavaScript files
+  // loadJs(urls) {
+  //   return new Promise((resolve, reject) => {
+  //     if (!urls) return resolve();
 
-      const jsArray = Array.isArray(urls) ? urls : [urls];
-      const promises = jsArray.map((url) => new Promise((res, rej) => {
-        if (app.jsCache[url] && config.useCache) {
-          this.log(`JS already loaded: ${url}`);
-          return res();
-        }
-        const script = document.createElement("script");
-        script.src = url;
-        script.defer = true;
-        script.onload = () => {
-          app.jsCache[url] = true;
-          res();
-        };
-        script.onerror = () => {
-          ErrorHandler.logError(`Error loading JS: ${url}`);
-          rej(new Error(`Error loading JS: ${url}`));
-        };
-        document.head.appendChild(script);
-      }));
+  //     const jsArray = Array.isArray(urls) ? urls : [urls];
+  //     const promises = jsArray.map((url) => new Promise((res, rej) => {
+  //       if (app.jsCache[url] && config.useCache) {
+  //         this.log(`JS already loaded: ${url}`);
+  //         return res();
+  //       }
+  //       const script = document.createElement("script");
+  //       script.src = url;
+  //       script.defer = true;
+  //       script.onload = () => {
+  //         app.jsCache[url] = true;
+  //         res();
+  //       };
+  //       script.onerror = () => {
+  //         ErrorHandler.logError(`Error loading JS: ${url}`);
+  //         rej(new Error(`Error loading JS: ${url}`));
+  //       };
+  //       document.head.appendChild(script);
+  //     }));
 
-      Promise.all(promises).then(resolve).catch(reject);
-    });
-  }
+  //     Promise.all(promises).then(resolve).catch(reject);
+  //   });
+  // }
 }
 
 // Example of registering actions
 const app = new App();
 app.actionRegistry.registerAction('test');
 app.actionRegistry.registerAction('table');
+//app.actionRegistry.registerAction('setHeaderTheme');
+
 app.init();

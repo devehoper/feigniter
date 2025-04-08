@@ -1,0 +1,49 @@
+<div class="bg-light">
+    <div class="container py-5">
+        <section id="documentation" class="bg-white shadow-sm rounded-3 p-4">
+            <h1 class="mb-4 text-primary border-bottom pb-2">Documentation</h1>
+            <p class="lead">Welcome to the Feigniter documentation. Below you will find information about how to use the library effectively.</p>
+
+            <h2 class="mt-5">Getting Started</h2>
+            <p>Feigniter is a lightweight JavaScript framework designed to simplify the development of dynamic web applications.</p>
+
+            <h2 class="mt-4">Core Features</h2>
+            <ul class="list-group mb-3">
+                <li class="list-group-item">Dynamic routing with hash-based navigation.</li>
+                <li class="list-group-item">Controller-based architecture for modular development.</li>
+                <li class="list-group-item">Support for caching views, JavaScript, and CSS files.</li>
+                <li class="list-group-item">Translation support using i18next.</li>
+                <li class="list-group-item">Action registry for handling custom DOM actions.</li>
+            </ul>
+
+            <h2 class="mt-4">Configuration</h2>
+            <p>The application configuration is managed through the <code>config.js</code> file. Key settings include:</p>
+            <ul class="ps-3">
+                <li><strong>homeController</strong>: The default controller to load.</li>
+                <li><strong>defaultMethod</strong>: The default method to execute in the controller.</li>
+                <li><strong>useCache</strong>: Enable or disable caching for views, JS, and CSS.</li>
+                <li><strong>useTranslation</strong>: Enable or disable translation support.</li>
+            </ul>
+
+            <h2 class="mt-4">Routing</h2>
+            <p>Feigniter uses hash-based routing. The URL format is:</p>
+            <pre class="bg-light p-3 rounded">&lt;code&gt;#ControllerName?methodName=arg1,arg2,...&lt;/code&gt;</pre>
+            <p>Example: <code>#HomeController?about</code></p>
+
+            <h2 class="mt-4">Controllers</h2>
+            <p>Controllers are JavaScript classes that manage the logic for specific pages. Each controller must extend the base <code>Controller</code> class.</p>
+
+            <h2 class="mt-4">Views</h2>
+            <p>Views are HTML files that define the structure of the page. They can be dynamically loaded and cached for better performance.</p>
+
+            <h2 class="mt-4">Translation</h2>
+            <p>Feigniter integrates with i18next for translation support. Translation files are stored in the <code>app/locales</code> directory.</p>
+
+            <h2 class="mt-4">Action Registry</h2>
+            <p>The action registry allows you to define and execute custom actions based on DOM elements with <code>data-feigniter-action-type</code> attributes.</p>
+
+            <h2 class="mt-4">Debugging</h2>
+            <p>Enable <code>debugMode</code> in the configuration to log debug messages and add a "Clear Cache" button for testing purposes.</p>
+        </section>
+    </div>
+</div>

@@ -20,8 +20,8 @@ class AppModel extends Model {
             this.theme = theme;
             element.removeClass();
             element.addClass(theme); // Set the theme class on the body element
-            this.data.theme = theme; // Update the theme in the data object
-            Model.setLocalData('feigniter', this.data); // Save the updated data to local storage
+            this.theme = theme; // Update the theme in the data object
+            Model.setLocalData(this.toJson()); // Save the updated data to local storage
         } else {
             app.log(`Theme ${theme} is not available.`);
         }

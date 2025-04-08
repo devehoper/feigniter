@@ -11,8 +11,15 @@ const config = {
     translationElementId: "language-selector", // ID of the language selector element
     availableLanguages: ["pt", "en"], // List of available languages
     useNavigationBar: false, // Use navigation bar for routing
-    loadTemplate: ["app/view/header.html", "app/view/footer.html"], // Templates to load
-    templateIndexToLoad: 1, // Index to insert additional templates
+    loadTemplate: { 
+        views: ["app/view/header.html", "app/view/footer.html"], // Template views
+        jsUrl: ["app/src/js/header.js", "app/src/js/footer.js"], // Template JavaScript files
+        cssUrl: [
+            "app/src/css/themes/default/pages/header.css",
+            "app/src/css/themes/default/pages/footer.css"
+        ], // Template CSS files
+    }, // Templates to load
+    templateContentInsertIndex: 1, // Index to insert additional content views
     basePath: "https://localhost/feigniter/", // Base path for the application
     
     //Begin Of Styling configs

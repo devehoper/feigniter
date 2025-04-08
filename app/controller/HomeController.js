@@ -1,18 +1,14 @@
 export default class HomeController extends Controller {
     constructor() {
         super();
-        this.search();
         super.loadModel("UserModel");
     }
 
     index() {
-        super.loadView("app/view/home/content",
-            [
-                "app/src/css/themes/default/pages/footer.css",
-                "app/src/css/themes/default/pages/header.css",
-                "app/src/css/themes/default/pages/content.css"
-            ],
-            "app/src/js/header.js");
+        super.loadView(
+            "app/view/home/content", // Only specify the content view
+            "app/src/css/themes/default/pages/content.css"
+        );
     }
 
     about() {
@@ -28,13 +24,17 @@ export default class HomeController extends Controller {
     }
 
     faq() {
-        super.loadView("app/view/home/faq", null, null, true);
+        super.loadView("app/view/home/faq");
     }
 
-    search() {
-        $(document).on('keyup', '#search', function(e) {
-            e.preventDefault();
-            app.log('Text changed');
-        });
+    documentation() {
+        super.loadView("app/view/documentation");
     }
+
+    // search() {
+    //     $(document).on('keyup', '#search', function(e) {
+    //         e.preventDefault();
+    //         app.log('Text changed');
+    //     });
+    // }
 }

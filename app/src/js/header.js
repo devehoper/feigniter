@@ -1,17 +1,33 @@
-$(document).ready(() => {
-    // let themeSelected = app.model.AppModel.theme;
-    // config.themes.forEach((theme) => {
-    //     if (themeSelected === theme) {
-    //         $("#theme-selector").append(`<option value="${theme}" selected>${theme}</option>`);
-    //         app.model.AppModel.setTheme(theme); // Set the theme on page load
-    //     } else {
-    //         app.model.AppModel.setTheme(themeSelected); // Set the theme on page load
-    //     }
-    //     $("#theme-selector").append(`<option value="${theme}">${theme}</option>`);
-    // });
+$(document).ready(async () => {
+    console.log("Header loaded");
+
+
+
+    // Handle language change
     $(document).on('change', '#' + config.translationElementId, (e) => {
         e.preventDefault();
-        app.log("changed language");
+        app.log("Language changed");
         app.translate();
     });
+
+    // Handle search click
+    $(document).on('keyup', '#search', function(e) {
+        e.preventDefault();
+        const searchValue = $(this).val();
+        app.log(searchValue);
+    });
 });
+
+    //Initialize theme selector
+    let themeSelected = app.models.AppModel.theme;
+    config.themes.forEach((theme) => {
+        $("#theme-selector").append(`<option value="${theme}">${theme}</option>`);
+    });
+    app.models.AppModel.setTheme(themeSelected); // Set the theme on page load
+
+    // Handle theme change
+    $(document).on('change', '#theme-selector', (e) => {
+        const selectedTheme = $(e.target).val();
+        app.models.AppModel.setTheme(selectedTheme);
+        console.log(`Theme changed to: ${selectedTheme}`);
+    });
