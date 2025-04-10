@@ -12,6 +12,7 @@ class App {
     this.models = {}; // Models used in the application
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
     this.data = Model.getLocalData(); // Load local data
+    this.jsToLoad = {}; // Object to hold JavaScript files to load
     this.cacheManager = {
       // Cache management utility
       clearAll: () => {
@@ -75,7 +76,41 @@ class App {
         ErrorHandler.logError("Error updating URL:", error.message);
       }
     }
+    $("#feigniter").empty();
+    this.runTemplateJs();
+    this.jsToLoad = {}; // Clear jsToLoad after execution
   }
+
+  // run js from template pages
+  runTemplateJs() {
+    let _this = this;
+
+    $(document).ready(() => {
+        console.log("Document ready for running template JS");
+
+        if (typeof _this.jsToLoad === "object" && Object.keys(_this.jsToLoad).length > 0) {
+            for (let id in _this.jsToLoad) {
+                const url = _this.jsToLoad[id];
+                if (app.jsCache[url]) {
+                    try {
+                        const scriptContent = $("#" + id).text(); // Retrieve script content by ID
+                        if (scriptContent) {
+                            eval(scriptContent); // Execute script content (use cautiously)
+                        } else {
+                            console.error(`No content found for script with ID: ${id}`);
+                        }
+                    } catch (error) {
+                        console.error(`Error executing script for ID: ${id}, URL: ${url}`, error);
+                    }
+                } else {
+                    console.warn(`Script not found in cache for URL: ${url}`);
+                }
+            }
+        } else {
+            console.error("Invalid or empty jsToLoad property.");
+        }
+    });
+}
 
   // Handle anchor click events
   handleAnchorClick(e) {
@@ -84,7 +119,6 @@ class App {
 
       const href = $(e.currentTarget).attr("href");
       this.url = href;
-      $("#feigniter").empty();
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }
@@ -311,6 +345,5 @@ class App {
 const app = new App();
 app.actionRegistry.registerAction('test');
 app.actionRegistry.registerAction('table');
-//app.actionRegistry.registerAction('setHeaderTheme');
 
 app.init();

@@ -14,11 +14,5 @@ class Action {
     table(element) {
       new DataTable('#' + element.id);
     }
-
-    setHeaderTheme() {
-      config.themes.forEach((theme) => {
-          $("#theme-selector").append(`<option value="${theme}">${theme}</option>`);
-      });
-    }
   }
   

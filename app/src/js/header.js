@@ -1,7 +1,6 @@
+( () => {
 $(document).ready(async () => {
     console.log("Header loaded");
-
-
 
     // Handle language change
     $(document).on('change', '#' + config.translationElementId, (e) => {
@@ -11,12 +10,14 @@ $(document).ready(async () => {
     });
 
     // Handle search click
-    $(document).on('keyup', '#search', function(e) {
-        e.preventDefault();
+    $(document).on('input', '#search', function(e) {
         const searchValue = $(this).val();
-        app.log(searchValue);
+        if (searchValue) {
+            app.log(`Search value: ${searchValue}`);
+        } else {
+            app.log('Search input is empty');
+        }
     });
-});
 
     //Initialize theme selector
     let themeSelected = app.models.AppModel.theme;
@@ -31,3 +32,5 @@ $(document).ready(async () => {
         app.models.AppModel.setTheme(selectedTheme);
         console.log(`Theme changed to: ${selectedTheme}`);
     });
+    });
+})();

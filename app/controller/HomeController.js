@@ -7,7 +7,8 @@ export default class HomeController extends Controller {
     index() {
         super.loadView(
             "app/view/home/content", // Only specify the content view
-            "app/src/css/themes/default/pages/content.css"
+            "app/src/css/themes/default/pages/content.css",
+            "app/src/js/home/content.js", // Specify the JavaScript file for the content view
         );
     }
 

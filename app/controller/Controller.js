@@ -129,26 +129,32 @@ class Controller {
   static loadJs = (urls) => {
     return new Promise((resolve) => {
       if (!urls) return resolve();
-      
       const jsArray = Array.isArray(urls) ? urls : [urls];
       const promises = jsArray.map(url => new Promise((res, rej) => {
         if (app.jsCache[url] && config.useCache) {
           app.log(`js already loaded: ${url}`);
           return res();
         }
-        const script = document.createElement('script');
-        script.src = url;
-        script.onload = () => {
-          app.jsCache[url] = true;
-          res();
-        }
-        script.onerror = () => {
-          ErrorHandler.logError(`Error loading JS: ${url}`);
-          rej(new Error(`Error loading JS: ${url}`));
-        };
-        document.head.appendChild(script);
+        $(document).ready(() => {
+          const script = document.createElement('script');
+          if(app.jsCache[url]) {
+            script.id = Date.now().toString() ;// Add an ID to the script element
+            app.jsToLoad[script.id] = url; // Store the URL in the jsToLoad object
+          }
+          script.type = 'text/javascript';
+          script.src = url;
+          script.onload = () => {
+            app.jsCache[url] = true;
+            res();
+          }
+          script.onerror = () => {
+            ErrorHandler.logError(`Error loading JS: ${url}`);
+            rej(new Error(`Error loading JS: ${url}`));
+          };
+          document.head.appendChild(script);
+        });
       }));
-      
+
       Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
     });
   };
@@ -177,6 +183,11 @@ class Controller {
     // Combine CSS and JS from both template and method arguments
     if (cssUrl) finalCssUrls = finalCssUrls.concat(cssUrl);
     if (jsUrl) finalJsUrls = finalJsUrls.concat(jsUrl);
+
+    // so in app.handleHashChange() we know wich js files we should run
+    // finalJsUrls.map((url) => {
+    //   app.jsToLoad[Date.now().toString()] = url; // Add a unique key to the jsToLoad object
+    // });
 
     // Load the content, CSS, and JS
     this.loadViewContent({
