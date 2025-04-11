@@ -133,6 +133,16 @@ class Controller {
       const promises = jsArray.map(url => new Promise((res, rej) => {
         if (app.jsCache[url] && config.useCache) {
           app.log(`js already loaded: ${url}`);
+          for(let key in app.jsCache) {
+            if(app.jsCache[url]) {
+              $(document).ready(() => {
+                if($(`script[src='${url}']`).length === 1) {
+                  eval($(`head script[src='${url}']`).text());
+                }
+              });
+            }
+          }
+          //app.jsToLoad[script.id] = url; // Store the URL in the jsToLoad object
           return res();
         }
         $(document).ready(() => {

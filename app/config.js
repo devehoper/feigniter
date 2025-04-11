@@ -6,7 +6,7 @@ const config = {
     defaultLanguage: "pt", // Default language
     localStorage: "feigniter", // Local storage key
     debugMode: false, // Enable or disable debug mode
-    useCache: true, // Enable or disable caching
+    useCache: true, // Enable or disable caching, dont change it, not full implemented for false case (V=0.1)
     useTranslation: true, // Enable or disable translation
     translationElementId: "language-selector", // ID of the language selector element
     availableLanguages: ["pt", "en"], // List of available languages

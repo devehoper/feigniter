@@ -77,8 +77,8 @@ class App {
       }
     }
     $("#feigniter").empty();
-    this.runTemplateJs();
-    this.jsToLoad = {}; // Clear jsToLoad after execution
+    //this.runTemplateJs();
+    //this.jsToLoad = {}; // Clear jsToLoad after execution
   }
 
   // run js from template pages
