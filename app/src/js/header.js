@@ -21,6 +21,7 @@ $(document).ready(async () => {
 
     //Initialize theme selector
     let themeSelected = app.models.AppModel.theme;
+    $("#theme-selector").empty(); // Clear existing options
     config.themes.forEach((theme) => {
         $("#theme-selector").append(`<option value="${theme}">${theme}</option>`);
     });
