@@ -11,7 +11,8 @@ const config = {
     translationElementId: "language-selector", // ID of the language selector element
     availableLanguages: ["pt", "en"], // List of available languages
     useNavigationBar: false, // Use navigation bar for routing
-    loadTemplate: { 
+    // if not using template set loadTemplate: {},
+    loadTemplate: {
         views: ["app/view/header.html", "app/view/footer.html"], // Template views
         jsUrl: ["app/src/js/header.js", "app/src/js/footer.js"], // Template JavaScript files
         cssUrl: [
@@ -21,14 +22,14 @@ const config = {
     }, // Templates to load
     templateContentInsertIndex: 1, // Index to insert additional content views
     basePath: "https://localhost/feigniter/", // Base path for the application
-    
+
     //Begin Of Styling configs
     defaultTheme: "theme-default", // Default theme
     themes: ["theme-default", "theme-dark"], // Available themes
     themePath: "app/view/themes/", // Path to theme files
     //End Of Styling Configs
 
-    libs: [ // External libraries to include
+    libs: [ // External libraries to include using cdn
         {
             "name": "", // Library name
             version: 0.1, // Library version

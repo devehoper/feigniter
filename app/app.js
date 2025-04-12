@@ -2,6 +2,8 @@ class App {
   constructor() {
     // Initialize application state and caches
     this.url = "#" + config.homeController + "?" + config.defaultMethod;
+    // History stack for navigation. Also using this to prevent page script to be loaded twice in Controller.loadViewContent
+    this.history = [];
     this.controller = config.homeController;
     this.method = config.defaultMethod;
     this.args = [];
@@ -12,7 +14,7 @@ class App {
     this.models = {}; // Models used in the application
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
     this.data = Model.getLocalData(); // Load local data
-    this.jsToLoad = {}; // Object to hold JavaScript files to load
+    this.jsToLoad = []; // Object to hold JavaScript files to load
     this.cacheManager = {
       // Cache management utility
       clearAll: () => {
@@ -119,6 +121,7 @@ class App {
 
       const href = $(e.currentTarget).attr("href");
       this.url = href;
+      this.history.push(href); // Push the new URL to history
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }

@@ -1,6 +1,6 @@
 (() => {
     console.log("CONTENT!");
     $(document).ready(() => {
-        alert("home/content.js loaded");
+        alert(" Script content.js loaded");
     });
 })();

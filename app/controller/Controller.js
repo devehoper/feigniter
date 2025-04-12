@@ -64,6 +64,28 @@ class Controller {
 
         // Load JS after ensuring the view is in the DOM
         await Controller.loadJs(jsUrls).catch(ErrorHandler.logError);
+        if (Object.keys(app.jsToLoad).length > 0) {
+          for (const url of app.jsToLoad) {
+              if (app.jsCache[url]) {
+                  const scriptTag = $(`script[src="${url}"]`);
+                  if (scriptTag.length > 0 && app.history.length > 0) {
+                      const clonedScriptTag = document.createElement('script');
+                      clonedScriptTag.src = url;
+                      clonedScriptTag.type = "text/javascript";
+                      document.body.appendChild(clonedScriptTag); // Execute the script
+      
+                      console.log("Anonymous function executed successfully.");
+                      // Remove the old script tag
+                      scriptTag.remove();
+                      console.log("Old script tag removed.");
+                  } else {
+                      console.log("Script not found in the DOM.");
+                  }
+              }
+          }
+          app.jsToLoad = [];
+      }
+      
 
     } catch (error) {
         ErrorHandler.logError(error);
@@ -147,10 +169,6 @@ class Controller {
         }
         $(document).ready(() => {
           const script = document.createElement('script');
-          if(app.jsCache[url]) {
-            script.id = Date.now().toString() ;// Add an ID to the script element
-            app.jsToLoad[script.id] = url; // Store the URL in the jsToLoad object
-          }
           script.type = 'text/javascript';
           script.src = url;
           script.onload = () => {
@@ -161,7 +179,7 @@ class Controller {
             ErrorHandler.logError(`Error loading JS: ${url}`);
             rej(new Error(`Error loading JS: ${url}`));
           };
-          document.head.appendChild(script);
+          document.body.appendChild(script);
         });
       }));
 
@@ -200,6 +218,13 @@ class Controller {
     // });
 
     // Load the content, CSS, and JS
+    if (jsUrl === null || (template && config.loadTemplate.jsUrl.length > 0)) {
+        app.jsToLoad = [...config.loadTemplate.jsUrl];
+    } else {
+        app.jsToLoad = jsUrl instanceof Array ? [...jsUrl] : [jsUrl];
+    }
+    app.jsToLoad = [...app.jsToLoad, ...finalJsUrls]; // Ensure both are included
+
     this.loadViewContent({
         viewUrls: viewUrlResult,
         cssUrls: finalCssUrls,
