@@ -1,0 +1,36 @@
+.theme-default {
+  background-color: #ffffff;
+  color: #5fff02;
+}
+.theme-default h1 {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.theme-default p {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 1.5;
+}
+.theme-default .btn {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  color: #000;
+  background: linear-gradient(90deg, #0ff, #08f);
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #08f;
+  transition: all 0.3s ease-in-out;
+}
+.theme-default .btn:hover {
+  background: linear-gradient(90deg, #08f, #0ff);
+  box-shadow: 0 0 20px #0ff, 0 0 40px #08f;
+}
+.theme-default main {
+  flex: 1; /* Allows content to expand while pushing the footer down */
+}

@@ -10,8 +10,9 @@ $(document).ready(async () => {
     });
 
     // Handle search click
-    $(document).on('input', '#search', function(e) {
+    $(document).on('keyup', '#search', function(e) {
         const searchValue = $(this).val();
+        console.warn($(this).val());
         if (searchValue) {
             app.log(`Search value: ${searchValue}`);
         } else {

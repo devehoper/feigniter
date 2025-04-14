@@ -28,9 +28,13 @@ class Model {
             console.error("Error clearing local data:", error);
         }
     }
+
+    static teste() {
+        alert("TESTE");
+    }
     
 
-    validateData(formData, rules) {
+    static validateData(formData, rules) {
         const errors = {};
     
         for (const field in rules) {
