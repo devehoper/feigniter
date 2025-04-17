@@ -112,7 +112,7 @@ Check package.json for more info
 ## Routing system
 
 The route will define the behavior of the app.
-base_path#controllerName?MethodName=arg1,arg2,arg3
+base_path#controllerName?MethodName=arg1,arg2,arg3...
 
 
 ## Views dir app/view
@@ -159,6 +159,113 @@ Directory "app/src/css":
 This dir  its the output dir for scss
 
 
+## Available Commands
+
+### General Commands
+
+- **Run Tests**:  
+  Run all tests using Jest.  
+  ```bash
+  npm run test
+  ```
+
+- **Build Project**:  
+  Obfuscate the JavaScript files for production.  
+  ```bash
+  npm run build
+  ```
+
+### Create New Components
+
+- **Create a New Controller**:  
+  Generate a new controller file in the `app/controller` directory.  
+  ```bash
+  npm run new:controller -- ControllerName
+  ```
+
+- **Create a New Model**:  
+  Generate a new model file in the `app/model` directory.  
+  ```bash
+  npm run new:model -- ModelName
+  ```
+
+- **Create a New View**:  
+  Generate a new view directory and an `index.html` file inside it.  
+  ```bash
+  npm run new:view -- ViewName
+  ```
+
+- **Create a New JavaScript File**:  
+  Generate a new JavaScript file in the `app/src/js` directory.  
+  ```bash
+  npm run new:js -- ScriptName
+  ```
+
+- **Create a New SCSS File**:  
+  Generate a new SCSS file in the appropriate theme directory.  
+  ```bash
+  npm run new:scss -- ThemeName
+  ```
+
+## Project Structure
+
+```
+d:\xampp\htdocs\feigniter
+├── index.html
+├── app
+│   ├── app.js
+│   ├── config.js
+│   ├── error_handler.js
+│   ├── actions
+│   │   ├── action.js
+│   │   └── action_registry.js
+│   ├── controller
+│   │   ├── Controller.js
+│   │   ├── HomeController.js
+│   │   └── TestController.js
+│   ├── model
+│   │   ├── Model.js
+│   │   └── AppModel.js
+│   ├── src
+│   │   ├── css
+│   │   │   ├── lib
+│   │   │   │   ├── all.min.css
+│   │   │   │   ├── bootstrap.min.css
+│   │   │   │   └── jquery-ui.min.css
+│   │   │   ├── main.css
+│   │   │   └── themes
+│   │   │       ├── default
+│   │   │       │   ├── default.css
+│   │   │       │   ├── pages
+│   │   │       │   │   ├── content.css
+│   │   │       │   │   └── footer.css
+│   │   │       └── dark
+│   │   │           ├── dark.css
+│   │   │           ├── pages
+│   │   │           │   ├── content.css
+│   │   │           │   └── footer.css
+│   │   ├── js
+│   │   │   ├── lib
+│   │   │   │   ├── all.min.js
+│   │   │   │   ├── bootstrap.min.js
+│   │   │   │   ├── dataTables
+│   │   │   │   │   ├── datatables.css
+│   │   │   │   │   └── datatables.min.js
+│   │   │   │   ├── jquery-ui.min.js
+│   │   │   │   └── jquery.js
+│   │   │   ├── header.js
+│   │   │   └── home
+│   │   │       └── content.js
+│   └── view
+│       ├── footer.html
+│       └── home
+│           ├── about.html
+│           ├── compatibility.html
+│           ├── content.html
+│           ├── documentation.html
+│           ├── faq.html
+│           └── features.html
+```
 
 ## @TODO
 
