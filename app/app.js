@@ -226,12 +226,12 @@ class App {
     }
   }
 
-  // Translate the application based on the selected language
-  translate () {
+  // Translate the application based on the given language
+  translate (language) {
     $(document).ready(() => {
       this.log("translate");
       if(config.useTranslation) {
-        this.models.AppModel.language = $("#" + config.translationElementId).find(":selected").val();
+        this.models.AppModel.language = language;
         Model.setLocalData({language: this.models.AppModel.language});
         i18next.changeLanguage(Model.getLocalData().language??config.defaultLanguage).then(
           () => {

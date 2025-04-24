@@ -3,10 +3,13 @@ $(document).ready(async () => {
     console.log("Header loaded");
 
     // Handle language change
-    $(document).on('change', '#' + config.translationElementId, (e) => {
+    $(document).on('change', '#' + config.translationElementId + ', #' + config.translationElementId + '-sm', (e) => {
         e.preventDefault();
+        console.warn("LANGUAGE CHANGED");
         app.log("Language changed");
-        app.translate();
+        if($(e.currentTarget).val() !== "-1") {
+            app.translate($(e.currentTarget).val());
+        }
     });
 
     // Handle search click
