@@ -35,7 +35,7 @@ $(document).ready(async () => {
     $(document).on('change', '#theme-selector', (e) => {
         const selectedTheme = $(e.target).val();
         app.models.AppModel.setTheme(selectedTheme);
-        console.log(`Theme changed to: ${selectedTheme}`);
+        app.setTheme(selectedTheme); // Set the theme in the app
     });
     });
 })();

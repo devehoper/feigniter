@@ -12,7 +12,7 @@ class App {
     this.jsCache = {}; // Cache for loaded JavaScript files
     this.cssCache = {}; // Cache for loaded CSS files
     this.models = {}; // Models used in the application
-    this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
+    //this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
     this.data = Model.getLocalData(); // Load local data
     this.jsToLoad = []; // Object to hold JavaScript files to load
     this.cacheManager = {
@@ -207,7 +207,7 @@ class App {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' || mutation.type === 'attributes') {
-          this.handleDOMActions();
+          //this.handleDOMActions();
         }
       });
     });
@@ -279,13 +279,31 @@ class App {
     
   }
 
+  setTheme(theme) {
+    $(document).ready(() => {
+      if(typeof theme === "undefined") {
+        if(typeof this.models["AppModel"] !== "undefined") {
+          theme = this.models.AppModel.theme || config.defaultTheme;
+        }
+      } else {
+        if(typeof this.models["AppModel"] !== "undefined") {
+          this.models.AppModel.setTheme(theme);
+        }
+      }
+      if(typeof this.models["AppModel"] !== "undefined") {
+        Model.setLocalData({theme: this.models.AppModel.theme});
+      }
+      $("body").removeClass(config.themes.join(" ")).addClass(theme);
+    });
+  }
+
   // Initialize the application
   init() {
     this.log("init");
     $(document).ready(async () => {
       // Set the Application wrapper
       if ($("#feigniter").length == 0) {
-        await $("body").prepend(`<div id='feigniter' class='${config.defaultTheme}'></div>`);
+        await $("body").prepend(`<div id='feigniter'></div>`);
       }
 
       // Dynamically load translation scripts if useTranslation is enabled
@@ -301,9 +319,11 @@ class App {
         }
       }
 
+      this.setTheme();
+
       await this.routing();
       await $(window).trigger("hashchange");
-      await this.handleDOMActions();
+      // await this.handleDOMActions();
       await this.observeDOMChanges();
 
       // Add a button to clear cache for debugging
@@ -346,7 +366,7 @@ class App {
 
 // Example of registering actions
 const app = new App();
-app.actionRegistry.registerAction('test');
-app.actionRegistry.registerAction('table');
+// app.actionRegistry.registerAction('test');
+// app.actionRegistry.registerAction('table');
 
 app.init();
