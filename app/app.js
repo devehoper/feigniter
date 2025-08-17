@@ -228,6 +228,7 @@ class App {
 
   // Translate the application based on the given language
   translate (language) {
+    this.log("Translating to " + language);
     $(document).ready(() => {
       this.log("translate");
       if(config.useTranslation && typeof this.models.AppModel !== "undefined") {

@@ -104,13 +104,12 @@ class Controller {
           } else {
             $(selector).html(content);
           }
-          // if(config.useTranslation) {
-          //   $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
-          //   app.translate();
-          // }
+          
         });
         resolve().then(() => {
-          app.translate();
+          if(config.useTranslation) {
+          app.translate(app.data.language);
+          }
         }); // Resolve the promise once the content is inserted
       } catch (error) {
         reject(error); // Reject the promise if an error occurs

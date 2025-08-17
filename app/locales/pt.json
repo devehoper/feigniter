@@ -10,5 +10,9 @@
     "where to find us": "Onde encontrar-nos",
     "contact": "Contato",
     "Select a theme": "Selecione um tema",
-    "Documentation": "Documentatação"
+    "documentation": "Documentatação",
+    "feigniter": "Feigniter",
+    "feigniter description": "Feigniter é um projeto moderno de frontend que demonstra boas práticas, design modular e otimização de desempenho. Ele inclui recursos como roteamento, cache, tradução e tratamento de erros. Por padrão, o Feigniter utiliza jQuery, jQuery UI, Bootstrap 5.3, FontAwesome, DataTables 2.2.2 e i18next. Todas essas bibliotecas são armazenadas localmente e permanecerão estritamente nas versões especificadas.",
+    "mission": "Missão",
+    "mission description": "Mantenha simples, limpo e fácil de usar, aumentando a velocidade de desenvolvimento."
 }

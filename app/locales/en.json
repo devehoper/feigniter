@@ -10,5 +10,9 @@
     "where to find us": "Where to find us",
     "contact": "Contact",
     "Select a theme": "Select a theme",
-    "Documentation": "Documentation"
+    "documentation": "Documentation",
+    "Feigniter": "Feigniter",
+    "feigniter description": "Feigniter is a modern frontend project showcasing best practices, modular design, and performance optimization. It includes features like routing, caching, translation, and error handling. By default Feigniter uses Jquery, Jquery UI, bootstrap 5.3, fontawesome, DataTables 2.2.2, i18next. All the above libs are stored local, and will keep strict to its versions.",
+    "mission": "Mission",
+    "mission description": "Keep it simple, clean and easy to use boosting development speed."
 }
