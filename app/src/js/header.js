@@ -24,16 +24,6 @@ $(document).ready(async () => {
 
     //Initialize theme selector
     let themeSelected = app.data.theme;
-    let selected = "";
-    $("#theme-selector").empty(); // Clear existing options
-    config.themes.forEach((theme) => {
-        if(theme === themeSelected) {
-            selected = "selected";
-        } else {
-            selected = "";
-        }
-        $("#theme-selector").append(`<option value="${theme}" ${selected}>${theme}</option>`);
-    });
     app.models.AppModel.setTheme(themeSelected); // Set the theme on page load
 
     // Handle theme change

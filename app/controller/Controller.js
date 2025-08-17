@@ -24,17 +24,18 @@ class Controller {
         // Ensure viewUrls is an array
         const urls = Array.isArray(viewUrls) ? viewUrls : [viewUrls];
 
+        // Batch DOM update for multiple views
+        let batchContent = "";
         for (let url of urls) {
             url += url.indexOf(".html") === -1 ? ".html" : "";
-
             // Check cache or fetch view
-            const viewContent = app.viewCache[url] && config.useCache
-                ? app.viewCache[url]
-                : await new Promise((resolve, reject) => {
+            let viewContent;
+            if (app.viewCache[url]) {
+                viewContent = app.viewCache[url];
+            } else {
+                viewContent = await new Promise((resolve, reject) => {
                     $.get(url, (data) => {
-                        if (config.useCache) {
-                            app.viewCache[url] = data;
-                        }
+                        app.viewCache[url] = data;
                         resolve(data);
                     }).fail((jqXHR, textStatus) => {
                         const errorMsg = `Error loading view: ${url} - ${textStatus}`;
@@ -42,49 +43,24 @@ class Controller {
                         reject(new Error(errorMsg));
                     });
                 });
-
-            // Insert content into the DOM
-            if (insertAfter && typeof insertAfter === "string") {
-                $(insertAfter).after(viewContent);
-            } else if (insertBefore && typeof insertBefore === "string") {
-                $(insertBefore).before(viewContent);
-            } else if (append) {
-                $(selector).append(viewContent);
-            } else {
-                $(selector).html(viewContent);
             }
-
-            // Apply translations if enabled
-            // if (config.useTranslation) {
-            //     $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
-            //     app.translate();
-            // }
+            batchContent += viewContent;
+        }
+        // Insert all content at once
+        if (insertAfter && typeof insertAfter === "string") {
+            $(insertAfter).after(batchContent);
+        } else if (insertBefore && typeof insertBefore === "string") {
+            $(insertBefore).before(batchContent);
+        } else if (append) {
+            $(selector).append(batchContent);
+        } else {
+            $(selector).html(batchContent);
         }
 
         // Load JS after ensuring the view is in the DOM
         await Controller.loadJs(jsUrls).catch(ErrorHandler.logError);
-        if (Object.keys(app.jsToLoad).length > 0) {
-          for (const url of app.jsToLoad) {
-              if (app.jsCache[url]) {
-                  const scriptTag = $(`script[src="${url}"]`);
-                  if (scriptTag.length > 0 && app.history.length > 0) {
-                      const clonedScriptTag = document.createElement('script');
-                      clonedScriptTag.src = url;
-                      clonedScriptTag.type = "text/javascript";
-                      document.body.appendChild(clonedScriptTag); // Execute the script
-      
-                      console.log("Anonymous function executed successfully.");
-                      // Remove the old script tag
-                      scriptTag.remove();
-                      console.log("Old script tag removed.");
-                  } else {
-                      console.log("Script not found in the DOM.");
-                  }
-              }
-          }
-          app.jsToLoad = [];
-      }
-      
+        // Remove redundant manual script injection for app.jsToLoad
+        app.jsToLoad = [];
 
     } catch (error) {
         ErrorHandler.logError(error);
@@ -152,37 +128,37 @@ class Controller {
     return new Promise((resolve) => {
       if (!urls) return resolve();
       const jsArray = Array.isArray(urls) ? urls : [urls];
-      const promises = jsArray.map(url => new Promise((res, rej) => {
-        if (app.jsCache[url] && config.useCache) {
-          app.log(`js already loaded: ${url}`);
-          for(let key in app.jsCache) {
-            if(app.jsCache[url]) {
-              $(document).ready(() => {
-                if($(`script[src='${url}']`).length === 1) {
-                  eval($(`head script[src='${url}']`).text());
-                }
-              });
-            }
-          }
-          //app.jsToLoad[script.id] = url; // Store the URL in the jsToLoad object
-          return res();
+      const promises = jsArray.map(url => {
+        // If already loaded, resolve immediately
+        if (app.jsCache[url] === true) {
+          app.log(`[jsCache] Already loaded: ${url}`);
+          return Promise.resolve();
         }
-        $(document).ready(() => {
+        // If loading, return the existing promise
+        if (app.jsCache[url] && app.jsCache[url].then) {
+          app.log(`[jsCache] Already loading: ${url}`);
+          return app.jsCache[url];
+        }
+        // Otherwise, start loading and cache the promise
+        app.log(`[jsCache] Start loading: ${url}`);
+        app.jsCache[url] = new Promise((res, rej) => {
           const script = document.createElement('script');
           script.type = 'text/javascript';
           script.src = url;
           script.onload = () => {
             app.jsCache[url] = true;
+            app.log(`[jsCache] Loaded: ${url}`);
             res();
-          }
+          };
           script.onerror = () => {
             ErrorHandler.logError(`Error loading JS: ${url}`);
+            app.jsCache[url] = false;
             rej(new Error(`Error loading JS: ${url}`));
           };
           document.body.appendChild(script);
         });
-      }));
-
+        return app.jsCache[url];
+      });
       Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
     });
   };
