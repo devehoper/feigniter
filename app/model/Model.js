@@ -2,10 +2,19 @@ class Model {
     constructor() {
 
     }
-
+/**
+ *{data: {data}}
+ * @param Object data
+ */
     static setLocalData(data) {
+        let storage = this.getLocalData();
         try {
-            localStorage.setItem(config.localStorage, JSON.stringify(data));
+            if(typeof data === "undefined" || data !== null) {
+                for(let key in data) {
+                    storage[key] = data[key];
+                }
+                localStorage.setItem(config.localStorage, JSON.stringify(storage));
+            }
         } catch (error) {
             console.error("Error setting local data:", error);
         }
@@ -13,11 +22,13 @@ class Model {
 
     static getLocalData() {
         try {
-            const data = localStorage.getItem(config.localStorage);
-            return data ? JSON.parse(data) : {};
+            let data = localStorage.getItem(config.localStorage) === null
+                ? {}
+                : JSON.parse(localStorage.getItem(config.localStorage));
+            return data;
         } catch (error) {
             console.error("Error getting local data:", error);
-            return {};
+            return null;
         }
     }
 
@@ -28,11 +39,6 @@ class Model {
             console.error("Error clearing local data:", error);
         }
     }
-
-    static teste() {
-        alert("TESTE");
-    }
-    
 
     static validateData(formData, rules) {
         const errors = {};

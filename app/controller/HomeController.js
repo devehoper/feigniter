@@ -1,7 +1,6 @@
 export default class HomeController extends Controller {
     constructor() {
         super();
-        super.loadModel("UserModel");
     }
 
     index() {

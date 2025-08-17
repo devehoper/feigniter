@@ -5,13 +5,12 @@ class AppModel extends Model {
     language = config.defaultLanguage;
     termsAndConditions = false;
     theme = config.defaultTheme;
-    data = {};
 
     constructor() {
         super();
         this.data = Model.getLocalData();
         this.setLanguage();
-        //this.setTheme(this.theme);
+        this.setTheme(this.theme);
     }
 
     setTheme(theme) {
@@ -21,7 +20,8 @@ class AppModel extends Model {
             element.removeClass();
             element.addClass(theme); // Set the theme class on the body element
             this.theme = theme; // Update the theme in the data object
-            Model.setLocalData(this.toJson()); // Save the updated data to local storage
+            Model.setLocalData({theme: theme});
+            //Model.setLocalData(this.toJson()); // Save the updated data to local storage
         } else {
             app.log(`Theme ${theme} is not available.`);
         }
@@ -29,13 +29,16 @@ class AppModel extends Model {
 
     setLanguage() {
         let navigatorLanguage =  config.defaultLanguage;
+        let ln = Model.getLocalData() == null || typeof Model.getLocalData().language == "undefined"
+        ? {}
+        : Model.getLocalData().language;
         if(config.useTranslation) {
             navigatorLanguage = (config.availableLanguages.includes(navigator.language) || config.availableLanguages.includes(navigator.userLanguage))
             ? navigator.language || navigator.userLanguage : config.defaultLanguage;
-
-            this.language = this.data !== null
-            ? this.language = this.data.language
-            : navigatorLanguage;
+            //app.models.AppModel.language = ln || config.defaultLanguage;
+            this.language = ln;
+            // ? this.language = this.data.language
+            // : navigatorLanguage;
         }
     }
 
@@ -46,7 +49,7 @@ class AppModel extends Model {
             language: this.language,
             termsAndConditions: this.termsAndConditions,
             theme: this.theme,
-            data: this.data
+            //data: this.data
         };
     }
 }

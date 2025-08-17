@@ -230,10 +230,10 @@ class App {
   translate (language) {
     $(document).ready(() => {
       this.log("translate");
-      if(config.useTranslation) {
-        this.models.AppModel.language = language;
-        Model.setLocalData({language: this.models.AppModel.language});
-        i18next.changeLanguage(Model.getLocalData().language??config.defaultLanguage).then(
+      if(config.useTranslation && typeof this.models.AppModel !== "undefined") {
+        this.models.AppModel['language'] = language;
+        Model.setLocalData({language});
+        i18next.changeLanguage(language).then(
           () => {
             this.log("Current language in i18next:", i18next.language);
             $('[data-translate]').each(function () {
@@ -253,7 +253,7 @@ class App {
       .init(
         {
           fallbackLng: config.defaultLanguage,
-          lng: config.defaultLanguage,
+          lng: app.data.language || config.defaultLanguage,
           backend: {
             loadPath: 'app/locales/{{lng}}.json',
           },
@@ -274,9 +274,6 @@ class App {
       const key = $(this).data('translate');
       $(this).text(i18next.t(key));
     });
-  }
-  async start() {
-    
   }
 
   setTheme(theme) {
@@ -301,6 +298,7 @@ class App {
   init() {
     this.log("init");
     $(document).ready(async () => {
+      Controller.loadModel("AppModel");
       // Set the Application wrapper
       if ($("#feigniter").length == 0) {
         await $("body").prepend(`<div id='feigniter'></div>`);
@@ -365,7 +363,7 @@ class App {
 }
 
 // Example of registering actions
-const app = new App();
+let app = new App();
 // app.actionRegistry.registerAction('test');
 // app.actionRegistry.registerAction('table');
 

@@ -1,6 +1,5 @@
 class Controller {
   constructor(modelName) {
-    this.loadModel("AppModel");
     app.log(this);
   }
 
@@ -56,10 +55,10 @@ class Controller {
             }
 
             // Apply translations if enabled
-            if (config.useTranslation) {
-                $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
-                app.translate();
-            }
+            // if (config.useTranslation) {
+            //     $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
+            //     app.translate();
+            // }
         }
 
         // Load JS after ensuring the view is in the DOM
@@ -105,12 +104,14 @@ class Controller {
           } else {
             $(selector).html(content);
           }
-          if(config.useTranslation) {
-            $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
-            app.translate();
-          }
+          // if(config.useTranslation) {
+          //   $("#" + config.translationElementId).val(app.models.AppModel.language || config.defaultLanguage);
+          //   app.translate();
+          // }
         });
-        resolve(); // Resolve the promise once the content is inserted
+        resolve().then(() => {
+          app.translate();
+        }); // Resolve the promise once the content is inserted
       } catch (error) {
         reject(error); // Reject the promise if an error occurs
       }
@@ -235,7 +236,7 @@ class Controller {
     });
 }
 
-  loadModel(modelName) {
+  static loadModel(modelName) {
     modelName = modelName.indexOf(".js") === -1 ? modelName : modelName.slice(0,modelName.length -3);
     return new Promise((resolve, reject) => {
       if (typeof app.models[modelName] !== 'undefined') {

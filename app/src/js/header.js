@@ -1,21 +1,21 @@
 ( () => {
 $(document).ready(async () => {
-    console.log("Header loaded");
+    app.log("Header loaded");
+    app.setLanguage();
+    
 
     // Handle language change
-    $(document).on('change', '#' + config.translationElementId + ', #' + config.translationElementId + '-sm', (e) => {
+    $(document).on('change', '#' + config.translationElementId, (e) => {
         e.preventDefault();
-        console.warn("LANGUAGE CHANGED");
-        app.log("Language changed");
-        if($(e.currentTarget).val() !== "-1") {
+        if($(e.currentTarget).val() !== "default") {
             app.translate($(e.currentTarget).val());
+            $(e.currentTarget).val('default');
         }
     });
 
     // Handle search click
     $(document).on('keyup', '#search', function(e) {
         const searchValue = $(this).val();
-        console.warn($(this).val());
         if (searchValue) {
             app.log(`Search value: ${searchValue}`);
         } else {
