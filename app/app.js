@@ -282,10 +282,12 @@ class App {
       if(typeof theme === "undefined") {
         if(typeof this.models["AppModel"] !== "undefined") {
           theme = this.models.AppModel.theme || config.defaultTheme;
+          Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
         }
       } else {
         if(typeof this.models["AppModel"] !== "undefined") {
           this.models.AppModel.setTheme(theme);
+          Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
         }
       }
       if(typeof this.models["AppModel"] !== "undefined") {

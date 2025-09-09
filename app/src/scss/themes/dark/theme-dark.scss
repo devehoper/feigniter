@@ -1,0 +1,6 @@
+@use "../../main.scss";
+
+.theme-dark, header, footer, main {
+  background-color: map-get(main.$colors, dark );
+  color: map-get(main.$colors, light );
+}

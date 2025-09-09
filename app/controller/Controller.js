@@ -19,7 +19,7 @@ class Controller {
 
     try {
         // Load CSS first
-        await this.loadCss(cssUrls).catch(ErrorHandler.logError);
+        await Controller.loadCss(cssUrls).catch(ErrorHandler.logError);
 
         // Ensure viewUrls is an array
         const urls = Array.isArray(viewUrls) ? viewUrls : [viewUrls];
@@ -80,7 +80,6 @@ class Controller {
           } else {
             $(selector).html(content);
           }
-          
         });
         resolve().then(() => {
           if(config.useTranslation) {
@@ -94,7 +93,7 @@ class Controller {
   }
   
 
-  loadCss = (urls) => {
+  static loadCss = (urls) => {
     return new Promise((resolve) => {
       if (!urls) return resolve();
       

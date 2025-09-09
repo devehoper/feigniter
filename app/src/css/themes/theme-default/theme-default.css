@@ -157,4 +157,8 @@ body {
     transform: scale(1);
     opacity: 0.8;
   }
-}/*# sourceMappingURL=main.css.map */
+}
+.theme-dark, header, footer, main {
+  background-color: #f8f9fa;
+  color: #343a40;
+}/*# sourceMappingURL=default.css.map */
