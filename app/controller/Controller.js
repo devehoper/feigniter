@@ -65,6 +65,7 @@ class Controller {
     } catch (error) {
         ErrorHandler.logError(error);
     }
+    app.translate();
   }
 
   insertContent(selector, content, append, insertAfter, insertBefore) {
@@ -91,19 +92,30 @@ class Controller {
       }
     });
   }
-  
+
+  /**
+   * @description Unloads all CSS files related to themes.
+   */
+  static unloadCSS() {
+    const links = document.querySelectorAll(`link[rel="stylesheet"]`);
+    links.forEach(link => {
+      if(link.attributes["href"].value.indexOf("app/src/css/themes/") != -1) {
+        link.parentNode.removeChild(link);
+      }
+    });
+  }
 
   static loadCss = (urls) => {
     return new Promise((resolve) => {
       if (!urls) return resolve();
-      
+
       const cssArray = Array.isArray(urls) ? urls : [urls];
       const promises = cssArray.map(url => new Promise((res, rej) => {
         if (app.cssCache[url] && config.useCache) {
           app.log(`CSS already loaded: ${url}`);
           return res();
         }
-        
+
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = url;
@@ -117,7 +129,7 @@ class Controller {
         };
         document.head.appendChild(link);
       }));
-      
+
       Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
     });
   };

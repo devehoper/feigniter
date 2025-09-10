@@ -127,6 +127,8 @@ class App {
     }
   }
 
+
+
   // Parse the URL into controller, method, and arguments
   parseURL(url) {
     const controllerStrPosition = url.indexOf("#");
@@ -228,12 +230,15 @@ class App {
 
   // Translate the application based on the given language
   translate (language) {
+    if(typeof language === "undefined") {
+       language = this.models.AppModel.language || config.defaultLanguage
+    }
     this.log("Translating to " + language);
     $(document).ready(() => {
       this.log("translate");
       if(config.useTranslation && typeof this.models.AppModel !== "undefined") {
         this.models.AppModel['language'] = language;
-        Model.setLocalData({language});
+        Model.setLocalData({language: language});
         i18next.changeLanguage(language).then(
           () => {
             this.log("Current language in i18next:", i18next.language);
@@ -282,11 +287,13 @@ class App {
       if(typeof theme === "undefined") {
         if(typeof this.models["AppModel"] !== "undefined") {
           theme = this.models.AppModel.theme || config.defaultTheme;
+          Controller.unloadCSS();
           Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
         }
       } else {
         if(typeof this.models["AppModel"] !== "undefined") {
           this.models.AppModel.setTheme(theme);
+          Controller.unloadCSS();
           Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
         }
       }
@@ -307,6 +314,13 @@ class App {
         await $("body").prepend(`<div id='feigniter'></div>`);
       }
 
+      this.setTheme();
+
+      await this.routing();
+      await $(window).trigger("hashchange");
+      // await this.handleDOMActions();
+      await this.observeDOMChanges();
+
       // Dynamically load translation scripts if useTranslation is enabled
       if (config.useTranslation) {
         try {
@@ -314,18 +328,12 @@ class App {
             "app/src/js/lib/i18next.js",
             "app/src/js/lib/i18nextbackend.js"
           ]);
-          this.setLanguage(); // Initialize translation after scripts are loaded
+          await this.setLanguage(); // Initialize translation after scripts are loaded
+          app.translate(); // Initial translation
         } catch (error) {
           ErrorHandler.logError("Failed to load translation scripts", error);
         }
       }
-
-      this.setTheme();
-
-      await this.routing();
-      await $(window).trigger("hashchange");
-      // await this.handleDOMActions();
-      await this.observeDOMChanges();
 
       // Add a button to clear cache for debugging
       if (config.debugMode) {
