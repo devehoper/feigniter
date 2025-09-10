@@ -32,5 +32,16 @@ $(document).ready(async () => {
         app.models.AppModel.setTheme(selectedTheme);
         app.setTheme(selectedTheme); // Set the theme in the app
     });
+
+    $(document).on('click', '.btn-signin', (e) => {
+        openGenericModal({
+            title: 'User Sign In',
+            localView: 'app/view/home/signin.html',
+            size: 'lg'
+        });
     });
+
+});
+
+
 })();

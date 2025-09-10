@@ -174,7 +174,7 @@ class Controller {
     });
   };
 
-  loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true) {
+  loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = "#feigniter") {
     let viewUrlResult = [];
     let finalCssUrls = [];
     let finalJsUrls = [];
@@ -216,7 +216,7 @@ class Controller {
         viewUrls: viewUrlResult,
         cssUrls: finalCssUrls,
         jsUrls: finalJsUrls,
-        selector: "#feigniter",
+        selector,
         append,
         overwrite: !append
     });

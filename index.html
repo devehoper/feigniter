@@ -24,13 +24,19 @@
     <meta name="twitter:description" content="A modern frontend project showcasing best practices and performance optimization.">
     <meta name="twitter:image" content="https://www.feigniter.devehoper.com/app/src/img/logo.png">
     
+    
+    <meta name="apple-mobile-web-app-title" content="Feigniter" />    
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="app/src/img/favicon/favicon-96x96.png" sizes="96x96" />
+    <!-- <link rel="icon" type="image/png" href="app/src/img/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="app/src/img/favicon/favicon.svg" />
     <link rel="shortcut icon" href="app/src/img/favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="app/src/img/favicon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Feigniter" />
-    <link rel="manifest" href="app/src/img/favicon/site.webmanifest" />
+    <link rel="manifest" href="app/src/img/favicon/site.webmanifest" /> -->
+
+    <link rel="apple-touch-icon" sizes="180x180" href="app/src/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="app/src/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="app/src/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="app/src/img/favicon/site.webmanifest">
     
     <!-- CSS Links -->
     <!-- Importing fonts and stylesheets -->
@@ -49,6 +55,21 @@
     <title>Feigniter</title>
 </head>
 <body>
+        <!-- Modal Container -->
+    <div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="genericModalTitle"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="genericModalBody">
+            <div class="text-center text-muted"></div>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <!-- JavaScript -->
     <!-- Importing JavaScript libraries and application scripts -->
     <script src="app/src/js/lib/jquery.js" defer></script>
@@ -56,6 +77,7 @@
     <script src="app/src/js/lib/all.min.js" defer></script>
     <script src="app/src/js/lib/bootstrap.min.js" defer></script>
     <script src="app/src/js/lib/dataTables/datatables.min.js" defer></script>
+    <script src="app/src/js/modal.js" defer></script>
     <script src="app/src/js/img.js" defer></script>
     <script src="app/error_handler.js" defer></script>
     <script src="app/config.js" defer></script>
