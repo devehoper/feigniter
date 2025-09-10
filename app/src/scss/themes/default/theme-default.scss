@@ -1,7 +1,7 @@
 @use "../../main.scss" as main;
 $text: map-get(main.$colors, dark);
 
-.theme-dark, header, footer, main {
+.theme-dark * {
   background-color: map-get(main.$colors, light);
   color: $text;
   // h1 {

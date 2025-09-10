@@ -4,17 +4,15 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%; /* Ensure the body fills the viewport */
-}
-
-body {
-  font-family: "Arial", sans-serif;
+  height: 100%;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 #feigniter {
-  margin: 0;
   width: 100%;
   height: 100%;
+  display: flex; /* Optional: enables layout control inside */
+  flex-direction: column;
 }
 
 /* ==========================
@@ -158,7 +156,7 @@ body {
     opacity: 0.8;
   }
 }
-.theme-dark, header, footer, main {
+.theme-dark * {
   background-color: #f8f9fa;
   color: #343a40;
-}/*# sourceMappingURL=default.css.map */
+}
