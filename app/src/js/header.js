@@ -1,8 +1,8 @@
+/**
+ * Description: Header JS file, autoload annonymous function to avoid polluting global namespace
+ */
 ( () => {
 $(document).ready(async () => {
-    app.log("Header loaded");
-    app.setLanguage();
-
     // Handle language change
     $(document).on('change', '#' + config.translationElementId, (e) => {
         e.preventDefault();

@@ -1,58 +1,54 @@
 <header class="p-3 bg-dark text-white" id="header">
-  <div class="container d-none d-sm-block">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <!-- Logo Section -->
-      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-          <use xlink:href="#bootstrap"></use>
-        </svg>
-      </a>
-
+  <div class="container d-none d-md-block">
+    <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <div class="col-sm-2">
+        <!-- Logo Section -->
+        <a href="/feigniter/#HomeController" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <img src="/feigniter/app/src/img/logo.png" alt="Feigniter Logo" width="100">
+        </a>
+      </div>
+      <div class="col-10 col-lg-auto me-lg-auto mb-2">
       <!-- Navigation Menu -->
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li class="header-item">
-            <a href="/feigniter/#HomeController" >
-              <img src="/feigniter/app/src/img/logo.png" alt="Feigniter Logo" width="100">
-            </a>
+        <ul class="nav  justify-content-center mb-md-0 header-menu">
+          <li class="header-item">
+            <a href="/feigniter/#HomeController" class="nav-link px-2 text-secondary" data-translate="home">Home</a>
           </li>
-        <li class="header-item">
-          <a href="/feigniter/#HomeController" class="nav-link px-2 text-secondary" data-translate="home">Home</a>
-        </li>
-        <li class="header-item">
-          <a href="/feigniter/#HomeController?features" class="nav-link px-2 text-white" data-translate="features">Features</a>
-        </li>
-        <li class="header-item">
-          <a href="/feigniter/#HomeController?compatibility" class="nav-link px-2 text-white" data-translate="browsers compatibility">Compatibility</a>
-        </li>
-        <li class="header-item">
-          <a href="/feigniter/#HomeController?faq" class="nav-link px-2 text-white">FAQs</a>
-        </li>
-        <li class="header-item">
-          <a href="/feigniter/#HomeController?about" class="nav-link px-2 text-white" data-translate="about">About</a>
-        </li>
-        <li class="header-item">
-          <a href="/feigniter/#HomeController?documentation" class="nav-link px-2 text-white" data-translate="documentation">Documentation</a>
-        </li>
-        <li class="header-item">
-          <!-- Language Selector -->
-          <select id="language-selector" name="language-selector" class="form-select text-white bg-dark" title="Select language">
-            <option value="default" selected>Select a language</option>
-            <option value="en" data-flag="🇺🇸">🇺🇸 English</option>
-            <option value="pt" data-flag="🇵🇹">🇵🇹 Português</option>
-          </select>
-        </li>
-        <li class="header-item">
-          <!-- Theme Selector -->
-          <select id="theme-selector" name="theme-selector" class="form-select text-white bg-dark" title="Select theme">
-            <option value="default" selected>Select a theme</option>
-            <option value="theme-default" >Default</option>
-            <option value="theme-dark" >Dark</option>
-          </select>
-        </li>
-        <li>
-          <i class="fa-solid fa-right-to-bracket"></i>
-        </li>
-      </ul>
+          <li class="header-item">
+            <a href="/feigniter/#HomeController?features" class="nav-link px-2 text-white" data-translate="features">Features</a>
+          </li>
+          <li class="header-item">
+            <a href="/feigniter/#HomeController?compatibility" class="nav-link px-2 text-white" data-translate="browsers compatibility">Compatibility</a>
+          </li>
+          <li class="header-item">
+            <a href="/feigniter/#HomeController?faq" class="nav-link px-2 text-white">FAQs</a>
+          </li>
+          <li class="header-item">
+            <a href="/feigniter/#HomeController?about" class="nav-link px-2 text-white" data-translate="about">About</a>
+          </li>
+          <li class="header-item">
+            <a href="/feigniter/#HomeController?documentation" class="nav-link px-2 text-white" data-translate="documentation">Documentation</a>
+          </li>
+          <li class="header-item">
+            <!-- Language Selector -->
+            <select id="language-selector" name="language-selector" class="form-select text-white bg-dark" title="Select language">
+              <option value="default" selected>Language</option>
+              <option value="en" data-flag="🇺🇸">🇺🇸 English</option>
+              <option value="pt" data-flag="🇵🇹">🇵🇹 Português</option>
+            </select>
+          </li>
+          <li class="header-item">
+            <!-- Theme Selector -->
+            <select id="theme-selector" name="theme-selector" class="form-select text-white bg-dark" title="Select theme">
+              <option value="default" selected>Theme</option>
+              <option value="theme-default" >Default</option>
+              <option value="theme-dark" >Dark</option>
+            </select>
+          </li>
+          <li>
+            <i class="fa-solid fa-right-to-bracket"></i>
+          </li>
+        </ul>
+      </div>
 
       <!-- Search Form -->
       <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -61,7 +57,7 @@
     </div>
   </div>
 
-  <div class="container d-sm-none">
+  <div class="container d-md-none">
     <div class="row">
       <div class="col-xs-12">
         <button class="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" title="Toggle navigation menu">
@@ -103,7 +99,7 @@
           <li class="header-item">
             <!-- Language Selector -->
             <select id="language-selector" name="language-selector" class="form-select text-white bg-dark" title="Select language">
-              <option value="default" selected>Select a language</option>
+              <option value="default" selected>Language</option>
               <option value="en" data-flag="🇺🇸">🇺🇸 English</option>
               <option value="pt" data-flag="🇵🇹">🇵🇹 Português</option>
             </select>
@@ -111,7 +107,7 @@
           <li class="header-item">
             <!-- Theme Selector -->
             <select id="theme-selector" name="theme-selector" class="form-select text-white bg-dark" title="Select theme">
-              <option value="default" selected>Select a theme</option>
+              <option value="default" selected>Theme</option>
               <option value="theme-default" >Default</option>
               <option value="theme-dark" >Dark</option>
             </select>

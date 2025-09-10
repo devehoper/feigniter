@@ -1,0 +1,20 @@
+@use "../main.scss" as main;
+
+header {
+    background-color: map-get(main.$colors, light);
+    color: black;
+}
+
+.header-menu {
+//   display: flex;
+//   flex-wrap: wrap;        /* 🔑 Enables wrapping */
+//   gap: 1rem;              /* Optional spacing between items */
+//   list-style: none;       /* Removes default bullets */
+//   padding: 0;
+//   margin: 0;
+
+//     li {
+//     flex: 0 1 auto;         /* Items shrink/grow naturally */
+//     min-width: 150px;       /* Optional: controls when items wrap */
+//     }
+}

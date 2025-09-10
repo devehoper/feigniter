@@ -156,3 +156,7 @@ html, body {
     opacity: 0.8;
   }
 }
+header {
+  background-color: #f8f9fa;
+  color: black;
+}

@@ -10,13 +10,13 @@ const config = {
     useTranslation: true, // Enable or disable translation
     translationElementId: "language-selector", // ID of the language selector element
     availableLanguages: ["pt", "en"], // List of available languages
-    useNavigationBar: true, // Use navigation bar for routing
+    useNavigationBar: false, // Use navigation bar for routing
     // if not using template set loadTemplate: {},
     loadTemplate: {
         views: ["app/view/header.html", "app/view/footer.html"], // Template views
         jsUrl: ["app/src/js/header.js", "app/src/js/footer.js"], // Template JavaScript files
         cssUrl: [
-            //"app/src/css/themes/default/pages/header.css",
+            "app/src/css/pages/header.css"
             //"app/src/css/themes/default/pages/footer.css"
         ], // Template CSS files
     }, // Templates to load

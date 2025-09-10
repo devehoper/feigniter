@@ -285,10 +285,14 @@ class App {
   setTheme(theme) {
     $(document).ready(() => {
       if(typeof theme === "undefined") {
-        if(typeof this.models["AppModel"] !== "undefined") {
-          theme = this.models.AppModel.theme || config.defaultTheme;
+        if(typeof this.data.theme || typeof this.models["AppModel"] !== "undefined") {
+          theme = this.data.theme || this.models.AppModel.theme || config.defaultTheme;
           Controller.unloadCSS();
           Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
+        } 
+        else {
+          theme = config.defaultTheme;
+          Controller.loadCss(`app/src/css/themes/${config.defaultTheme}/${config.defaultTheme}.css`);
         }
       } else {
         if(typeof this.models["AppModel"] !== "undefined") {
@@ -297,6 +301,7 @@ class App {
           Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
         }
       }
+
       if(typeof this.models["AppModel"] !== "undefined") {
         Model.setLocalData({theme: this.models.AppModel.theme});
       }
@@ -314,7 +319,7 @@ class App {
         await $("body").prepend(`<div id='feigniter'></div>`);
       }
 
-      this.setTheme();
+      await this.setTheme();
 
       await this.routing();
       await $(window).trigger("hashchange");
