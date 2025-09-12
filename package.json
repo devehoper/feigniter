@@ -3,16 +3,20 @@
     "javascript-obfuscator": "^4.1.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "chalk": "^5.6.2",
+    "fs-extra": "^11.3.1",
+    "inquirer": "^8.2.7"
   },
   "scripts": {
     "test": "jest",
     "build": "javascript-obfuscator app --output app-obfuscated --compact true --self-defending true",
+    "components": "node components.js",
     "new:controller": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/controller/${name}Controller.js`, `export default class ${name}Controller extends Controller {\\n    constructor() {\\n        super();\\n    }\\n    index() {\\n        super.loadView('app/view/${name.toLowerCase()}/index.html');\\n    }\\n}\\n`);\"",
     "new:model": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/model/${name}Model.js`, `export default class ${name}Model extends Model {\\n    constructor() {\\n        super();\\n    }\\n}\\n`);\"",
     "new:view": "node -e \"const fs = require('fs'); const name = process.argv[1]; const dir = `app/view/${name.toLowerCase()}`; fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(`${dir}/index.html`, `<div>Welcome to ${name} view</div>`);\"",
     "new:js": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/src/js/${name}.js`, `(() => {\\n    console.log('${name} script loaded');\\n})();\\n`);\"",
     "new:scss": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/src/css/themes/${name.toLowerCase()}/${name.toLowerCase()}.scss`, `/* SCSS for ${name} theme */\\n`);\""
-  },
-  "dependencies": {}
+  }
+  
 }
