@@ -284,30 +284,21 @@ class App {
 
   setTheme(theme) {
     $(document).ready(() => {
-      if(typeof theme === "undefined") {
-        if(typeof this.data.theme || typeof this.models["AppModel"] !== "undefined") {
-          theme = this.data.theme || this.models.AppModel.theme || config.defaultTheme;
-          Controller.unloadCSS();
-          Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
-        } 
-        else {
-          theme = config.defaultTheme;
-          Controller.loadCss(`app/src/css/themes/${config.defaultTheme}/${config.defaultTheme}.css`);
-        }
-      } else {
-        if(typeof this.models["AppModel"] !== "undefined") {
-          this.models.AppModel.setTheme(theme);
-          Controller.unloadCSS();
-          Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
-        }
+      const appModel = this.models?.AppModel;
+      theme = theme || this.data?.theme || appModel?.theme || config.defaultTheme;
+
+      Controller.unloadCSS();
+      Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
+
+      if (appModel) {
+        appModel.setTheme?.(theme);
+        Model.setLocalData({ theme });
       }
 
-      if(typeof this.models["AppModel"] !== "undefined") {
-        Model.setLocalData({theme: this.models.AppModel.theme});
-      }
       $("body").removeClass(config.themes.join(" ")).addClass(theme);
     });
   }
+
 
   // Initialize the application
   init() {

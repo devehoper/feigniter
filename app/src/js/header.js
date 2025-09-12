@@ -29,8 +29,10 @@ $(document).ready(async () => {
     // Handle theme change
     $(document).on('change', '#theme-selector', (e) => {
         const selectedTheme = $(e.target).val();
-        app.models.AppModel.setTheme(selectedTheme);
-        app.setTheme(selectedTheme); // Set the theme in the app
+        if(selectedTheme !== "default") {
+            app.models.AppModel.setTheme(selectedTheme);
+            app.setTheme(selectedTheme); // Set the theme in the app
+        }
     });
 
     $(document).on('click', '.btn-signin', (e) => {

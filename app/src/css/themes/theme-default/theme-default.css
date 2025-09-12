@@ -15,148 +15,98 @@ html, body {
   flex-direction: column;
 }
 
-/* ==========================
-   MIXINS
-========================== */
-/* ==========================
-   EFFECTS
-========================== */
-.hover-effect {
-  position: relative;
-  transition: all 0.3s ease-in-out;
-}
-.hover-effect:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.neon-effect {
-  color: #007bff;
-  text-shadow: 0 0 5px #007bff, 0 0 10px #007bff;
-}
-
-.glitch-effect {
-  position: relative;
-  color: #dc3545;
-}
-.glitch-effect::before, .glitch-effect::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
+#img-preview {
+  background-color: rgba(0, 0, 0, 0.9);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  position: fixed;
   top: 0;
-  opacity: 0.8;
-}
-.glitch-effect::before {
-  color: #28a745;
-  left: 2px;
-  animation: glitch 0.3s infinite;
-}
-.glitch-effect::after {
-  color: #ffc107;
-  left: -2px;
-  animation: glitch 0.3s infinite reverse;
-}
-
-@keyframes glitch {
-  0% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(2px, -2px);
-  }
-  60% {
-    transform: translate(-2px, 2px);
-  }
-  80% {
-    transform: translate(2px, -2px);
-  }
-  100% {
-    transform: translate(0);
-  }
-}
-.hide-effect {
-  display: none;
-  animation: hide 2s forwards;
-}
-
-@keyframes hide {
-  0% {
-    opacity: 0.7;
-  }
-  25% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  75% {
-    opacity: 0.2;
-  }
-  100% {
-    transform: display none;
-    transform: opacity 0;
-  }
-}
-@keyframes glow {
-  0% {
-    background: #0ff;
-    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-  }
-  100% {
-    background: #08f;
-    box-shadow: 0 0 20px #08f, 0 0 40px #08f;
-  }
-}
-@keyframes glow-hover {
-  0%, 100% {
-    background: #f0f;
-    box-shadow: 0 0 10px #f0f, 0 0 20px #f0f;
-  }
-  50% {
-    background: #0ff;
-    box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
-  }
-}
-.pulse-effect {
-  position: relative;
+  left: 0;
   width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle, #222, #000);
-  overflow: hidden;
+  height: 100%;
+  z-index: 9999;
+  cursor: zoom-out;
+  transition: opacity 0.3s ease;
+  opacity: 0;
 }
 
-.pulse-effect::before {
-  content: "";
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(120deg, #0ff, #08f, #0ff);
-  animation: pulse 5s forwards;
-  filter: blur(100px);
-  z-index: -1;
+#img-preview.show {
+  opacity: 1;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
+.header-menu-icon {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  padding: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  color: white;
+  cursor: pointer;
 }
-.theme-dark * {
-  background-color: #f8f9fa;
-  color: #343a40;
+
+.header-menu-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.btn-signin {
+  padding: 5px;
+}
+
+.btn-signin:hover {
+  cursor: pointer;
+}
+
+.footer-img {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.theme-default html,
+.theme-default body,
+.theme-default section,
+.theme-default article,
+.theme-default aside,
+.theme-default header,
+.theme-default footer,
+.theme-default main,
+.theme-default nav,
+.theme-default ul,
+.theme-default ol,
+.theme-default li,
+.theme-default table,
+.theme-default thead,
+.theme-default tbody,
+.theme-default tfoot,
+.theme-default tr,
+.theme-default td,
+.theme-default th,
+.theme-default pre,
+.theme-default code,
+.theme-default blockquote,
+.theme-default figure,
+.theme-default figcaption,
+.theme-default input,
+.theme-default textarea,
+.theme-default select,
+.theme-default button {
+  background-color: #f8f9fa !important;
+  color: #343a40 !important;
+}
+.theme-default a {
+  color: #343a40 !important;
+}
+.theme-default ::selection {
+  background-color: white;
+  color: #343a40 !important;
+}
+.theme-default input,
+.theme-default textarea,
+.theme-default select,
+.theme-default button {
+  border-color: rgb(218.25, 223.5, 228.75) !important;
 }

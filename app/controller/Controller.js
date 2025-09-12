@@ -100,7 +100,8 @@ class Controller {
     const links = document.querySelectorAll(`link[rel="stylesheet"]`);
     links.forEach(link => {
       if(link.attributes["href"].value.indexOf("app/src/css/themes/") != -1) {
-        link.parentNode.removeChild(link);
+        //link.parentNode.removeChild(link);
+        link.remove();
       }
     });
   }
@@ -111,11 +112,6 @@ class Controller {
 
       const cssArray = Array.isArray(urls) ? urls : [urls];
       const promises = cssArray.map(url => new Promise((res, rej) => {
-        if (app.cssCache[url] && config.useCache) {
-          app.log(`CSS already loaded: ${url}`);
-          return res();
-        }
-
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = url;

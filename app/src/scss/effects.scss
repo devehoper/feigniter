@@ -1,0 +1,146 @@
+@use 'colors.scss';
+/* ==========================
+   MIXINS
+========================== */
+
+// Mixin for transition
+@mixin transition($time: 0.3s) {
+    transition: all $time ease-in-out;
+  }
+  
+  // Mixin for gradient background
+  @mixin gradient($from, $to) {
+    background: linear-gradient(135deg, $from, $to);
+  }
+  
+  // Mixin for flex center
+  @mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+/* ==========================
+   EFFECTS
+========================== */
+
+// Hover Effect
+.hover-effect {
+    position: relative;
+    @include transition;
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  // Neon Glow
+  .neon-effect {
+    color: map-get(colors.$default, primary);
+    text-shadow: 0 0 5px map-get(colors.$default, primary), 0 0 10px map-get(colors.$default, primary);
+  }
+  
+  // Glitch Effect
+  .glitch-effect {
+    position: relative;
+    color: map-get(colors.$default, danger);
+    &::before,
+    &::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0.8;
+    }
+    &::before {
+      color: map-get(colors.$default, success);
+      left: 2px;
+      animation: glitch 0.3s infinite;
+    }
+    &::after {
+      color: map-get(colors.$default, warning);
+      left: -2px;
+      animation: glitch 0.3s infinite reverse;
+    }
+  }
+  
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(-2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+  }
+
+  .hide-effect {
+    display: none;
+    animation: hide 2s forwards;
+  }
+
+  @keyframes hide {
+    0% {opacity: 0.7;}
+    25% {opacity: 0.5; }
+    50% {opacity: 0.3; }
+    75% {opacity: 0.2; }
+    100% {transform: display none; transform: opacity 0; }
+  }
+
+  @keyframes glow {
+    0% {
+      background: #0ff;
+      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+    100% {
+      background: #08f;
+      box-shadow: 0 0 20px #08f, 0 0 40px #08f;
+    }
+  }
+
+  @keyframes glow-hover {
+    0%, 100% {
+      background: #f0f;
+      box-shadow: 0 0 10px #f0f, 0 0 20px #f0f;
+    }
+    50% {
+      background: #0ff;
+      box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+    }
+  }
+
+  .pulse-effect {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #222, #000);
+    overflow: hidden;
+  }
+
+  .pulse-effect::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, #0ff, #08f, #0ff);
+    animation: pulse 5s forwards;
+    filter: blur(100px);
+    z-index: -1;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+  }

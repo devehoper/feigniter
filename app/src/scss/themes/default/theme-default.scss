@@ -1,43 +1,54 @@
 @use "../../main.scss" as main;
-$text: map-get(main.$colors, dark);
+@use '../../colors.scss';
 
-.theme-dark * {
-  background-color: map-get(main.$colors, light);
-  color: $text;
-  // h1 {
-  //   font-size: 3rem;
-  //   text-align: center;xzczxc
-  //   margin-bottom: 20px;
-  // }
+$text: map-get(colors.$default, dark);
 
-  // p {
-  //   font-size: 1.2rem;
-  //   text-align: center;
-  //   margin-bottom: 40px;
-  //   line-height: 1.5;
-  // }
+.theme-default {
+  html,
+  body,
+  section,
+  article,
+  aside,
+  header,
+  footer,
+  main,
+  nav,
+  ul,
+  ol,
+  li,
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  td,
+  th,
+  pre,
+  code,
+  blockquote,
+  figure,
+  figcaption,
+  input,
+  textarea,
+  select,
+  button {
+    background-color: map-get(colors.$default, light) !important;
+    color: $text !important;
+  }
 
-  // .btn {
-  //   display: inline-block;
-  //   padding: 15px 30px;
-  //   font-size: 1.2rem;
-  //   color: #000;
-  //   background: linear-gradient(90deg, #0ff, #08f);
-  //   border: none;
-  //   border-radius: 5px;
-  //   text-transform: uppercase;
-  //   text-decoration: none;
-  //   cursor: pointer;
-  //   box-shadow: 0 0 10px #0ff, 0 0 20px #08f;
-  //   transition: all 0.3s ease-in-out;
-  // }
+  a {
+    color: $text !important;
+  }
 
-  // .btn:hover {
-  //   background: linear-gradient(90deg, #08f, #0ff);
-  //   box-shadow: 0 0 20px #0ff, 0 0 40px #08f;
-  // }
+  ::selection {
+    background-color: lighten(map-get(colors.$default, light), 10%);
+    color: $text !important;
+  }
 
-  // main {
-  //   flex: 1; /* Allows content to expand while pushing the footer down */
-  // }
+  input,
+  textarea,
+  select,
+  button {
+    border-color: darken(map-get(colors.$default, light), 10%) !important;
+  }
 }
