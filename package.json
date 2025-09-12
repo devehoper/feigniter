@@ -11,7 +11,7 @@
   "scripts": {
     "test": "jest",
     "build": "javascript-obfuscator app --output app-obfuscated --compact true --self-defending true",
-    "components": "node components.js",
+    "widgets": "node widgets.js",
     "new:controller": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/controller/${name}Controller.js`, `export default class ${name}Controller extends Controller {\\n    constructor() {\\n        super();\\n    }\\n    index() {\\n        super.loadView('app/view/${name.toLowerCase()}/index.html');\\n    }\\n}\\n`);\"",
     "new:model": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/model/${name}Model.js`, `export default class ${name}Model extends Model {\\n    constructor() {\\n        super();\\n    }\\n}\\n`);\"",
     "new:view": "node -e \"const fs = require('fs'); const name = process.argv[1]; const dir = `app/view/${name.toLowerCase()}`; fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(`${dir}/index.html`, `<div>Welcome to ${name} view</div>`);\"",

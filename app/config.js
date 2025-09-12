@@ -10,7 +10,7 @@ const config = {
     useTranslation: true, // Enable or disable translation
     translationElementId: "language-selector", // ID of the language selector element
     availableLanguages: ["pt", "en"], // List of available languages
-    useNavigationBar: false, // Use navigation bar for routing
+    useNavigationBar: true, // Use navigation bar for routing
     // if not using template set loadTemplate: {},
     loadTemplate: {
         views: ["app/view/header.html", "app/view/footer.html"], // Template views
