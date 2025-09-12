@@ -106,29 +106,34 @@ class Controller {
     });
   }
 
-  static loadCss = (urls) => {
-    return new Promise((resolve) => {
-      if (!urls) return resolve();
+static loadCss = (urls, options = {}) => {
+  return new Promise((resolve) => {
+    if (!urls) return resolve();
 
-      const cssArray = Array.isArray(urls) ? urls : [urls];
-      const promises = cssArray.map(url => new Promise((res, rej) => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = url;
-        link.onload = () => {
-          app.cssCache[url] = true;
-          res();
-        };
-        link.onerror = () => {
-          ErrorHandler.logError(`Error loading CSS: ${url}`);
-          rej(new Error(`Error loading CSS: ${url}`));
-        };
-        document.head.appendChild(link);
-      }));
+    const cssArray = Array.isArray(urls) ? urls : [urls];
+    const version = options.version || Date.now(); // Use a timestamp or a passed-in version
 
-      Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
-    });
-  };
+    const promises = cssArray.map(url => new Promise((res, rej) => {
+      const cacheBustedUrl = `${url}?v=${version}`;
+
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = cacheBustedUrl;
+      link.onload = () => {
+        app.cssCache[cacheBustedUrl] = true;
+        res();
+      };
+      link.onerror = () => {
+        ErrorHandler.logError(`Error loading CSS: ${cacheBustedUrl}`);
+        rej(new Error(`Error loading CSS: ${cacheBustedUrl}`));
+      };
+      document.head.appendChild(link);
+    }));
+
+    Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
+  });
+};
+
 
   // this one its static because its used in the app.js file
   static loadJs = (urls) => {
@@ -151,7 +156,7 @@ class Controller {
         app.jsCache[url] = new Promise((res, rej) => {
           const script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = url;
+          script.src = url + "?v=" + Date.now(); // Cache busting
           script.onload = () => {
             app.jsCache[url] = true;
             app.log(`[jsCache] Loaded: ${url}`);
