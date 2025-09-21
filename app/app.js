@@ -12,7 +12,7 @@ class App {
     this.jsCache = {}; // Cache for loaded JavaScript files
     this.cssCache = {}; // Cache for loaded CSS files
     this.models = {}; // Models used in the application
-    //this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
+    this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
     this.data = Model.getLocalData(); // Load local data
     this.jsToLoad = []; // Object to hold JavaScript files to load
     this.cacheManager = {
@@ -209,7 +209,7 @@ class App {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' || mutation.type === 'attributes') {
-          //this.handleDOMActions();
+          this.handleDOMActions();
         }
       });
     });
@@ -314,7 +314,8 @@ class App {
 
       await this.routing();
       await $(window).trigger("hashchange");
-      // await this.handleDOMActions();
+      // Deals with elements with data-feigniter-action-type attribute
+      //await this.handleDOMActions();
       await this.observeDOMChanges();
 
       // Dynamically load translation scripts if useTranslation is enabled
@@ -371,7 +372,7 @@ class App {
 
 // Example of registering actions
 let app = new App();
-// app.actionRegistry.registerAction('test');
-// app.actionRegistry.registerAction('table');
+app.actionRegistry.registerAction('test');
+app.actionRegistry.registerAction('table');
 
 app.init();

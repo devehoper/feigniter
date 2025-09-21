@@ -1,14 +1,10 @@
 class Action {
-    constructor(name) {
+    constructor(name, element) {
       this.name = name;
     }
   
     execute(name, element) {
       this[name](element);
-    }
-
-    test(element) {
-      $(element).html("some action");
     }
 
     table(element) {
