@@ -15,5 +15,18 @@
     "feigniter description": "Feigniter é um projeto moderno de frontend que demonstra boas práticas, design modular e otimização de desempenho. Ele inclui recursos como roteamento, cache, tradução e tratamento de erros. Por padrão, o Feigniter utiliza jQuery, jQuery UI, Bootstrap 5.3, FontAwesome, DataTables 2.2.2 e i18next. Todas essas bibliotecas são armazenadas localmente e permanecerão estritamente nas versões especificadas.",
     "mission": "Missão",
     "mission description": "Manter a biblioteca simples, limpa e fácil de usar, aumentando a velocidade de desenvolvimento.",
-    "whatsapp message": "Envie-me uma mensagem no WhatsApp"
+    "whatsapp message": "Envie-me uma mensagem no WhatsApp",
+    "form": {
+        "error": {
+            "required": "{{field}} é obrigatório.",
+            "invalidEmail": "{{field}} deve ser um e-mail válido.",
+            "invalidNumber": "{{field}} deve ser um número.",
+            "tooShort": "{{field}} deve ter pelo menos {{min}} caracteres.",
+            "invalidDate": "{{field}} deve ser uma data válida.",
+            "invalidURL": "{{field}} deve ser um URL válido.",
+            "weakPassword": "{{field}} deve ser uma palavra-passe forte.",
+            "passwordMismatch": "As palavras-passe não coincidem.",
+            "notFound": "{{field}} não foi encontrado."
+        }
+    }
 }

@@ -31,7 +31,8 @@ $text: map-get(colors.$default, dark);
   input,
   textarea,
   select,
-  button {
+  button,
+  div  {
     background-color: map-get(colors.$default, light) !important;
     color: $text !important;
   }
