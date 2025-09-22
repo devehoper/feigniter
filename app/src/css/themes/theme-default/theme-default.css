@@ -101,10 +101,6 @@ html, body {
 .theme-default a {
   color: #343a40 !important;
 }
-.theme-default ::-moz-selection {
-  background-color: white;
-  color: #343a40 !important;
-}
 .theme-default ::selection {
   background-color: white;
   color: #343a40 !important;
@@ -114,4 +110,4 @@ html, body {
 .theme-default select,
 .theme-default button {
   border-color: rgb(218.25, 223.5, 228.75) !important;
-}/*# sourceMappingURL=theme-default.css.map */
+}

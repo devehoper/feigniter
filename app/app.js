@@ -13,7 +13,8 @@ class App {
     this.cssCache = {}; // Cache for loaded CSS files
     this.models = {}; // Models used in the application
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
-    this.data = Model.getLocalData(); // Load local data
+    this.data = Model.getLocalData(); // Loads data from localstorage
+    this.headerSelectedMenuIndex = 0;
     this.jsToLoad = []; // Object to hold JavaScript files to load
     this.cacheManager = {
       // Cache management utility

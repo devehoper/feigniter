@@ -3,8 +3,13 @@
  */
 ( () => {
 $(document).ready(async () => {
+    $('.header-item').removeClass('active');
+    $(".header-item")
+    .eq(app.headerSelectedMenuIndex || 0)
+    .addClass("active");
+
     // Handle language change
-    $(document).on('change', '#' + config.translationElementId, (e) => {
+    $(document).on('change', '#language-selecto, #language-selector-mobile', (e) => {
         e.preventDefault();
         if($(e.currentTarget).val() !== "default") {
             app.translate($(e.currentTarget).val());
@@ -27,7 +32,7 @@ $(document).ready(async () => {
     app.models.AppModel.setTheme(themeSelected); // Set the theme on page load
 
     // Handle theme change
-    $(document).on('change', '#theme-selector', (e) => {
+    $(document).on('change', '#theme-selector, #theme-selector-mobile', (e) => {
         const selectedTheme = $(e.target).val();
         if(selectedTheme !== "default") {
             app.models.AppModel.setTheme(selectedTheme);
@@ -41,6 +46,13 @@ $(document).ready(async () => {
             localView: 'app/view/home/signin.html',
             size: 'lg'
         });
+    });
+
+    $(document).on('click', '.header-item', (e) => {
+        let selectedIndex = $(e.currentTarget).data('index');
+        app.data["headerSelectedMenuIndex"] = selectedIndex;
+        $('.header-item').removeClass('active');
+        $(e.currentTarget).addClass('active');
     });
 
 });

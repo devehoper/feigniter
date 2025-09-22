@@ -101,10 +101,6 @@ html, body {
 .theme-dark a {
   color: #f8f9fa !important;
 }
-.theme-dark ::-moz-selection {
-  background-color: rgb(74.8620689655, 83.5, 92.1379310345);
-  color: #f8f9fa !important;
-}
 .theme-dark ::selection {
   background-color: rgb(74.8620689655, 83.5, 92.1379310345);
   color: #f8f9fa !important;
@@ -114,4 +110,4 @@ html, body {
 .theme-dark select,
 .theme-dark button {
   border-color: rgb(29.1379310345, 32.5, 35.8620689655) !important;
-}/*# sourceMappingURL=theme-dark.css.map */
+}

@@ -13,6 +13,7 @@ class Controller {
     insertBefore = null, 
     overwrite = true 
   } = {}) {
+    app.log(viewUrls);
     if (overwrite) {
         $(selector).empty();
     }
@@ -244,6 +245,7 @@ static loadCss = (urls, options = {}) => {
         const errorMsg = `Failed to load model: ${modelName}`;
         ErrorHandler.logError(errorMsg);
         reject(new Error(errorMsg));
+        window.location.reload();
       };
       document.head.appendChild(script);
     });

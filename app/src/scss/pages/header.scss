@@ -1,8 +1,14 @@
 @use "../main.scss" as main;
 
 header {
-    background-color: map-get(main.$colors, light);
-    color: black;
+    // background-color: map-get(main.$colors, light);
+    // color: black;
+
+    .active {
+        font-weight: bold;
+        text-decoration: underline;
+        background-color: cyan;
+    }
 }
 
 .header-menu {
