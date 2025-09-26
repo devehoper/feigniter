@@ -5,6 +5,7 @@ const config = {
     defaultMethod: "index", // Default method
     defaultLanguage: "pt", // Default language
     localStorage: "feigniter", // Local storage key
+    appContainerSelector: "#feigniter", // Wrappper that contains all the app content
     debugMode: true, // Enable or disable debug mode
     useCache: true, // Enable or disable caching, dont change it, not full implemented for false case (V=0.1)
     useTranslation: true, // Enable or disable translation

@@ -176,7 +176,16 @@ static loadCss = (urls, options = {}) => {
     });
   };
 
-  loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = "#feigniter") {
+  /**
+   * @description Load a view into the app container with optional CSS and JS.
+   * @param string viewUrl
+   * @param string cssUrl
+   * @param string jsUrl
+   * @param boolean append
+   * @param boolean template
+   * @param string selector App container selector
+   */
+  loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = config.appContainerSelector) {
     let viewUrlResult = [];
     let finalCssUrls = [];
     let finalJsUrls = [];

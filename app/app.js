@@ -82,38 +82,39 @@ class App {
     $("#feigniter").empty();
     //this.runTemplateJs();
     //this.jsToLoad = {}; // Clear jsToLoad after execution
+    console.warn("URL changed to:", url);
   }
 
   // run js from template pages
-  runTemplateJs() {
-    let _this = this;
+//   runTemplateJs() {
+//     let _this = this;
 
-    $(document).ready(() => {
-        console.log("Document ready for running template JS");
+//     $(document).ready(() => {
+//         console.log("Document ready for running template JS");
 
-        if (typeof _this.jsToLoad === "object" && Object.keys(_this.jsToLoad).length > 0) {
-            for (let id in _this.jsToLoad) {
-                const url = _this.jsToLoad[id];
-                if (app.jsCache[url]) {
-                    try {
-                        const scriptContent = $("#" + id).text(); // Retrieve script content by ID
-                        if (scriptContent) {
-                            eval(scriptContent); // Execute script content (use cautiously)
-                        } else {
-                            console.error(`No content found for script with ID: ${id}`);
-                        }
-                    } catch (error) {
-                        console.error(`Error executing script for ID: ${id}, URL: ${url}`, error);
-                    }
-                } else {
-                    console.warn(`Script not found in cache for URL: ${url}`);
-                }
-            }
-        } else {
-            console.error("Invalid or empty jsToLoad property.");
-        }
-    });
-}
+//         if (typeof _this.jsToLoad === "object" && Object.keys(_this.jsToLoad).length > 0) {
+//             for (let id in _this.jsToLoad) {
+//                 const url = _this.jsToLoad[id];
+//                 if (app.jsCache[url]) {
+//                     try {
+//                         const scriptContent = $("#" + id).text(); // Retrieve script content by ID
+//                         if (scriptContent) {
+//                             eval(scriptContent); // Execute script content (use cautiously)
+//                         } else {
+//                             console.error(`No content found for script with ID: ${id}`);
+//                         }
+//                     } catch (error) {
+//                         console.error(`Error executing script for ID: ${id}, URL: ${url}`, error);
+//                     }
+//                 } else {
+//                     console.warn(`Script not found in cache for URL: ${url}`);
+//                 }
+//             }
+//         } else {
+//             console.error("Invalid or empty jsToLoad property.");
+//         }
+//     });
+// }
 
   // Handle anchor click events
   handleAnchorClick(e) {
@@ -123,6 +124,7 @@ class App {
       const href = $(e.currentTarget).attr("href");
       this.url = href;
       this.history.push(href); // Push the new URL to history
+      console.warn("Anchor clicked, navigating to:", href);
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }
@@ -178,6 +180,7 @@ class App {
                 });
             };
             document.body.appendChild(script);
+            console.warn("LOADED CONTROLLER", controller);
         } catch (error) {
             console.error(`Error loading controller: ${controller}`, error);
         }
