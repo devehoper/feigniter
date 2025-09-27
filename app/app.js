@@ -16,6 +16,7 @@ class App {
     this.data = Model.getLocalData(); // Loads data from localstorage
     this.headerSelectedMenuIndex = 0;
     this.jsToLoad = []; // Object to hold JavaScript files to load
+    this.singletons = {}; // Object to hold singleton instances
     this.cacheManager = {
       // Cache management utility
       clearAll: () => {
@@ -51,7 +52,7 @@ class App {
 
   // Handle changes in the URL hash
   handleHashChange() {
-    let url = config.useNavigationBar ? window.location.hash : this.url; // Use app.url if navigation bar is disabled
+    let url = config.useNavigationBar ? window.location.hash : app.url; // Use app.url if navigation bar is disabled
     const { controller, method, args } = this.parseURL(url);
 
     this.controller = controller || config.homeController;
@@ -59,9 +60,14 @@ class App {
     this.args = args;
 
     // Load the controller and method based on URL
-    this.loadController(this.controller, this.method, this.args);
+    this.loadController(this.controller, this.method, this.args).then(() => {
 
-    if (config.useNavigationBar) {
+    }).then(() => {
+      // After loading the controller, run singletons
+      this.runSingletons();
+    });
+
+    //if (config.useNavigationBar) {
       // Ensure controller and method are not null before updating the URL
       const newController = controller || config.homeController;
       const newMethod = method || config.defaultMethod;
@@ -74,16 +80,38 @@ class App {
           ? config.basePath
           : config.basePath + "/";
         const newUrl = `${sanitizedBasePath}#${newController}?${newMethod}=${newArgs}`;
-        history.replaceState(null, null, newUrl);
+        if(config.useNavigationBar) {
+          history.replaceState(null, null, newUrl);
+        }
       } catch (error) {
         ErrorHandler.logError("Error updating URL:", error.message);
       }
-    }
+    //}
     $("#feigniter").empty();
     //this.runTemplateJs();
     //this.jsToLoad = {}; // Clear jsToLoad after execution
     console.warn("URL changed to:", url);
   }
+
+  setSingleton(name, instance) {
+    if (!app.singletons[name]) {
+      app.singletons[name] = new instance();
+    }
+  }
+  runSingletons() {
+    $(document).ready(() => {
+      for(let key in app.singletons) {
+        if(app.singletons[key]) {
+          // Re-initialize singleton instances if they have an init method
+          if (typeof app.singletons[key].update === 'function') {
+            app.singletons[key].update();
+            app.log( " re-initialized successfully." );
+          }
+        }
+      }
+    });
+  }
+
 
   // run js from template pages
 //   runTemplateJs() {
@@ -118,16 +146,27 @@ class App {
 
   // Handle anchor click events
   handleAnchorClick(e) {
+    const href = $(e.currentTarget).attr("href");
     if (!config.useNavigationBar && $(e.currentTarget).attr("target") !== "_blank") {
       e.preventDefault();
-
-      const href = $(e.currentTarget).attr("href");
       this.url = href;
       this.history.push(href); // Push the new URL to history
       console.warn("Anchor clicked, navigating to:", href);
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }
+  }
+
+  navigate() {
+    // let fullUrl = app.parseURL(url);
+    // let controller = fullUrl.controller || controller;
+    // let method = fullUrl.method || method;
+    // let args = fullUrl.args.length > 0 ? fullUrl.args : [];
+    // const argsStr = args.length > 0 ? args.join(",") : "";
+    // const hash = `#${controller}?${method}${argsStr ? '=' + argsStr : ''}`;
+    window.location.hash = app.url;
+    // Optionally, you can trigger handleHashChange directly if you want to avoid hashchange event:
+    this.handleHashChange();
   }
 
 
@@ -154,38 +193,52 @@ class App {
   }
 
   // Load a controller and execute a method with arguments
-  async loadController(controller, method, args) {
-    this.log(
-        `Loading controller: ${controller}, method: ${method}, with args: ${args}`
-    );
+async loadController(controller, method, args) {
+  this.log(`Loading controller: ${controller}, method: ${method}, with args: ${args}`);
 
-    if (this.controllerCache[controller]) {
-        this.log(`Using cached controller: ${controller}`);
-        this.executeMethod(this.controllerCache[controller], method, args);
-    } else {
-        try {
-            const script = document.createElement('script');
-            script.src = `./app/controller/${controller}.js`;
-            script.type = 'module';
-            script.nosniff;
-            script.onload = () => {
-                import(`./controller/${controller}.js`).then((module) => {
-                    const ControllerClass = module.default;
-                    const controllerInstance = new ControllerClass(); // Instantiate the controller
-                    this.controllerCache[controller] = controllerInstance;
-                    this.log(`Loaded controller: ${controller}`);
-                    this.executeMethod(controllerInstance, method, args);
-                }).catch((error) => {
-                    console.error(`Error loading controller: ${controller}`, error);
-                });
-            };
-            document.body.appendChild(script);
-            console.warn("LOADED CONTROLLER", controller);
-        } catch (error) {
-            console.error(`Error loading controller: ${controller}`, error);
-        }
-    }
+  if (this.controllerCache[controller]) {
+    this.log(`Using cached controller: ${controller}`);
+    this.executeMethod(this.controllerCache[controller], method, args);
+    return;
   }
+
+  try {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = `./app/controller/${controller}.js`;
+      script.type = 'module';
+      script.nosniff;
+
+      script.onload = () => {
+        import(`./controller/${controller}.js`)
+          .then((module) => {
+            const ControllerClass = module.default;
+            const controllerInstance = new ControllerClass();
+            this.controllerCache[controller] = controllerInstance;
+            this.log(`Loaded controller: ${controller}`);
+            this.executeMethod(controllerInstance, method, args);
+            resolve();
+          })
+          .catch((error) => {
+            console.error(`Error importing controller: ${controller}`, error);
+            reject(error);
+          });
+      };
+
+      script.onerror = (err) => {
+        console.error(`Script load failed: ${controller}`, err);
+        reject(err);
+      };
+
+      document.body.appendChild(script);
+    });
+
+    console.warn("LOADED CONTROLLER", controller);
+  } catch (error) {
+    console.error(`Error loading controller: ${controller}`, error);
+  }
+}
+
 
   // Execute a method on a controller instance
   executeMethod(controllerInstance, method, args) {
@@ -235,7 +288,7 @@ class App {
   // Translate the application based on the given language
   translate (language) {
     if(typeof language === "undefined") {
-       language = this.models.AppModel.language || config.defaultLanguage
+      language = this.models.AppModel.language || config.defaultLanguage
     }
     this.log("Translating to " + language);
     $(document).ready(() => {
@@ -311,7 +364,7 @@ class App {
       Controller.loadModel("AppModel");
       // Set the Application wrapper
       if ($("#feigniter").length == 0) {
-        await $("body").prepend(`<div id='feigniter'></div>`);
+        await $("body").prepend(`<div id='${config.appContainerSelector.substring(1,config.appContainerSelector.length)}'></div>`);
       }
 
       await this.setTheme();
@@ -341,6 +394,8 @@ class App {
         $("body").append('<button id="clearCache">Clear Cache</button>');
         $("#clearCache").on("click", () => this.cacheManager.clearAll());
       }
+
+      //app.runSingletons();
     });
   }
 
@@ -376,7 +431,7 @@ class App {
 
 // Example of registering actions
 let app = new App();
-app.actionRegistry.registerAction('test');
+// app.actionRegistry.registerAction('test');
 app.actionRegistry.registerAction('table');
 
 app.init();

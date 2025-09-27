@@ -6,10 +6,14 @@ const config = {
     defaultLanguage: "pt", // Default language
     localStorage: "feigniter", // Local storage key
     appContainerSelector: "#feigniter", // Wrappper that contains all the app content
+
     debugMode: true, // Enable or disable debug mode
     useCache: true, // Enable or disable caching, dont change it, not full implemented for false case (V=0.1)
+    enableCacheClearing: true, // Enable cache clearing button in debug mode
+
     useTranslation: true, // Enable or disable translation
     availableLanguages: ["pt", "en"], // List of available languages
+
     useNavigationBar: true, // Use navigation bar for routing
     // if not using template set loadTemplate: {},
     loadTemplate: {
@@ -21,20 +25,11 @@ const config = {
         ], // Template CSS files
     }, // Templates to load
     templateContentInsertIndex: 1, // Index to insert additional content views
-    basePath: "https://feigniter.devehoper.com/", // Base path for the application
+    basePath: "https://localhost/feigniter/", // Base path for the application
 
     //Begin Of Styling configs
     defaultTheme: "theme-default", // Default theme
     themes: ["theme-default", "theme-dark"], // Available themes
-    themePath: "app/view/themes/", // Path to theme files
+    themePath: "app/view/themes/" // Path to theme files
     //End Of Styling Configs
-
-    libs: [ // External libraries to include using cdn
-        {
-            "name": "", // Library name
-            version: 0.1, // Library version
-            url: "http://google.com" // Library URL
-        }
-    ],
-    enableCacheClearing: true // Enable cache clearing button in debug mode
 };

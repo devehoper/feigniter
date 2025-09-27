@@ -115,7 +115,7 @@ static loadCss = (urls, options = {}) => {
     const version = options.version || Date.now(); // Use a timestamp or a passed-in version
 
     const promises = cssArray.map(url => new Promise((res, rej) => {
-      const cacheBustedUrl = `${url}?v=${version}`;
+      const cacheBustedUrl = config.debugMode ? url : `${url}?v=${version}`;
 
       const link = document.createElement('link');
       link.rel = 'stylesheet';
@@ -156,8 +156,9 @@ static loadCss = (urls, options = {}) => {
         app.log(`[jsCache] Start loading: ${url}`);
         app.jsCache[url] = new Promise((res, rej) => {
           const script = document.createElement('script');
+          const cacheBustedUrl = config.debugMode ? url : url + "?v=" + Date.now();
           script.type = 'text/javascript';
-          script.src = url + "?v=" + Date.now(); // Cache busting
+          script.src = cacheBustedUrl; // Cache busting
           script.onload = () => {
             app.jsCache[url] = true;
             app.log(`[jsCache] Loaded: ${url}`);
@@ -176,62 +177,51 @@ static loadCss = (urls, options = {}) => {
     });
   };
 
-  /**
-   * @description Load a view into the app container with optional CSS and JS.
-   * @param string viewUrl
-   * @param string cssUrl
-   * @param string jsUrl
-   * @param boolean append
-   * @param boolean template
-   * @param string selector App container selector
-   */
-  loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = config.appContainerSelector) {
+loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = "#feigniter") {
+  return new Promise((resolve, reject) => {
     let viewUrlResult = [];
     let finalCssUrls = [];
     let finalJsUrls = [];
 
-    if (template) {
-        // Include template views, CSS, and JS
+    try {
+      if (template) {
         viewUrlResult = [...config.loadTemplate.views];
         finalCssUrls = [...config.loadTemplate.cssUrl];
         finalJsUrls = [...config.loadTemplate.jsUrl];
 
-        // Ensure viewUrl is an array and append it at the specified index
         const newViews = Array.isArray(viewUrl) ? viewUrl : [viewUrl];
         const formattedViews = newViews.map(url => url + (url.indexOf(".html") === -1 ? ".html" : ""));
         viewUrlResult.splice(config.templateContentInsertIndex, 0, ...formattedViews);
-    } else {
-        // Handle non-template views
+      } else {
         viewUrlResult = Array.isArray(viewUrl) ? viewUrl : [viewUrl];
         viewUrlResult = viewUrlResult.map(url => url + (url.indexOf(".html") === -1 ? ".html" : ""));
-    }
+      }
 
-    // Combine CSS and JS from both template and method arguments
-    if (cssUrl) finalCssUrls = finalCssUrls.concat(cssUrl);
-    if (jsUrl) finalJsUrls = finalJsUrls.concat(jsUrl);
+      if (cssUrl) finalCssUrls = finalCssUrls.concat(cssUrl);
+      if (jsUrl) finalJsUrls = finalJsUrls.concat(jsUrl);
 
-    // so in app.handleHashChange() we know wich js files we should run
-    // finalJsUrls.map((url) => {
-    //   app.jsToLoad[Date.now().toString()] = url; // Add a unique key to the jsToLoad object
-    // });
-
-    // Load the content, CSS, and JS
-    if (jsUrl === null || (template && config.loadTemplate.jsUrl.length > 0)) {
+      if (jsUrl === null || (template && config.loadTemplate.jsUrl.length > 0)) {
         app.jsToLoad = [...config.loadTemplate.jsUrl];
-    } else {
+      } else {
         app.jsToLoad = jsUrl instanceof Array ? [...jsUrl] : [jsUrl];
-    }
-    app.jsToLoad = [...app.jsToLoad, ...finalJsUrls]; // Ensure both are included
+      }
+      app.jsToLoad = [...app.jsToLoad, ...finalJsUrls];
 
-    this.loadViewContent({
+      // Wrap loadViewContent in a promise if it’s async
+      this.loadViewContent({
         viewUrls: viewUrlResult,
         cssUrls: finalCssUrls,
         jsUrls: finalJsUrls,
         selector,
         append,
         overwrite: !append
-    });
+      }).then(resolve).catch(reject);
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
+
 
   static loadModel(modelName) {
     modelName = modelName.indexOf(".js") === -1 ? modelName : modelName.slice(0,modelName.length -3);

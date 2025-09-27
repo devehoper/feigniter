@@ -4,35 +4,38 @@ export default class HomeController extends Controller {
     }
 
     index() {
-        super.loadView(
-            "app/view/home/content", // Only specify the content view
-        );
-    }
-
-    about() {
-        super.loadView("app/view/home/about");
+        super.loadView("app/view/home/content").then( () => {
+            typeof app.singletons["header"] !== "undefined" ? app.singletons["header"].setActiveMenuItem(0) : null;
+        });
     }
 
     features() {
-        super.loadView("app/view/home/features");
+        super.loadView("app/view/home/features").then( () => {
+            typeof app.singletons["header"] !== "undefined" ? app.singletons["header"].setActiveMenuItem(1): null;
+        });
     }
 
     compatibility() {
-        super.loadView("app/view/home/compatibility");
+        super.loadView("app/view/home/compatibility").then( () => {
+            typeof app.singletons["header"] !== "undefined" ? app.singletons["header"].setActiveMenuItem(2): null;
+        });
     }
 
     faq() {
-        super.loadView("app/view/home/faq");
+        super.loadView("app/view/home/faq").then( () => {
+            typeof app.singletons["header"] !== "undefined" ? app.singletons["header"].setActiveMenuItem(3): null;
+        });
+    }
+
+    about() {
+        super.loadView("app/view/home/about").then( () => {
+            typeof app.singletons["header"] !== "undefined" ? app.singletons["header"].setActiveMenuItem(4): null;
+        });
     }
 
     documentation() {
-        super.loadView("app/view/documentation");
+        super.loadView("app/view/documentation").then( () => {
+            typeof app.singletons["header"] !== "undefined" ? app.singletons["header"].setActiveMenuItem(5): null;
+        });
     }
-
-    // search() {
-    //     $(document).on('keyup', '#search', function(e) {
-    //         e.preventDefault();
-    //         app.log('Text changed');
-    //     });
-    // }
 }
