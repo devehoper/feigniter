@@ -10,7 +10,6 @@ class Header {
     update ()  {
         $(document).ready(() => {
             console.warn("Header update method called");
-            
         });
     }
 
@@ -25,7 +24,7 @@ class Header {
             // });
 
             // Handle language change
-            $(document).on('change', '#language-selecto, #language-selector-mobile', (e) => {
+            $(document).on('change', '#language-selector, #language-selector-mobile', (e) => {
                 e.preventDefault();
                 if($(e.currentTarget).val() !== "default") {
                     app.translate($(e.currentTarget).val());
