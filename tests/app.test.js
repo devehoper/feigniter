@@ -2,6 +2,10 @@ const { JSDOM } = require("jsdom");
 const fs = require("fs");
 const path = require("path");
 
+// Explicitly mock the 'jquery' module for environments where the test runner
+// looks for a module import, even if the application code uses the global '$'.
+jest.mock('jquery', () => $);
+
 describe("App Class", () => {
   let App, config, app;
 

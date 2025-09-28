@@ -113,38 +113,6 @@ class App {
     });
   }
 
-
-  // run js from template pages
-//   runTemplateJs() {
-//     let _this = this;
-
-//     $(document).ready(() => {
-//         console.log("Document ready for running template JS");
-
-//         if (typeof _this.jsToLoad === "object" && Object.keys(_this.jsToLoad).length > 0) {
-//             for (let id in _this.jsToLoad) {
-//                 const url = _this.jsToLoad[id];
-//                 if (app.jsCache[url]) {
-//                     try {
-//                         const scriptContent = $("#" + id).text(); // Retrieve script content by ID
-//                         if (scriptContent) {
-//                             eval(scriptContent); // Execute script content (use cautiously)
-//                         } else {
-//                             console.error(`No content found for script with ID: ${id}`);
-//                         }
-//                     } catch (error) {
-//                         console.error(`Error executing script for ID: ${id}, URL: ${url}`, error);
-//                     }
-//                 } else {
-//                     console.warn(`Script not found in cache for URL: ${url}`);
-//                 }
-//             }
-//         } else {
-//             console.error("Invalid or empty jsToLoad property.");
-//         }
-//     });
-// }
-
   // Handle anchor click events
   handleAnchorClick(e) {
     const href = $(e.currentTarget).attr("href");
@@ -409,37 +377,6 @@ async loadController(controller, method, args) {
       //app.runSingletons();
     });
   }
-
-  
-
-  // // Dynamically load JavaScript files
-  // loadJs(urls) {
-  //   return new Promise((resolve, reject) => {
-  //     if (!urls) return resolve();
-
-  //     const jsArray = Array.isArray(urls) ? urls : [urls];
-  //     const promises = jsArray.map((url) => new Promise((res, rej) => {
-  //       if (app.jsCache[url] && config.useCache) {
-  //         this.log(`JS already loaded: ${url}`);
-  //         return res();
-  //       }
-  //       const script = document.createElement("script");
-  //       script.src = url;
-  //       script.defer = true;
-  //       script.onload = () => {
-  //         app.jsCache[url] = true;
-  //         res();
-  //       };
-  //       script.onerror = () => {
-  //         ErrorHandler.logError(`Error loading JS: ${url}`);
-  //         rej(new Error(`Error loading JS: ${url}`));
-  //       };
-  //       document.head.appendChild(script);
-  //     }));
-
-  //     Promise.all(promises).then(resolve).catch(reject);
-  //   });
-  // }
 }
 
 // Example of registering actions

@@ -18,5 +18,4 @@
     "new:js": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/src/js/${name}.js`, `(() => {\\n    console.log('${name} script loaded');\\n})();\\n`);\"",
     "new:scss": "node -e \"const fs = require('fs'); const name = process.argv[1]; fs.writeFileSync(`app/src/css/themes/${name.toLowerCase()}/${name.toLowerCase()}.scss`, `/* SCSS for ${name} theme */\\n`);\""
   }
-  
 }
