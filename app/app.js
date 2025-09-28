@@ -18,15 +18,16 @@ class App {
     this.jsToLoad = []; // Object to hold JavaScript files to load
     this.singletons = {}; // Object to hold singleton instances
     this.cacheManager = {
-      // Cache management utility
-      clearAll: () => {
-        this.controllerCache = {};
-        this.viewCache = {};
-        this.jsCache = {};
-        this.cssCache = {};
-        console.log("All caches cleared.");
-      },
+    // Cache management utility
+    clearAll: () => {
+      this.controllerCache = {};
+      this.viewCache = {};
+      this.jsCache = {};
+      this.cssCache = {};
+      console.log("All caches cleared.");
+    },
     };
+    this.validate = formValidator;
   }
 
   // Function to validate and sanitize config.basePath
@@ -395,9 +396,21 @@ async loadController(controller, method, args) {
         $("#clearCache").on("click", () => this.cacheManager.clearAll());
       }
 
+      if (config.useVue) {
+        Controller.loadJs(config.basePath + "app/src/js/lib/vue.js", "module").then(() => {
+          this.log("Vue.js loaded");
+
+          import(config.basePath + "app/services/vueHost.js").then(({ default: VueHost }) => {
+            app.singletons["vue"] = new VueHost();
+          });
+        });
+      }
+
       //app.runSingletons();
     });
   }
+
+  
 
   // // Dynamically load JavaScript files
   // loadJs(urls) {

@@ -137,45 +137,54 @@ static loadCss = (urls, options = {}) => {
 
 
   // this one its static because its used in the app.js file
-  static loadJs = (urls) => {
-    return new Promise((resolve) => {
-      if (!urls) return resolve();
-      const jsArray = Array.isArray(urls) ? urls : [urls];
-      const promises = jsArray.map(url => {
-        // If already loaded, resolve immediately
-        if (app.jsCache[url] === true) {
-          app.log(`[jsCache] Already loaded: ${url}`);
-          return Promise.resolve();
-        }
-        // If loading, return the existing promise
-        if (app.jsCache[url] && app.jsCache[url].then) {
-          app.log(`[jsCache] Already loading: ${url}`);
-          return app.jsCache[url];
-        }
-        // Otherwise, start loading and cache the promise
-        app.log(`[jsCache] Start loading: ${url}`);
-        app.jsCache[url] = new Promise((res, rej) => {
-          const script = document.createElement('script');
-          const cacheBustedUrl = config.debugMode ? url : url + "?v=" + Date.now();
-          script.type = 'text/javascript';
-          script.src = cacheBustedUrl; // Cache busting
-          script.onload = () => {
-            app.jsCache[url] = true;
-            app.log(`[jsCache] Loaded: ${url}`);
-            res();
-          };
-          script.onerror = () => {
-            ErrorHandler.logError(`Error loading JS: ${url}`);
-            app.jsCache[url] = false;
-            rej(new Error(`Error loading JS: ${url}`));
-          };
-          document.body.appendChild(script);
-        });
+static loadJs = (entries, defaultType = 'text/javascript') => {
+  return new Promise((resolve) => {
+    if (!entries) return resolve();
+
+    const jsArray = Array.isArray(entries) ? entries : [entries];
+
+    const promises = jsArray.map(entry => {
+      const url = typeof entry === 'string' ? entry : entry.url;
+      const type = typeof entry === 'string' ? defaultType : (entry.type || defaultType);
+
+      if (app.jsCache[url] === true) {
+        app.log(`[jsCache] Already loaded: ${url}`);
+        return Promise.resolve();
+      }
+
+      if (app.jsCache[url] && app.jsCache[url].then) {
+        app.log(`[jsCache] Already loading: ${url}`);
         return app.jsCache[url];
+      }
+
+      app.log(`[jsCache] Start loading: ${url}`);
+      app.jsCache[url] = new Promise((res, rej) => {
+        const script = document.createElement('script');
+        const cacheBustedUrl = config.debugMode ? url : url + '?v=' + Date.now();
+        const type = typeof entry === 'string' ? defaultType : (entry.type || defaultType);
+        script.type = type;
+        script.src = cacheBustedUrl;
+        script.defer = true;
+        script.onload = () => {
+          app.jsCache[url] = true;
+          app.log(`[jsCache] Loaded: ${url}`);
+          res();
+        };
+        script.onerror = () => {
+          ErrorHandler.logError(`Error loading JS: ${url}`);
+          app.jsCache[url] = false;
+          rej(new Error(`Error loading JS: ${url}`));
+        };
+        document.body.appendChild(script);
       });
-      Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
+
+      return app.jsCache[url];
     });
-  };
+
+    Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
+  });
+};
+
 
 loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = "#feigniter") {
   return new Promise((resolve, reject) => {
