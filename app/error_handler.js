@@ -2,9 +2,9 @@ class ErrorHandler {
     // Log an error message and optionally an error object
     static logError(message, error = null) {
         if(config.debugMode) {
-            console.error(`Error: ${message}`);
+            app.error(`Error: ${message}`);
             if (error) {
-                console.error(error);
+                app.error(error);
             }
             if (app && app.log) {
                 app.log(error); // Log error using the app's logging mechanism

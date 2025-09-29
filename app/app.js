@@ -24,7 +24,7 @@ class App {
       this.viewCache = {};
       this.jsCache = {};
       this.cssCache = {};
-      console.log("All caches cleared.");
+      app.log("All caches cleared.");
     },
     };
     this.validate = formValidator;
@@ -91,7 +91,7 @@ class App {
     $("#feigniter").empty();
     //this.runTemplateJs();
     //this.jsToLoad = {}; // Clear jsToLoad after execution
-    console.warn("URL changed to:", url);
+    app.warn("URL changed to:", url);
   }
 
   setSingleton(name, instance) {
@@ -120,7 +120,7 @@ class App {
       e.preventDefault();
       this.url = href;
       this.history.push(href); // Push the new URL to history
-      console.warn("Anchor clicked, navigating to:", href);
+      app.warn("Anchor clicked, navigating to:", href);
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }
@@ -189,22 +189,22 @@ async loadController(controller, method, args) {
             resolve();
           })
           .catch((error) => {
-            console.error(`Error importing controller: ${controller}`, error);
+            app.error(`Error importing controller: ${controller}`, error);
             reject(error);
           });
       };
 
       script.onerror = (err) => {
-        console.error(`Script load failed: ${controller}`, err);
+        app.error(`Script load failed: ${controller}`, err);
         reject(err);
       };
 
       document.body.appendChild(script);
     });
 
-    console.warn("LOADED CONTROLLER", controller);
+    app.warn("LOADED CONTROLLER", controller);
   } catch (error) {
-    console.error(`Error loading controller: ${controller}`, error);
+    app.error(`Error loading controller: ${controller}`, error);
   }
 }
 
@@ -214,7 +214,7 @@ async loadController(controller, method, args) {
     if (controllerInstance && typeof controllerInstance[method] === 'function') {
         controllerInstance[method](...args);
     } else {
-        console.error(`Method ${method} not found on controller instance`);
+        app.error(`Method ${method} not found on controller instance`);
     }
   }
 
@@ -250,7 +250,21 @@ async loadController(controller, method, args) {
   // Log messages in debug mode
   log(text) {
     if(config.debugMode) {
-      console.log(text);
+      app.log(text);
+    }
+  }
+
+   // Log messages in debug mode
+  warn(text) {
+    if(config.debugMode) {
+      app.warn(text);
+    }
+  }
+
+   // Log messages in debug mode
+  error(text) {
+    if(config.debugMode) {
+      app.error(text);
     }
   }
 

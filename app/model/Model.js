@@ -16,7 +16,7 @@ class Model {
                 localStorage.setItem(config.localStorage, JSON.stringify(storage));
             }
         } catch (error) {
-            console.error("Error setting local data:", error);
+            app.error("Error setting local data:", error);
         }
     }
 
@@ -27,7 +27,7 @@ class Model {
                 : JSON.parse(localStorage.getItem(config.localStorage));
             return data;
         } catch (error) {
-            console.error("Error getting local data:", error);
+            app.error("Error getting local data:", error);
             return null;
         }
     }
@@ -36,7 +36,7 @@ class Model {
         try {
             localStorage.removeItem(config.localStorage);
         } catch (error) {
-            console.error("Error clearing local data:", error);
+            app.error("Error clearing local data:", error);
         }
     }
 
@@ -169,9 +169,9 @@ class Model {
     // const errors = validateData(formData, rules);
     
     // if (Object.keys(errors).length > 0) {
-    //     console.log("Validation errors:", errors);
+    //     app.log("Validation errors:", errors);
     // } else {
-    //     console.log("Form is valid! ✅");
+    //     app.log("Form is valid! ✅");
     // }    
     
     toJson() {

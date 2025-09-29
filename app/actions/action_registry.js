@@ -12,7 +12,7 @@ class ActionRegistry {
         this.actions[name].execute(name, element);
 
       } else {
-        console.error(`Action ${name} not found`);
+        app.error(`Action ${name} not found`);
       }
     }
   }

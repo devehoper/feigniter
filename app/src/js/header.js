@@ -1,7 +1,7 @@
 class Header {
     //Runs once
     constructor() {
-        console.warn("Header singleton initialized");
+        app.warn("Header singleton initialized");
         this.setEvents();
         this.update();
     }
@@ -9,7 +9,7 @@ class Header {
     //Runs on every page load
     update ()  {
         $(document).ready(() => {
-            console.warn("Header update method called");
+            app.warn("Header update method called");
         });
     }
 

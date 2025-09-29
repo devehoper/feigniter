@@ -1,10 +1,10 @@
 class Footer {
     constructor() {
-        console.warn("Footer singleton initialized");
+        app.warn("Footer singleton initialized");
     }
 
     update ()  {
-        console.warn("Footer update method called");
+        app.warn("Footer update method called");
     }
 }
 
