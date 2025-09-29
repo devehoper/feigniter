@@ -36,7 +36,6 @@ inquirer.prompt([
     if (!selectedWidgets.includes(widget)) {
       const widgetPath = path.join(__dirname, 'src/widgets', widget);
       fs.removeSync(widgetPath);
-      console.log(`Removed widget: ${widget}`);
     }
   });
 
@@ -45,7 +44,6 @@ inquirer.prompt([
     if (!selectedServices.includes(service)) {
       const servicePath = path.join(__dirname, 'src/services', `${service}.js`);
       fs.removeSync(servicePath);
-      console.log(`Removed service: ${service}`);
     }
   });
 
@@ -54,5 +52,4 @@ inquirer.prompt([
   const exports = `export default {\n  ${selectedServices.join(',\n  ')}\n};`;
 
   fs.writeFileSync(path.join(__dirname, 'src/services', 'index.js'), `${imports}\n\n${exports}`);
-  console.log('Updated services/index.js');
 });

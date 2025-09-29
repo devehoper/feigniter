@@ -24,7 +24,6 @@ class App {
       this.viewCache = {};
       this.jsCache = {};
       this.cssCache = {};
-      app.log("All caches cleared.");
     },
     };
     this.validate = formValidator;
@@ -40,7 +39,6 @@ class App {
         throw new Error(`Invalid base path: ${basePath}`);
       }
     } catch (error) {
-      ErrorHandler.logError(error.message);
       return config.basePath; // Fallback to default base path
     }
   }
@@ -85,13 +83,11 @@ class App {
           history.replaceState(null, null, newUrl);
         }
       } catch (error) {
-        ErrorHandler.logError("Error updating URL:", error.message);
       }
     //}
-    $("#feigniter").empty();
+    $(config.appContainerSelector).empty();
     //this.runTemplateJs();
     //this.jsToLoad = {}; // Clear jsToLoad after execution
-    app.warn("URL changed to:", url);
   }
 
   setSingleton(name, instance) {
@@ -106,7 +102,6 @@ class App {
           // Re-initialize singleton instances if they have an init method
           if (typeof app.singletons[key].update === 'function') {
             app.singletons[key].update();
-            app.log( " re-initialized successfully." );
           }
         }
       }
@@ -120,7 +115,6 @@ class App {
       e.preventDefault();
       this.url = href;
       this.history.push(href); // Push the new URL to history
-      app.warn("Anchor clicked, navigating to:", href);
       // Trigger hashchange event for navigation
       $(window).trigger("hashchange");
     }
@@ -163,10 +157,8 @@ class App {
 
   // Load a controller and execute a method with arguments
 async loadController(controller, method, args) {
-  this.log(`Loading controller: ${controller}, method: ${method}, with args: ${args}`);
 
   if (this.controllerCache[controller]) {
-    this.log(`Using cached controller: ${controller}`);
     this.executeMethod(this.controllerCache[controller], method, args);
     return;
   }
@@ -184,7 +176,6 @@ async loadController(controller, method, args) {
             const ControllerClass = module.default;
             const controllerInstance = new ControllerClass();
             this.controllerCache[controller] = controllerInstance;
-            this.log(`Loaded controller: ${controller}`);
             this.executeMethod(controllerInstance, method, args);
             resolve();
           })
@@ -202,7 +193,6 @@ async loadController(controller, method, args) {
       document.body.appendChild(script);
     });
 
-    app.warn("LOADED CONTROLLER", controller);
   } catch (error) {
     app.error(`Error loading controller: ${controller}`, error);
   }
@@ -257,7 +247,6 @@ async loadController(controller, method, args) {
    // Log messages in debug mode
   warn(text) {
     if(config.debugMode) {
-      app.warn(text);
     }
   }
 
@@ -269,49 +258,46 @@ async loadController(controller, method, args) {
   }
 
   // Translate the application based on the given language
-  translate (language) {
-    if(typeof language === "undefined") {
-      language = this.models.AppModel.language || config.defaultLanguage
+  translate (language = config.defaultLanguage) {
+    if(config.useTranslation) {
+      $(document).ready(() => {
+        if(config.useTranslation && typeof this.models.AppModel !== "undefined") {
+          this.models.AppModel['language'] = language;
+          Model.setLocalData({language: language});
+          i18next.changeLanguage(language).then(
+            () => {
+              $('[data-translate]').each(function () {
+                const key = $(this).data('translate');
+                $(this).text(i18next.t(key));
+              });
+            }
+          );
+        }
+      });
     }
-    this.log("Translating to " + language);
-    $(document).ready(() => {
-      this.log("translate");
-      if(config.useTranslation && typeof this.models.AppModel !== "undefined") {
-        this.models.AppModel['language'] = language;
-        Model.setLocalData({language: language});
-        i18next.changeLanguage(language).then(
-          () => {
-            this.log("Current language in i18next:", i18next.language);
-            $('[data-translate]').each(function () {
-              const key = $(this).data('translate');
-              $(this).text(i18next.t(key));
-            });
-          }
-        );
-      }
-    });
   }
 
   // Initialize the translation library
   setLanguage() {
-    i18next
-      .use(i18nextHttpBackend)
-      .init(
-        {
-          fallbackLng: config.defaultLanguage,
-          lng: app.data.language || config.defaultLanguage,
-          backend: {
-            loadPath: 'app/locales/{{lng}}.json',
+    if(config.useTranslation) {
+      i18next
+        .use(i18nextHttpBackend)
+        .init(
+          {
+            fallbackLng: config.defaultLanguage,
+            lng: app.data.language || config.defaultLanguage,
+            backend: {
+              loadPath: 'app/locales/{{lng}}.json',
+            },
           },
-        },
-        (err, t) => {
-          if (err) {
-            ErrorHandler.logError('Error initializing i18next:', err);
-          } else {
-            this.updateTranslations();
+          (err, t) => {
+            if (err) {
+            } else {
+              this.updateTranslations();
+            }
           }
-        }
-      );
+        );
+      }
   }
 
   // Update translations for elements with data-translate attributes
@@ -342,11 +328,10 @@ async loadController(controller, method, args) {
 
   // Initialize the application
   init() {
-    this.log("init");
     $(document).ready(async () => {
       Controller.loadModel("AppModel");
       // Set the Application wrapper
-      if ($("#feigniter").length == 0) {
+      if ($(config.appContainerSelector).length == 0) {
         await $("body").prepend(`<div id='${config.appContainerSelector.substring(1,config.appContainerSelector.length)}'></div>`);
       }
 
@@ -368,7 +353,6 @@ async loadController(controller, method, args) {
           await this.setLanguage(); // Initialize translation after scripts are loaded
           app.translate(); // Initial translation
         } catch (error) {
-          ErrorHandler.logError("Failed to load translation scripts", error);
         }
       }
 
@@ -380,7 +364,6 @@ async loadController(controller, method, args) {
 
       if (config.useVue) {
         Controller.loadJs(config.basePath + "app/src/js/lib/vue.js", "module").then(() => {
-          this.log("Vue.js loaded");
 
           import(config.basePath + "app/services/vueHost.js").then(({ default: VueHost }) => {
             app.singletons["vue"] = new VueHost();

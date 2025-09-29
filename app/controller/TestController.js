@@ -6,7 +6,6 @@ export default class TestController extends Controller {
         super.loadView("app/view/test.html").then( () => {
             const vue = app.singletons["vue"];
             if (!vue) {
-                app.log("VueHost not available");
                 return;
             } else {
                 const MyComponent = {

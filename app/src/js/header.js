@@ -1,28 +1,17 @@
 class Header {
     //Runs once
     constructor() {
-        app.warn("Header singleton initialized");
+        
         this.setEvents();
-        this.update();
     }
 
     //Runs on every page load
     update ()  {
-        $(document).ready(() => {
-            app.warn("Header update method called");
-        });
+
     }
 
     setEvents() {
         $(document).ready(() => {
-            // $(document).on('click', '.header-item', (e) => {
-            //     e.preventDefault();
-            //     let selectedIndex = $(e.currentTarget).data('index');
-            //     app["headerMenuItemSelected"] = selectedIndex;
-            //     $('.header-item').removeClass('active');
-            //     $(e.currentTarget).addClass('active');
-            // });
-
             // Handle language change
             $(document).on('change', '#language-selector, #language-selector-mobile', (e) => {
                 e.preventDefault();
@@ -36,9 +25,7 @@ class Header {
             $(document).on('keyup', '#search', function(e) {
                 const searchValue = $(this).val();
                 if (searchValue) {
-                    app.log(`Search value: ${searchValue}`);
                 } else {
-                    app.log('Search input is empty');
                 }
             });
 

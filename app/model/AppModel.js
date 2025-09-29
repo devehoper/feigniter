@@ -14,7 +14,7 @@ class AppModel extends Model {
     }
 
     setTheme(theme) {
-        let element = $('#feigniter');
+        let element = $(config.appContainerSelector);
         if(config.themes.includes(theme)) {
             this.theme = theme;
             element.removeClass();
@@ -23,7 +23,7 @@ class AppModel extends Model {
             Model.setLocalData({theme: theme});
             //Model.setLocalData(this.toJson()); // Save the updated data to local storage
         } else {
-            app.log(`Theme ${theme} is not available.`);
+            
         }
     }
 

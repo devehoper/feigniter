@@ -1,11 +1,10 @@
 class Controller {
   constructor(modelName) {
-    app.log(this);
   }
 
   async loadViewContent({ 
     viewUrls = [], 
-    selector = "#feigniter", 
+    selector = config.appContainerSelector, 
     cssUrls = [], 
     jsUrls = [], 
     append = false, 
@@ -13,14 +12,13 @@ class Controller {
     insertBefore = null, 
     overwrite = true 
   } = {}) {
-    app.log(viewUrls);
     if (overwrite) {
         $(selector).empty();
     }
 
     try {
         // Load CSS first
-        await Controller.loadCss(cssUrls).catch(ErrorHandler.logError);
+        await Controller.loadCss(cssUrls).catch();
 
         // Ensure viewUrls is an array
         const urls = Array.isArray(viewUrls) ? viewUrls : [viewUrls];
@@ -40,7 +38,6 @@ class Controller {
                         resolve(data);
                     }).fail((jqXHR, textStatus) => {
                         const errorMsg = `Error loading view: ${url} - ${textStatus}`;
-                        ErrorHandler.logError(errorMsg);
                         reject(new Error(errorMsg));
                     });
                 });
@@ -59,12 +56,11 @@ class Controller {
         }
 
         // Load JS after ensuring the view is in the DOM
-        await Controller.loadJs(jsUrls).catch(ErrorHandler.logError);
+        await Controller.loadJs(jsUrls).catch();
         // Remove redundant manual script injection for app.jsToLoad
         app.jsToLoad = [];
 
     } catch (error) {
-        ErrorHandler.logError(error);
     }
     app.translate();
   }
@@ -115,7 +111,7 @@ static loadCss = (urls, options = {}) => {
     const version = options.version || Date.now(); // Use a timestamp or a passed-in version
 
     const promises = cssArray.map(url => new Promise((res, rej) => {
-      const cacheBustedUrl = config.debugMode ? url : `${url}?v=${version}`;
+      const cacheBustedUrl = config.debugMode && !config.useCache ? url : `${url}?v=${version}`;
 
       const link = document.createElement('link');
       link.rel = 'stylesheet';
@@ -125,13 +121,12 @@ static loadCss = (urls, options = {}) => {
         res();
       };
       link.onerror = () => {
-        ErrorHandler.logError(`Error loading CSS: ${cacheBustedUrl}`);
         rej(new Error(`Error loading CSS: ${cacheBustedUrl}`));
       };
       document.head.appendChild(link);
     }));
 
-    Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
+    Promise.all(promises).then(resolve).catch();
   });
 };
 
@@ -148,30 +143,25 @@ static loadJs = (entries, defaultType = 'text/javascript') => {
       const type = typeof entry === 'string' ? defaultType : (entry.type || defaultType);
 
       if (app.jsCache[url] === true) {
-        app.log(`[jsCache] Already loaded: ${url}`);
         return Promise.resolve();
       }
 
       if (app.jsCache[url] && app.jsCache[url].then) {
-        app.log(`[jsCache] Already loading: ${url}`);
         return app.jsCache[url];
       }
 
-      app.log(`[jsCache] Start loading: ${url}`);
       app.jsCache[url] = new Promise((res, rej) => {
         const script = document.createElement('script');
-        const cacheBustedUrl = config.debugMode ? url : url + '?v=' + Date.now();
+        const cacheBustedUrl = config.debugMode && !config.useCache ? url : url + '?v=' + Date.now();
         const type = typeof entry === 'string' ? defaultType : (entry.type || defaultType);
         script.type = type;
         script.src = cacheBustedUrl;
         script.defer = true;
         script.onload = () => {
           app.jsCache[url] = true;
-          app.log(`[jsCache] Loaded: ${url}`);
           res();
         };
         script.onerror = () => {
-          ErrorHandler.logError(`Error loading JS: ${url}`);
           app.jsCache[url] = false;
           rej(new Error(`Error loading JS: ${url}`));
         };
@@ -181,12 +171,12 @@ static loadJs = (entries, defaultType = 'text/javascript') => {
       return app.jsCache[url];
     });
 
-    Promise.all(promises).then(resolve).catch(ErrorHandler.logError);
+    Promise.all(promises).then(resolve).catch();
   });
 };
 
 
-loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = "#feigniter") {
+loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = config.appContainerSelector) {
   return new Promise((resolve, reject) => {
     let viewUrlResult = [];
     let finalCssUrls = [];
@@ -245,13 +235,13 @@ loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, s
           resolve(app.models[modelName]);
         } else {
           const errorMsg = `Model ${modelName} is not defined after loading`;
-          ErrorHandler.logError(errorMsg);
+          (errorMsg);
           reject(new Error(errorMsg));
         }
       };
       script.onerror = () => {
         const errorMsg = `Failed to load model: ${modelName}`;
-        ErrorHandler.logError(errorMsg);
+        (errorMsg);
         reject(new Error(errorMsg));
         window.location.reload();
       };
@@ -262,9 +252,7 @@ loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, s
   clearViewCache(url) {
     if (app.viewCache[url]) {
       delete app.viewCache[url];
-      app.log(`Cleared cache for view: ${url}`);
     } else {
-      app.log(`No cache found for view: ${url}`);
     }
   }
 }

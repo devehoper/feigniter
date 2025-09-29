@@ -83,7 +83,6 @@ function formValidator(formId, inputsConfig) {
       return;
     }
 
-    console.log('Form is valid. Submitting...');
     $form.off('submit');
     $form.submit();
   });
