@@ -1,11 +1,11 @@
 class App {
   constructor() {
     // Initialize application state and caches
-    this.url = "#" + config.homeController + "?" + config.defaultMethod;
+    this.url = `#${userConfig.homeController ?? config.homeController}?${userConfig.defaultMethod ?? config.defaultMethod}`;
     // History stack for navigation. Also using this to prevent page script to be loaded twice in Controller.loadViewContent
     this.history = [];
-    this.controller = config.homeController;
-    this.method = config.defaultMethod;
+    this.controller = userConfig.homeController ?? config.homeController;
+    this.method = userConfig.defaultMethod ?? config.defaultMethod;
     this.args = [];
     this.controllerCache = {}; // Cache for loaded controllers
     this.viewCache = {}; // Cache for loaded views
@@ -14,17 +14,16 @@ class App {
     this.models = {}; // Models used in the application
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
     this.data = Model.getLocalData(); // Loads data from localstorage
-    this.headerSelectedMenuIndex = 0;
     this.jsToLoad = []; // Object to hold JavaScript files to load
     this.singletons = {}; // Object to hold singleton instances
-    this.cacheManager = {
     // Cache management utility
-    clearAll: () => {
-      this.controllerCache = {};
-      this.viewCache = {};
-      this.jsCache = {};
-      this.cssCache = {};
-    },
+    this.cacheManager = {
+      clearAll: () => {
+        this.controllerCache = {};
+        this.viewCache = {};
+        this.jsCache = {};
+        this.cssCache = {};
+      },
     };
     this.validate = formValidator;
   }
@@ -32,14 +31,14 @@ class App {
   // Function to validate and sanitize config.basePath
   sanitizeBasePath(basePath) {
     try {
-      const validPathRegex = new RegExp(`(?:${config.basePath})[#?].*`);
+      const validPathRegex = new RegExp(`(?:${(userConfig.basePath ?? config.basePath)})[#?].*`);
       if (validPathRegex.test(basePath)) {
         return basePath;
       } else {
         throw new Error(`Invalid base path: ${basePath}`);
       }
     } catch (error) {
-      return config.basePath; // Fallback to default base path
+      return (userConfig.basePath ?? config.basePath); // Fallback to default base path
     }
   }
 
@@ -51,11 +50,11 @@ class App {
 
   // Handle changes in the URL hash
   handleHashChange() {
-    let url = config.useNavigationBar ? window.location.hash : app.url; // Use app.url if navigation bar is disabled
+    let url = (userConfig.useNavigationBar ?? config.useNavigationBar) ? window.location.hash : app.url; // Use app.url if navigation bar is disabled
     const { controller, method, args } = this.parseURL(url);
 
-    this.controller = controller || config.homeController;
-    this.method = method || config.defaultMethod;
+    this.controller = controller || (userConfig.homeController ?? config.homeController);
+    this.method = method || (userConfig.defaultMethod ?? config.defaultMethod);
     this.args = args;
 
     // Load the controller and method based on URL
@@ -68,24 +67,25 @@ class App {
 
     //if (config.useNavigationBar) {
       // Ensure controller and method are not null before updating the URL
-      const newController = controller || config.homeController;
-      const newMethod = method || config.defaultMethod;
+      const newController = controller || (userConfig.homeController ?? config.homeController);
+      const newMethod = method || (userConfig.defaultMethod ?? config.defaultMethod);
       const newArgs = args.length > 0 ? args.join(",") : "";
 
       // Securely using history.replaceState
       try {
+        let basePath = userConfig.basePath ?? config.basePath;
         // Ensure basePath ends with a slash
-        const sanitizedBasePath = config.basePath.endsWith("/")
-          ? config.basePath
-          : config.basePath + "/";
+        const sanitizedBasePath = basePath.endsWith("/")
+          ? basePath
+          : basePath + "/";
         const newUrl = `${sanitizedBasePath}#${newController}?${newMethod}=${newArgs}`;
-        if(config.useNavigationBar) {
+        if(userConfig.useNavigationBar ?? config.useNavigationBar) {
           history.replaceState(null, null, newUrl);
         }
       } catch (error) {
       }
     //}
-    $(config.appContainerSelector).empty();
+    $(userConfig.appContainerSelector ?? config.appContainerSelector).empty();
     //this.runTemplateJs();
     //this.jsToLoad = {}; // Clear jsToLoad after execution
   }
@@ -111,7 +111,7 @@ class App {
   // Handle anchor click events
   handleAnchorClick(e) {
     const href = $(e.currentTarget).attr("href");
-    if (!config.useNavigationBar && $(e.currentTarget).attr("target") !== "_blank") {
+    if (!(userConfig.useNavigationBar ?? config.useNavigationBar) && $(e.currentTarget).attr("target") !== "_blank") {
       e.preventDefault();
       this.url = href;
       this.history.push(href); // Push the new URL to history
@@ -171,7 +171,7 @@ async loadController(controller, method, args) {
       script.nosniff;
 
       script.onload = () => {
-        import(`./controller/${controller}.js`)
+        import(`../controller/${controller}.js`)
           .then((module) => {
             const ControllerClass = module.default;
             const controllerInstance = new ControllerClass();
@@ -239,31 +239,40 @@ async loadController(controller, method, args) {
 
   // Log messages in debug mode
   log(text) {
-    if(config.debugMode) {
+    if(userConfig.debugMode ?? config.debugMode) {
       app.log(text);
     }
   }
 
    // Log messages in debug mode
   warn(text) {
-    if(config.debugMode) {
+    if(userConfig.debugMode ?? config.debugMode) {
     }
   }
 
    // Log messages in debug mode
   error(text) {
-    if(config.debugMode) {
+    if(userConfig.debugMode ?? config.debugMode) {
       app.error(text);
     }
   }
 
   // Translate the application based on the given language
-  translate (language = config.defaultLanguage) {
-    if(config.useTranslation) {
+  translate (language) {
+    if( userConfig.useTranslation ?? config.useTranslation) {
+      if(typeof language === "undefined") {
+        if(typeof app.data["language"] === "undefined") {
+          language = (userConfig.defaultLanguage ?? config.defaultLanguage);
+        } else {
+          language = app.data["language"];
+        }
+      } else {
+        app.data["language"] = language;
+      }
+
+      Model.setLocalData({"language": language});
       $(document).ready(() => {
-        if(config.useTranslation && typeof this.models.AppModel !== "undefined") {
-          this.models.AppModel['language'] = language;
-          Model.setLocalData({language: language});
+        if((userConfig.useTranslation ?? config.useTranslation)) {
           i18next.changeLanguage(language).then(
             () => {
               $('[data-translate]').each(function () {
@@ -279,13 +288,15 @@ async loadController(controller, method, args) {
 
   // Initialize the translation library
   setLanguage() {
-    if(config.useTranslation) {
+    if(userConfig.useTranslation ?? config.useTranslation) {
+      let language = typeof app.data.language === "undefined" ? (userConfig.defaultLanguage ?? config.defaultLanguage) : app.data.language;
+
       i18next
         .use(i18nextHttpBackend)
         .init(
           {
-            fallbackLng: config.defaultLanguage,
-            lng: app.data.language || config.defaultLanguage,
+            fallbackLng: (userConfig.defaultLanguage ?? config.defaultLanguage),
+            lng: language,
             backend: {
               loadPath: 'app/locales/{{lng}}.json',
             },
@@ -310,62 +321,90 @@ async loadController(controller, method, args) {
 
   setTheme(theme) {
     $(document).ready(() => {
-      const appModel = this.models?.AppModel;
-      theme = theme || this.data?.theme || appModel?.theme || config.defaultTheme;
+      let themes = userConfig.themes ?? config.themes;
+      theme = theme || this.data?.theme || (userConfig.defaultTheme ?? config.defaultTheme);
 
       Controller.unloadCSS();
       Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
 
-      if (appModel) {
-        appModel.setTheme?.(theme);
-        Model.setLocalData({ theme });
-      }
+      Model.setLocalData({ theme });
 
-      $("body").removeClass(config.themes.join(" ")).addClass(theme);
+      $("body").removeClass(themes.join(" ")).addClass(theme);
     });
   }
+
+  // setLocalTheme(theme) {
+  //   let element = $(userConfig.appContainerSelector ?? config.appContainerSelector);
+  //   let themes = userConfig.themes ?? config.themes;
+  //   if(themes.includes(theme)) {
+  //       element.removeClass();
+  //       element.addClass(theme); // Set the theme class on the body element
+  //       app.data["theme"] = theme; // Update the theme in the data object
+  //       app.setLocalData({theme: theme});
+  //   }
+  // }
+
+    // setLocalLanguage() {
+    //     let navigatorLanguage =  userConfig.defaultLanguage ?? config.defaultLanguage;
+    //     let availableLanguages = userConfig.availableLanguages ?? config.availableLanguages;
+
+    //     let ln = Model.getLocalData() == null || typeof Model.getLocalData().language == "undefined"
+    //     ? {}
+    //     : Model.getLocalData().language;
+    //     if(userConfig.useTranslation ?? config.useTranslation) {
+    //         navigatorLanguage = (availableLanguages.includes(navigator.language) || availableLanguages.includes(navigator.userLanguage))
+    //         ? navigator.language || navigator.userLanguage : (userConfig.defaultLanguage ?? config.defaultLanguage);
+    //         //app.models.AppModel.language = ln || config.defaultLanguage;
+    //         this.language = ln;
+    //         // ? this.language = this.data.language
+    //         // : navigatorLanguage;
+    //     }
+    // }
 
 
   // Initialize the application
   init() {
     $(document).ready(async () => {
-      Controller.loadModel("AppModel");
+      app.data = Model.getLocalData();
+      let appContainerSelector = userConfig.appContainerSelector ?? config.appContainerSelector;
+      let bp = userConfig.basePath ?? config.basePath;
       // Set the Application wrapper
-      if ($(config.appContainerSelector).length == 0) {
-        await $("body").prepend(`<div id='${config.appContainerSelector.substring(1,config.appContainerSelector.length)}'></div>`);
+      if ($(appContainerSelector).length == 0) {
+        await $("body").prepend(`<div id='${appContainerSelector.substring(1,appContainerSelector.length)}'></div>`);
       }
-
-      await this.setTheme();
-
       await this.routing();
+      await this.setTheme();
       await $(window).trigger("hashchange");
       // Deals with elements with data-feigniter-action-type attribute
       //await this.handleDOMActions();
       await this.observeDOMChanges();
 
       // Dynamically load translation scripts if useTranslation is enabled
-      if (config.useTranslation) {
-        try {
-          await Controller.loadJs([
-            "app/src/js/lib/i18next.js",
-            "app/src/js/lib/i18nextbackend.js"
-          ]);
-          await this.setLanguage(); // Initialize translation after scripts are loaded
-          app.translate(); // Initial translation
-        } catch (error) {
-        }
+      // if (userConfig.useTranslation ?? config.useTranslation) {
+      //   try {
+      //     await Controller.loadJs([
+      //       "app/src/js/lib/i18next.js",
+      //       "app/src/js/lib/i18nextbackend.js"
+      //     ]);
+      //     await this.setLanguage(); // Initialize translation after scripts are loaded
+      //     app.translate(); // Initial translation
+      //   } catch (error) {
+      //   }
+      // }
+      if (userConfig.useTranslation ?? config.useTranslation) {
+        app.setLanguage();
+        
       }
 
       // Add a button to clear cache for debugging
-      if (config.debugMode) {
+      if (userConfig.debugMode ?? config.debugMode) {
         $("body").append('<button id="clearCache">Clear Cache</button>');
         $("#clearCache").on("click", () => this.cacheManager.clearAll());
       }
 
-      if (config.useVue) {
-        Controller.loadJs(config.basePath + "app/src/js/lib/vue.js", "module").then(() => {
-
-          import(config.basePath + "app/services/vueHost.js").then(({ default: VueHost }) => {
+      if (userConfig.useVue ?? config.useVue) {
+        Controller.loadJs(bp + "app/src/js/lib/vue.js", "module").then(() => {
+          import(bp + "app/services/vueHost.js").then(({ default: VueHost }) => {
             app.singletons["vue"] = new VueHost();
           });
         });

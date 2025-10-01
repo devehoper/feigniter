@@ -31,14 +31,13 @@ class Header {
 
             //Initialize theme selector
             let themeSelected = app.data.theme;
-            app.models.AppModel.setTheme(themeSelected); // Set the theme on page load
+            app.setTheme(themeSelected); // Set the theme on page load
 
             // Handle theme change
             $(document).on('change', '#theme-selector, #theme-selector-mobile', (e) => {
                 const selectedTheme = $(e.target).val();
                 if(selectedTheme !== "default") {
-                    app.models.AppModel.setTheme(selectedTheme);
-                    app.setTheme(selectedTheme); // Set the theme in the app
+                    app.setTheme(selectedTheme);
                 }
             });
 

@@ -4,7 +4,7 @@ class Controller {
 
   async loadViewContent({ 
     viewUrls = [], 
-    selector = config.appContainerSelector, 
+    selector = userConfig.appContainerSelector ?? config.appContainerSelector,
     cssUrls = [], 
     jsUrls = [], 
     append = false, 
@@ -80,8 +80,8 @@ class Controller {
           }
         });
         resolve().then(() => {
-          if(config.useTranslation) {
-          app.translate(app.data.language);
+          if(userConfig.useTranslation ?? config.useTranslation) {
+            app.translate(app.data.language);
           }
         }); // Resolve the promise once the content is inserted
       } catch (error) {
@@ -105,13 +105,15 @@ class Controller {
 
 static loadCss = (urls, options = {}) => {
   return new Promise((resolve) => {
+    let debugMode = userConfig.debugMode ?? config.debugMode;
+    let userCache = userConfig.useCache ?? config.useCache;
     if (!urls) return resolve();
 
     const cssArray = Array.isArray(urls) ? urls : [urls];
     const version = options.version || Date.now(); // Use a timestamp or a passed-in version
 
     const promises = cssArray.map(url => new Promise((res, rej) => {
-      const cacheBustedUrl = config.debugMode && !config.useCache ? url : `${url}?v=${version}`;
+      const cacheBustedUrl = debugMode && ! userCache ? url : `${url}?v=${version}`;
 
       const link = document.createElement('link');
       link.rel = 'stylesheet';
@@ -176,21 +178,26 @@ static loadJs = (entries, defaultType = 'text/javascript') => {
 };
 
 
-loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = config.appContainerSelector) {
+loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, selector = (userConfig.appContainerSelector ?? config.appContainerSelector)) {
   return new Promise((resolve, reject) => {
     let viewUrlResult = [];
     let finalCssUrls = [];
     let finalJsUrls = [];
+    let defaultViewUrlResult = userConfig.loadTemplate ?? config.loadTemplate;
+    let defaultFinalCssUrls = userConfig.loadTemplate ?? config.loadTemplate;
+    let defaultFinalJsUrls = userConfig.loadTemplate ?? config.loadTemplate;
+    let templateContentInsertIndex = userConfig.templateContentInsertIndex ?? config.templateContentInsertIndex;
+    let loadTemplateJs = userConfig.loadTemplate ?? config.loadTemplate;
 
     try {
       if (template) {
-        viewUrlResult = [...config.loadTemplate.views];
-        finalCssUrls = [...config.loadTemplate.cssUrl];
-        finalJsUrls = [...config.loadTemplate.jsUrl];
+        viewUrlResult = [...defaultViewUrlResult.views];
+        finalCssUrls = [...defaultFinalCssUrls.cssUrl];
+        finalJsUrls = [...defaultFinalJsUrls.jsUrl];
 
         const newViews = Array.isArray(viewUrl) ? viewUrl : [viewUrl];
         const formattedViews = newViews.map(url => url + (url.indexOf(".html") === -1 ? ".html" : ""));
-        viewUrlResult.splice(config.templateContentInsertIndex, 0, ...formattedViews);
+        viewUrlResult.splice(templateContentInsertIndex, 0, ...formattedViews);
       } else {
         viewUrlResult = Array.isArray(viewUrl) ? viewUrl : [viewUrl];
         viewUrlResult = viewUrlResult.map(url => url + (url.indexOf(".html") === -1 ? ".html" : ""));
@@ -199,8 +206,8 @@ loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, s
       if (cssUrl) finalCssUrls = finalCssUrls.concat(cssUrl);
       if (jsUrl) finalJsUrls = finalJsUrls.concat(jsUrl);
 
-      if (jsUrl === null || (template && config.loadTemplate.jsUrl.length > 0)) {
-        app.jsToLoad = [...config.loadTemplate.jsUrl];
+      if (jsUrl === null || (template && loadTemplateJs.jsUrl.length > 0)) {
+        app.jsToLoad = [...loadTemplateJs.jsUrl];
       } else {
         app.jsToLoad = jsUrl instanceof Array ? [...jsUrl] : [jsUrl];
       }

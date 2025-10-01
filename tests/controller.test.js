@@ -131,7 +131,7 @@ class Controller {
     } catch (error) {
         ErrorHandler.logError(error);
     }
-    app.translate();
+    //app.translate();
   }
 
   insertContent(selector, content, append, insertAfter, insertBefore) {

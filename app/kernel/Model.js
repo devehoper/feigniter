@@ -13,7 +13,7 @@ class Model {
                 for(let key in data) {
                     storage[key] = data[key];
                 }
-                localStorage.setItem(config.localStorage, JSON.stringify(storage));
+                localStorage.setItem((userConfig.localStorage ?? config.localStorage), JSON.stringify(storage));
             }
         } catch (error) {
             app.error("Error setting local data:", error);
@@ -22,9 +22,9 @@ class Model {
 
     static getLocalData() {
         try {
-            let data = localStorage.getItem(config.localStorage) === null
+            let data = localStorage.getItem((userConfig.localStorage ?? config.localStorage)) === null
                 ? {}
-                : JSON.parse(localStorage.getItem(config.localStorage));
+                : JSON.parse(localStorage.getItem((userConfig.localStorage ?? config.localStorage)));
             return data;
         } catch (error) {
             app.error("Error getting local data:", error);
@@ -34,7 +34,7 @@ class Model {
 
     static clearLocalData() {
         try {
-            localStorage.removeItem(config.localStorage);
+            localStorage.removeItem(userConfig.localStorage ?? config.localStorage);
         } catch (error) {
             app.error("Error clearing local data:", error);
         }
