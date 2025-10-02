@@ -23,6 +23,8 @@ class App {
         this.viewCache = {};
         this.jsCache = {};
         this.cssCache = {};
+        Model.clearLocalData();
+        window.location.reload();
       },
     };
     this.validate = formValidator;
@@ -363,8 +365,9 @@ async loadController(controller, method, args) {
 
 
   // Initialize the application
-  init() {
-    $(document).ready(async () => {
+  async init() {
+    $(document).ready(async () => { 
+      await app.startServiceWorker();
       app.data = Model.getLocalData();
       let appContainerSelector = userConfig.appContainerSelector ?? config.appContainerSelector;
       let bp = userConfig.basePath ?? config.basePath;
@@ -398,7 +401,7 @@ async loadController(controller, method, args) {
 
       // Add a button to clear cache for debugging
       if (userConfig.debugMode ?? config.debugMode) {
-        $("body").append('<button id="clearCache">Clear Cache</button>');
+        $("body").append('<button id="clearCache" class="btn btn-error">Clear Cache && Refresh</button>');
         $("#clearCache").on("click", () => this.cacheManager.clearAll());
       }
 
@@ -413,6 +416,63 @@ async loadController(controller, method, args) {
       //app.runSingletons();
     });
   }
+
+  /**
+   * Registers the Service Worker and returns a promise that resolves 
+   * only when the Service Worker is fully 'active' and controlling the page.
+   * This ensures the 'navigator.serviceWorker.controller' is available 
+   * when the application needs to send messages or use fetch.
+   * * NOTE: The SW file is now assumed to be located at the application's root: '/sw.js'.
+   */
+  startServiceWorker() {
+    return new Promise((resolve, reject) => {
+      // UPDATED PATH: Assumes sw.js is at the root of the application for maximum scope.
+      const swPath = '  sw.js';
+      
+      if (!('serviceWorker' in navigator)) {
+          console.warn('Service Workers are not supported by this browser.');
+          return resolve(false);
+      }
+
+      // 1. Start Registration
+      // The scope: '/' ensures the Service Worker attempts to control the entire domain.
+      navigator.serviceWorker.register(swPath, { scope: '/' })
+        .then(registration => {
+          console.log('Service Worker registration successful:', registration.scope);
+
+          // 2. Wait for the Service Worker to become 'active'
+          if (registration.active) {
+            // If already active (e.g., on subsequent loads), resolve immediately
+            return resolve(true);
+          }
+          
+          // Handle cases where installation fails or the worker is null
+          if (!registration.installing) {
+              console.warn('Service Worker found but not installing. Assuming controlled state.');
+              return resolve(true);
+          }
+
+          // 3. For new installations, wait for the state to change to 'activated'
+          registration.installing.addEventListener('statechange', function(event) {
+            if (event.target.state === 'activated') {
+              console.log('Service Worker state changed to activated.');
+              
+              // Wait a fraction of a second to ensure claim() has settled
+              setTimeout(() => {
+                  resolve(true);
+              }, 100); 
+            }
+          });
+
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+          reject(error);
+        });
+    });
+  }
+
+
 }
 
 // Example of registering actions

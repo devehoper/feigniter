@@ -2,68 +2,104 @@ class Controller {
   constructor(modelName) {
   }
 
-  async loadViewContent({ 
-    viewUrls = [], 
+/**
+ * Utility function to send a command to the active Service Worker
+ * to fetch a fresh copy of a URL and update the cache in the background.
+ * This implements the "Stale-While-Revalidate via PostMessage" pattern.
+ * @param {string} url The URL of the view to re-cache (e.g., '/views/home.html').
+ */
+requestManualCacheUpdate(url) {
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+            command: 'CACHE_VIEW_UPDATE',
+            url: url
+        });
+        console.log(`[Client] Sent command to Service Worker to update: ${url}`);
+    } else {
+        console.warn("[Client] Service Worker not active or controlled by client. Cannot send update message.");
+    }
+}
+
+
+/**
+ * Loads view content using the native fetch() API, relying on the
+ * Service Worker (sw.js) to manage cache-first network requests.
+ * The manual app.viewCache logic is removed.
+ * * NOTE: This requires a Service Worker to be registered and active
+ * with a Cache-First strategy to function as an effective cache.
+ */
+async loadViewContent({
+    viewUrls = [],
     selector = userConfig.appContainerSelector ?? config.appContainerSelector,
-    cssUrls = [], 
-    jsUrls = [], 
-    append = false, 
-    insertAfter = null, 
-    insertBefore = null, 
-    overwrite = true 
-  } = {}) {
+    cssUrls = [],
+    jsUrls = [],
+    append = false,
+    insertAfter = null,
+    insertBefore = null,
+    overwrite = true
+} = {}) {
+
+    // Manual cache check is removed; caching is now handled by the Service Worker (sw.js).
+    const targetElement = $(selector);
     if (overwrite) {
-        $(selector).empty();
+        targetElement.empty();
     }
 
     try {
         // Load CSS first
-        await Controller.loadCss(cssUrls).catch();
+        // Assuming Controller.loadCss exists and handles asset loading (which should be non-cached by SW)
+        await Controller.loadCss(cssUrls).catch(e => console.error("CSS Load Error:", e));
 
-        // Ensure viewUrls is an array
-        const urls = Array.isArray(viewUrls) ? viewUrls : [viewUrls];
+        // Ensure viewUrls is an array, map to full .html paths
+        const urls = (Array.isArray(viewUrls) ? viewUrls : [viewUrls])
+            .map(url => url + (url.indexOf(".html") === -1 ? ".html" : ""));
 
-        // Batch DOM update for multiple views
         let batchContent = "";
         for (let url of urls) {
-            url += url.indexOf(".html") === -1 ? ".html" : "";
-            // Check cache or fetch view
-            let viewContent;
-            if (app.viewCache[url]) {
-                viewContent = app.viewCache[url];
-            } else {
-                viewContent = await new Promise((resolve, reject) => {
-                    $.get(url, (data) => {
-                        app.viewCache[url] = data;
-                        resolve(data);
-                    }).fail((jqXHR, textStatus) => {
-                        const errorMsg = `Error loading view: ${url} - ${textStatus}`;
-                        reject(new Error(errorMsg));
-                    });
-                });
+            console.log(`Requesting view: ${url}. Service Worker will decide cache/network.`);
+
+            // --- CORE CHANGE: Using native fetch() ---
+            // The Service Worker intercepts this request and handles the cache lookup (Cache-First).
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                // This captures HTTP errors like 404s
+                throw new Error(`HTTP error! status: ${response.status} for ${url}`);
             }
+
+            // Get the HTML content
+            const viewContent = await response.text();
             batchContent += viewContent;
         }
+
         // Insert all content at once
         if (insertAfter && typeof insertAfter === "string") {
             $(insertAfter).after(batchContent);
         } else if (insertBefore && typeof insertBefore === "string") {
             $(insertBefore).before(batchContent);
         } else if (append) {
-            $(selector).append(batchContent);
+            targetElement.append(batchContent);
         } else {
-            $(selector).html(batchContent);
+            targetElement.html(batchContent);
         }
 
         // Load JS after ensuring the view is in the DOM
-        await Controller.loadJs(jsUrls).catch();
-        // Remove redundant manual script injection for app.jsToLoad
+        await Controller.loadJs(jsUrls).catch(e => console.error("JS Load Error:", e));
         app.jsToLoad = [];
 
+        // Call the function to trigger a background cache update for the primary view (urls[0]).
+        // This updates the cached copy for the user's *next* visit without slowing down the *current* load.
+        this.requestManualCacheUpdate(urls[0]); 
+
     } catch (error) {
+        console.error("View Loading Failed:", error.message);
+        // Fallback message using jQuery
+        targetElement.html(`<div class="p-4 bg-red-100 text-red-700 rounded-lg">Failed to load content: ${error.message}</div>`);
     }
     app.translate();
-  }
+}
+
+
 
   insertContent(selector, content, append, insertAfter, insertBefore) {
     return new Promise((resolve, reject) => {
