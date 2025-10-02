@@ -9,17 +9,18 @@ const userConfig = {
 
     useVue: false,
 
-    debugMode: true, // Enable or disable debug mode
-    useCache: false, // Enable or disable caching, dont change it, not full implemented for false case (V=0.1)
+    debugMode: false, // Enable or disable debug mode
+    useCache: true, // Enable or disable caching, dont change it, not full implemented for false case (V=0.1)
     enableCacheClearing: true, // Enable cache clearing button in debug mode
 
     useTranslation: true, // Enable or disable translation
     availableLanguages: ["pt", "en"], // List of available languages
 
-    useNavigationBar: false, // Use navigation bar for routing
+    useNavigationBar: true, // Use navigation bar for routing
      // Templates to load
     templateContentInsertIndex: 1, // Index to insert additional content views
-    basePath: "https://localhost/feigniter/", // Base path for the application
+    //basePath: "https://localhost/feigniter/", // Base path for the application
+    basePath: "https://feigniter.devehoper.com/", // Base path for the application
 
     //Begin Of Styling configs
     defaultTheme: "theme-default", // Default theme
