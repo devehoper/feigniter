@@ -1,4 +1,4 @@
-export default class ActionRegistry {
+class ActionRegistry {
     constructor() {
       this.actions = {};
     }
