@@ -4,15 +4,16 @@ class TestController extends Controller {
     }
     index() {
         super.loadView("app/view/test.html").then( () => {
-            const vue = app.singletons.vue;
-            if (!vue) { // Guard clause: exit if Vue singleton isn't available
+            const vue = app.singletons["vue"];
+            if (!vue) {
                 return;
-            }
+            } else {
+                const MyComponent = {
+                    template: `<div style="padding:1rem; background:#eef;">Vue is working 🎉</div>`
+                };
 
-            const MyComponent = {
-                template: `<div style="padding:1rem; background:#eef;">Vue is working 🎉</div>`
-            };
-            vue.mount(MyComponent, "#vue-root");
+                vue.mount(MyComponent, "#vue-root") || null;
+            }
         });
     }
 }
