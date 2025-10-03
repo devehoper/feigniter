@@ -1,6 +1,4 @@
-import Controller from '../kernel/Controller.js';
-
-export default class HomeController extends Controller {
+ class HomeController extends Controller {
     constructor() {
         super();
     }
