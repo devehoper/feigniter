@@ -158,47 +158,35 @@ class App {
   }
 
   // Load a controller and execute a method with arguments
-async loadController(controller, method, args) {
+  async loadController(controller, method, args) {
+    if (this.controllerCache[controller]) {
+      this.executeMethod(this.controllerCache[controller], method, args);
+      return;
+    }
 
-  if (this.controllerCache[controller]) {
-    this.executeMethod(this.controllerCache[controller], method, args);
-    return;
-  }
-
-  try {
-    await new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = `./app/controller/${controller}.js`;
-      script.type = 'module';
-      script.nosniff;
-
-      script.onload = () => {
-        import(`../controller/${controller}.js`)
-          .then((module) => {
-            const ControllerClass = module.default;
+    try {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = `app/controller/${controller}.js`;
+        script.onload = () => {
+          // The controller script should define a class on the window object.
+          const ControllerClass = window[controller];
+          if (ControllerClass) {
             const controllerInstance = new ControllerClass();
             this.controllerCache[controller] = controllerInstance;
             this.executeMethod(controllerInstance, method, args);
             resolve();
-          })
-          .catch((error) => {
-            app.error(`Error importing controller: ${controller}`, error);
-            reject(error);
-          });
-      };
-
-      script.onerror = (err) => {
-        app.error(`Script load failed: ${controller}`, err);
-        reject(err);
-      };
-
-      document.body.appendChild(script);
-    });
-
-  } catch (error) {
-    app.error(`Error loading controller: ${controller}`, error);
+          } else {
+            reject(new Error(`Controller class '${controller}' not found on window object after loading script.`));
+          }
+        };
+        script.onerror = (err) => reject(new Error(`Script load failed for: ${controller}.js`));
+        document.body.appendChild(script);
+      });
+    } catch (error) {
+      app.error(`Error loading controller: ${controller}`, error);
+    }
   }
-}
 
 
   // Execute a method on a controller instance
@@ -477,18 +465,5 @@ async loadController(controller, method, args) {
 
 }
 
-let app = new App();
+const app = new App();
 app.init();
-// if (typeof module !== 'undefined' && module.exports) {
-//   module.exports = { App };
-// }
-
-// // This block will now only run in the browser, not during Jest tests.
-// if (typeof process === 'undefined' || process.env.JEST_WORKER_ID === undefined) {
-//   // Example of registering actions
-//   let app = new App();
-//   // app.actionRegistry.registerAction('test');
-//   app.actionRegistry.registerAction('table');
-  
-//   app.init();
-// }

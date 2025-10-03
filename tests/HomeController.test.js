@@ -6,7 +6,7 @@
 // The auto-mocking in jest.config.js is for when other components import it.
 jest.unmock('../app/controller/HomeController.js');
 
-const HomeController = require('../app/controller/HomeController.js').default;
+const HomeController = require('../app/controller/HomeController.js');
 const Controller = require('../app/kernel/Controller.js');
 
 describe('HomeController', () => {
@@ -33,4 +33,3 @@ describe('HomeController', () => {
         loadViewSpy.mockRestore();
     });
 });
-

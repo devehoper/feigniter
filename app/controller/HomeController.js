@@ -1,4 +1,4 @@
- class HomeController extends Controller {
+class HomeController extends Controller {
     constructor() {
         super();
     }
@@ -38,4 +38,13 @@
             typeof app.singletons["header"] !== "undefined" ? app.singletons["header"].setActiveMenuItem(5): null;
         });
     }
+}
+
+// This pattern allows the class to be used in two ways:
+// 1. In the browser, it attaches itself to the window object.
+// 2. In Node.js (for Jest tests), it's exported as a module.
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = HomeController;
+} else {
+    window.HomeController = HomeController;
 }
