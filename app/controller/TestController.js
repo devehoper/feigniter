@@ -1,3 +1,5 @@
+import Controller from '../kernel/Controller.js';
+
 export default class TestController extends Controller {
     constructor() {
         super();

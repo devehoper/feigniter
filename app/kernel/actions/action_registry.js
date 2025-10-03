@@ -1,4 +1,4 @@
-class ActionRegistry {
+export default class ActionRegistry {
     constructor() {
       this.actions = {};
     }
@@ -17,3 +17,4 @@ class ActionRegistry {
     }
   }
   
+if (typeof module !== 'undefined' && module.exports) { module.exports = ActionRegistry; }

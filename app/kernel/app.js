@@ -476,10 +476,16 @@ async loadController(controller, method, args) {
 
 
 }
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { App };
+}
 
-// Example of registering actions
-let app = new App();
-// app.actionRegistry.registerAction('test');
-app.actionRegistry.registerAction('table');
-
-app.init();
+// This block will now only run in the browser, not during Jest tests.
+if (typeof process === 'undefined' || process.env.JEST_WORKER_ID === undefined) {
+  // Example of registering actions
+  let app = new App();
+  // app.actionRegistry.registerAction('test');
+  app.actionRegistry.registerAction('table');
+  
+  app.init();
+}

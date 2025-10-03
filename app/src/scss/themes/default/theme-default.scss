@@ -28,10 +28,10 @@ $text: map-get(colors.$default, dark);
   blockquote,
   figure,
   figcaption,
-  input,
-  textarea,
-  select,
-  button,
+  // input,
+  // textarea,
+  // select,
+  // button,
   div  {
     background-color: map-get(colors.$default, light) !important;
     color: $text !important;
@@ -46,10 +46,11 @@ $text: map-get(colors.$default, dark);
     color: $text !important;
   }
 
+  //Form inputs
   input,
   textarea,
   select,
   button {
-    border-color: darken(map-get(colors.$default, light), 10%) !important;
+    border-color: darken(map-get(colors.$default, dark), 10%) !important;
   }
 }
