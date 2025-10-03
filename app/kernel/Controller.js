@@ -300,4 +300,3 @@ loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, s
   }
 }
 
-if (typeof module !== 'undefined' && module.exports) { module.exports = Controller; }

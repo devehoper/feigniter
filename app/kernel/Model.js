@@ -178,5 +178,3 @@ class Model {
         
     }
 }
-
-if (typeof module !== 'undefined' && module.exports) { module.exports = Model; }
