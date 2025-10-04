@@ -9,9 +9,9 @@ const userConfig = {
 
     useVue: false,
 
-    debugMode: true, // Enable or disable debug mode
-    useCache: false, // Enable or disable caching, dont change it, not full implemented for false case (V=0.1)
-    enableCacheClearing: true, // Enable cache clearing button in debug mode
+    debugMode: false, // Enable or disable debug mode
+    useCache: true, // Enable or disable caching, dont change it, not full implemented for false case (V=0.1)
+    enableCacheClearing: false, // Enable cache clearing button in debug mode
 
     useTranslation: true, // Enable or disable translation
     availableLanguages: ["pt", "en"], // List of available languages
