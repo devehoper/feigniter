@@ -19,8 +19,9 @@ const userConfig = {
     useNavigationBar: false, // Use navigation bar for routing
      // Templates to load
     templateContentInsertIndex: 1, // Index to insert additional content views
-    basePath: "https://localhost/feigniter/", // Base path for the application
-
+    // IMPORTANT: Change the basePath to your live domain when deploying to production!
+    // Example: "https://www.yourwebsite.com/"
+    basePath: "https://feigniter.devehoper.com/", // Base path for the application
     //Begin Of Styling configs
     defaultTheme: "theme-default", // Default theme
     themes: ["theme-default", "theme-dark"], // Available themes
