@@ -16,7 +16,7 @@ const userConfig = {
     useTranslation: true, // Enable or disable translation
     availableLanguages: ["pt", "en"], // List of available languages
 
-    useNavigationBar: false, // Use navigation bar for routing
+    useNavigationBar: true, // Use navigation bar for routing
      // Templates to load
     templateContentInsertIndex: 1, // Index to insert additional content views
     // IMPORTANT: Change the basePath to your live domain when deploying to production!
