@@ -54,7 +54,23 @@
         "caching": {
             "title": "💾 Why is it so fast? (Caching)",
             "body": "Caching is like having a super-fast memory. The first time you visit a page, Feigniter saves a copy of it. The next time you come back, it just shows you the saved copy instantly instead of building it all over again. It's why pages load so quickly!"
-        }
+        },
+        "production": {
+            "title": "🚀 How do I get my website ready for everyone? (Production Settings)",
+            "body": "Before you show your website to the whole world (this is called \"going to production\"), you want to make it as fast and safe as possible. It's like cleaning up your treehouse before your friends come over!"
+        },
+        "testing": {
+            "title": "🤖 How do I make sure my code works? (Testing)",
+            "body": "Before you show your treehouse to everyone, you want to make sure it's safe. You have a special robot helper (named Jest) that can test your code for you!",
+            "install": "First, you need to install all the robot's parts by running:",
+            "run": "Then, when you want to run the tests, you just tell the robot to start:",
+            "result": "The robot will automatically check all your special LEGO pieces. If it finds a problem, it tells you exactly where it is so you can fix it. To use this robot, you need Node.js installed on your computer (see the next topic!)."
+        },
+        "nodejs": {
+            "title": "🛠️ Why do I need Node.js?",
+            "body": "Think of Node.js as your personal workshop. Your website (the treehouse) doesn't need the workshop to stand and be used by your friends. But **you** need the workshop to use your cool power tools!"
+        },
+        "watchVideo": "Watch the Video"
     },
 
     "form": {
