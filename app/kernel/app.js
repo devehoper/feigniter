@@ -367,7 +367,7 @@ async loadController(controller, method, args) {
   // Initialize the application
   async init() {
     $(document).ready(async () => {
-      if(!userConfig.debugMode ?? !config.debugMode) {
+      if(userConfig.useCache ?? config.useCache) {
         await app.startServiceWorker();
       }      
       app.data = Model.getLocalData();
