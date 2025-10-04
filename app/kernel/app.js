@@ -366,8 +366,10 @@ async loadController(controller, method, args) {
 
   // Initialize the application
   async init() {
-    $(document).ready(async () => { 
-      await app.startServiceWorker();
+    $(document).ready(async () => {
+      if(!userConfig.debugMode ?? !config.debugMode) {
+        await app.startServiceWorker();
+      }      
       app.data = Model.getLocalData();
       let appContainerSelector = userConfig.appContainerSelector ?? config.appContainerSelector;
       let bp = userConfig.basePath ?? config.basePath;
