@@ -16,16 +16,54 @@
     "mission": "Missão",
     "mission description": "Manter a biblioteca simples, limpa e fácil de usar, aumentando a velocidade de desenvolvimento.",
     "whatsapp message": "Envie-me uma mensagem no WhatsApp",
+    "docs": {
+        "title": "Documentação Feigniter!",
+        "subtitle": "O seu guia para construir websites fantásticos, de forma super simples!",
+        "whatIs": {
+            "title": "🤔 O que é o Feigniter?",
+            "body": "Imagine que quer construir uma casa na árvore super fixe. O Feigniter é como uma caixa gigante de LEGOs especiais só para construir websites! Em vez de começar do zero com madeira e pregos, recebe muitas peças prontas que se encaixam perfeitamente. Isto torna a construção do seu website mais rápida e muito mais divertida."
+        },
+        "routing": {
+            "title": "🗺️ Como é que o site sabe para onde ir? (Roteamento)",
+            "body": "O roteamento é como um mapa para o seu website. Quando escreve um URL com um símbolo #, o Feigniter olha para o mapa para ver que página lhe deve mostrar."
+        },
+        "controllers": {
+            "title": "🧠 O que é um Controller?",
+            "body": "Um Controller é o \"cérebro\" de cada página. Se a sua página web fosse um robô, o Controller seria o computador lá dentro que diz aos braços e pernas o que fazer. Ele trata de toda a lógica, como o que acontece quando clica num botão."
+        },
+        "views": {
+            "title": "🎨 O que é uma View?",
+            "body": "Uma View é a \"cara\" da página. É o código HTML que decide a aparência da página—onde vão as imagens, o que o texto diz e a cor dos botões. O Controller (o cérebro) carrega a View (a cara) para a mostrar ao utilizador."
+        },
+        "config": {
+            "title": "⚙️ Como altero as definições? (Configuração)",
+            "body": "O ficheiro `config.js` tem todas as definições padrão, como um novo videojogo acabado de sair da caixa. Nunca deve alterar este ficheiro! Em vez disso, faz as suas alterações no `userConfig.js`. Pense no `userConfig.js` como o seu ficheiro de definições especiais que diz ao jogo: \"Ei, quero jogar no modo difícil!\" ou \"Quero que a minha personagem use um chapéu azul!\". As suas definições no `userConfig.js` ganham sempre."
+        },
+        "fileStructure": {
+            "title": "📂 Onde vão todos os ficheiros? (Estrutura de Ficheiros)"
+        }
+    },
     "form": {
         "error": {
             "required": "{{field}} é obrigatório.",
+            "tooShort": "{{field}} deve ter pelo menos {{min}} caracteres.",
+            "tooLong": "{{field}} deve ter no máximo {{max}} caracteres.",
             "invalidEmail": "{{field}} deve ser um e-mail válido.",
             "invalidNumber": "{{field}} deve ser um número.",
-            "tooShort": "{{field}} deve ter pelo menos {{min}} caracteres.",
+            "min": "{{field}} deve ser no mínimo {{min}}.",
+            "max": "{{field}} deve ser no máximo {{max}}.",
+            "weakPassword": "A {{field}} não é forte o suficiente.",
+            "passwordMismatch": "As palavras-passe não coincidem.",
+            "checked": "{{field}} deve ser marcado.",
+            "file": {
+                "required": "Por favor, carregue um ficheiro para {{field}}.",
+                "invalidType": "Tipo de ficheiro inválido. Tipos permitidos: {{types}}.",
+                "tooLarge": "{{field}} deve ser menor que {{size}} KB.",
+                "tooSmall": "{{field}} deve ser maior que {{size}} KB."
+            },
+            "custom": "{{field}} é inválido.",
             "invalidDate": "{{field}} deve ser uma data válida.",
             "invalidURL": "{{field}} deve ser um URL válido.",
-            "weakPassword": "{{field}} deve ser uma palavra-passe forte.",
-            "passwordMismatch": "As palavras-passe não coincidem.",
             "notFound": "{{field}} não foi encontrado."
         }
     }

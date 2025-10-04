@@ -27,7 +27,6 @@ class App {
         window.location.reload();
       },
     };
-    this.validate = formValidator;
   }
 
   // Function to validate and sanitize config.basePath
@@ -159,42 +158,23 @@ class App {
 
   // Load a controller and execute a method with arguments
 async loadController(controller, method, args) {
-
   if (this.controllerCache[controller]) {
     this.executeMethod(this.controllerCache[controller], method, args);
     return;
   }
 
   try {
-    await new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = `./app/controller/${controller}.js`;
-      script.type = 'module';
-      script.nosniff;
-
-      script.onload = () => {
-        import(`../controller/${controller}.js`)
-          .then((module) => {
-            const ControllerClass = module.default;
-            const controllerInstance = new ControllerClass();
-            this.controllerCache[controller] = controllerInstance;
-            this.executeMethod(controllerInstance, method, args);
-            resolve();
-          })
-          .catch((error) => {
-            app.error(`Error importing controller: ${controller}`, error);
-            reject(error);
-          });
-      };
-
-      script.onerror = (err) => {
-        app.error(`Script load failed: ${controller}`, err);
-        reject(err);
-      };
-
-      document.body.appendChild(script);
-    });
-
+    // Use dynamic import directly. It handles both fetching and executing the module.
+    // The path is relative to the current file (app.js), so '../controller/' is correct.
+    const module = await import(`../controller/${controller}.js`);
+    
+    // ES modules export a `default` property for the default export.
+    const ControllerClass = module.default;
+    const controllerInstance = new ControllerClass();
+    
+    this.controllerCache[controller] = controllerInstance;
+    this.executeMethod(controllerInstance, method, args);
+    
   } catch (error) {
     app.error(`Error loading controller: ${controller}`, error);
   }
@@ -241,21 +221,22 @@ async loadController(controller, method, args) {
 
   // Log messages in debug mode
   log(text) {
-    if(userConfig.debugMode ?? config.debugMode) {
-      app.log(text);
+    if (userConfig.debugMode ?? config.debugMode) {
+      console.log(text);
     }
   }
 
    // Log messages in debug mode
   warn(text) {
-    if(userConfig.debugMode ?? config.debugMode) {
+    if (userConfig.debugMode ?? config.debugMode) {
+      console.warn(text);
     }
   }
 
    // Log messages in debug mode
-  error(text) {
-    if(userConfig.debugMode ?? config.debugMode) {
-      app.error(text);
+  error(text, error = null) {
+    if (userConfig.debugMode ?? config.debugMode) {
+      console.error(text, error || '');
     }
   }
 
@@ -429,7 +410,7 @@ async loadController(controller, method, args) {
   startServiceWorker() {
     return new Promise((resolve, reject) => {
       // UPDATED PATH: Assumes sw.js is at the root of the application for maximum scope.
-      const swPath = '  sw.js';
+      const swPath = 'sw.js';
       
       if (!('serviceWorker' in navigator)) {
           console.warn('Service Workers are not supported by this browser.');

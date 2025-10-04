@@ -16,17 +16,68 @@
     "mission": "Mission",
     "mission description": "Keep it simple, clean and easy to use boosting development speed.",
     "whatsapp message": "Message Me on WhatsApp",
+    "docs": {
+        "title": "Feigniter Docs!",
+        "subtitle": "Your guide to building awesome websites, made super simple!",
+        "whatIs": {
+            "title": "🤔 What is Feigniter?",
+            "body": "Imagine you want to build a super cool treehouse. Feigniter is like a giant box of special LEGOs just for building websites! Instead of starting from scratch with wood and nails, you get lots of ready-made pieces that fit together perfectly. This makes building your website faster and way more fun."
+        },
+        "routing": {
+            "title": "🗺️ How does the website know where to go? (Routing)",
+            "body": "Routing is like a map for your website. When you type a URL with a # symbol, Feigniter looks at the map to see which page to show you."
+        },
+        "controllers": {
+            "title": "🧠 What's a Controller?",
+            "body": "A Controller is the \"brain\" for each page. If your webpage were a robot, the Controller would be the computer inside that tells its arms and legs what to do. It handles all the logic, like what happens when you click a button."
+        },
+        "views": {
+            "title": "🎨 What's a View?",
+            "body": "A View is the \"face\" of the page. It's the HTML code that decides what the page looks like—where the pictures go, what the text says, and what color the buttons are. The Controller (the brain) loads the View (the face) to show it to the user."
+        },
+        "config": {
+            "title": "⚙️ How do I change the settings? (Configuration)",
+            "body": "The `config.js` file has all the default settings, like a new video game right out of the box. You should **never change this file!**\n                        <br><br>\n                        Instead, you make your changes in <strong>`userConfig.js`</strong>. Think of `userConfig.js` as your own special settings file that tells the game, \"Hey, I want to play on hard mode!\" or \"I want my character to wear a blue hat!\". Your settings in `userConfig.js` will always win."
+        },
+        "fileStructure": {
+            "title": "📂 Where do all the files go? (File Structure)",
+            "body": "Think of your website project like a big toy box. To keep things from getting messy, you put different kinds of toys in different smaller boxes. Feigniter does the same thing with its files!"
+        },
+        "models": {
+            "title": "👮 What's a Model? (The Rule Checker)",
+            "body": "A Model helps you manage your data. One of its most important jobs is to be a **Rule Checker**. Before you save any information (like a username or email), you give it to the Model with a list of rules. The Model checks if the data follows all the rules. If it doesn't, it tells you exactly what's wrong!"
+        },
+        "translation": {
+            "title": "🌍 How does it speak different languages? (Translation)",
+            "body": "Feigniter has a magic translator! You can create language files (like `en.json` for English and `pt.json` for Portuguese). When a user picks a language, Feigniter automatically looks in the right file and shows the correct words on the page."
+        },
+        "caching": {
+            "title": "💾 Why is it so fast? (Caching)",
+            "body": "Caching is like having a super-fast memory. The first time you visit a page, Feigniter saves a copy of it. The next time you come back, it just shows you the saved copy instantly instead of building it all over again. It's why pages load so quickly!"
+        }
+    },
 
     "form": {
         "error": {
         "required": "{{field}} is required.",
+        "tooShort": "{{field}} must be at least {{min}} characters.",
+        "tooLong": "{{field}} must be at most {{max}} characters.",
         "invalidEmail": "{{field}} must be a valid email.",
         "invalidNumber": "{{field}} must be a number.",
-        "tooShort": "{{field}} must be at least {{min}} characters.",
+        "min": "{{field}} must be at least {{min}}.",
+        "max": "{{field}} must be at most {{max}}.",
+        "weakPassword": "{{field}} is not strong enough.",
+        "passwordMismatch": "Passwords do not match.",
+        "checked": "{{field}} must be checked.",
+        "file": {
+            "required": "Please upload a file for {{field}}.",
+            "invalidType": "Invalid file type. Allowed types: {{types}}.",
+            "tooLarge": "{{field}} must be smaller than {{size}} KB.",
+            "tooSmall": "{{field}} must be larger than {{size}} KB."
+        },
+        "custom": "{{field}} is invalid.",
         "invalidDate": "{{field}} must be a valid date.",
         "invalidURL": "{{field}} must be a valid URL.",
-        "weakPassword": "{{field}} must be a strong password.",
-        "passwordMismatch": "Passwords do not match.",
         "notFound": "{{field}} not found."
         }
     }

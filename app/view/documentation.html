@@ -1,49 +1,250 @@
-<div >
-    <div class="container py-5">
-        <section id="documentation" class="bg-white shadow-sm rounded-3 p-4">
-            <h1 class="mb-4 text-primary border-bottom pb-2">Documentation</h1>
-            <p class="lead">Welcome to the Feigniter documentation. Below you will find information about how to use the library effectively.</p>
+<div class="container py-5">
+    <section id="documentation" class="bg-white shadow-sm rounded-3 p-4 p-md-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary" data-translate="docs.title">Feigniter Docs!</h1>
+            <p class="lead" data-translate="docs.subtitle">Your guide to building awesome websites, made super simple!</p>
+        </div>
 
-            <h2 class="mt-5">Getting Started</h2>
-            <p>Feigniter is a lightweight JavaScript framework designed to simplify the development of dynamic web applications.</p>
+        <div class="accordion" id="documentationAccordion">
 
-            <h2 class="mt-4">Core Features</h2>
-            <ul class="list-group mb-3">
-                <li class="list-group-item">Dynamic routing with hash-based navigation.</li>
-                <li class="list-group-item">Controller-based architecture for modular development.</li>
-                <li class="list-group-item">Support for caching views, JavaScript, and CSS files.</li>
-                <li class="list-group-item">Translation support using i18next.</li>
-                <li class="list-group-item">Action registry for handling custom DOM actions.</li>
-            </ul>
+            <!-- What is Feigniter? -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong data-translate="docs.whatIs.title">🤔 What is Feigniter?</strong>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        <span data-translate="docs.whatIs.body">Imagine you want to build a super cool treehouse. Feigniter is like a giant box of special LEGOs just for building websites! Instead of starting from scratch with wood and nails, you get lots of ready-made pieces that fit together perfectly. This makes building your website faster and way more fun.</span>
+                    </div>
+                </div>
+            </div>
 
-            <h2 class="mt-4">Configuration</h2>
-            <p>The application configuration is managed through the <code>config.js</code> file. Key settings include:</p>
-            <ul class="ps-3">
-                <li><strong>homeController</strong>: The default controller to load.</li>
-                <li><strong>defaultMethod</strong>: The default method to execute in the controller.</li>
-                <li><strong>useCache</strong>: Enable or disable caching for views, JS, and CSS.</li>
-                <li><strong>useTranslation</strong>: Enable or disable translation support.</li>
-            </ul>
+            <!-- Routing -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <strong data-translate="docs.routing.title">🗺️ How does the website know where to go? (Routing)</strong>
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        <span data-translate="docs.routing.body">Routing is like a map for your website. When you type a URL with a <code>#</code> symbol, Feigniter looks at the map to see which page to show you.</span>
+                        <pre class="bg-light p-3 rounded mt-2"><code>#HomeController?about</code></pre>
+                        It's like telling your GPS, "Go to the **HomeController** house and show me the **about** room!"
+                        <br><br>
+                        You can even give it special instructions:
+                        <pre class="bg-light p-3 rounded mt-2"><code>#UserController?showProfile=123</code></pre>
+                        This tells the **UserController** to run the **showProfile** method and give it the number **123**.
+                    </div>
+                </div>
+            </div>
 
-            <h2 class="mt-4">Routing</h2>
-            <p>Feigniter uses hash-based routing. The URL format is:</p>
-            <pre class="bg-light p-3 rounded">&lt;code&gt;#ControllerName?methodName=arg1,arg2,...&lt;/code&gt;</pre>
-            <p>Example: <code>#HomeController?about</code></p>
+            <!-- Controllers -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <strong data-translate="docs.controllers.title">🧠 What's a Controller?</strong>
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        <span data-translate="docs.controllers.body">A Controller is the "brain" for each page. If your webpage were a robot, the Controller would be the computer inside that tells its arms and legs what to do. It handles all the logic, like what happens when you click a button.</span>
+                        <pre class="bg-light p-3 rounded mt-2"><code>// app/controller/MyPageController.js
+export default class MyPageController extends Controller {
+    index() {
+        // This is the brain of your page!
+        // It tells the app to load the 'face' (the View).
+        this.loadView('app/view/mypage.html');
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
 
-            <h2 class="mt-4">Controllers</h2>
-            <p>Controllers are JavaScript classes that manage the logic for specific pages. Each controller must extend the base <code>Controller</code> class.</p>
+            <!-- Views -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <strong data-translate="docs.views.title">🎨 What's a View?</strong>
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        <span data-translate="docs.views.body">A View is the "face" of the page. It's the HTML code that decides what the page looks like—where the pictures go, what the text says, and what color the buttons are. The Controller (the brain) loads the View (the face) to show it to the user.</span>
+                        <pre class="bg-light p-3 rounded mt-2"><code>&lt;!-- app/view/mypage.html --&gt;
+&lt;h1&gt;Welcome to My Page!&lt;/h1&gt;
+&lt;p&gt;This is the face of the page.&lt;/p&gt;
+&lt;button&gt;Click me!&lt;/button&gt;
+</code></pre>
+                    </div>
+                </div>
+            </div>
 
-            <h2 class="mt-4">Views</h2>
-            <p>Views are HTML files that define the structure of the page. They can be dynamically loaded and cached for better performance.</p>
+            <!-- Configuration -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <strong data-translate="docs.config.title">⚙️ How do I change the settings? (Configuration)</strong>
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        <span data-translate="docs.config.body">The <code>config.js</code> file has all the default settings, like a new video game right out of the box. You should **never change this file!**
+                        <br><br>
+                        Instead, you make your changes in <strong><code>userConfig.js</code></strong>. Think of <code>userConfig.js</code> as your own special settings file that tells the game, "Hey, I want to play on hard mode!" or "I want my character to wear a blue hat!". Your settings in <code>userConfig.js</code> will always win.</span>
+                        <pre class="bg-light p-3 rounded mt-2"><code>// In userConfig.js
+const userConfig = {
+    homeController: "MyCoolHomeController",
+    debugMode: true // Turn on "easy mode" to see helpful messages!
+};</code></pre>
+                    </div>
+                </div>
+            </div>
 
-            <h2 class="mt-4">Translation</h2>
-            <p>Feigniter integrates with i18next for translation support. Translation files are stored in the <code>app/locales</code> directory.</p>
+            <!-- File Structure -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFileStructure">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFileStructure" aria-expanded="false" aria-controls="collapseFileStructure">
+                        <strong data-translate="docs.fileStructure.title">📂 Where do all the files go? (File Structure)</strong>
+                    </button>
+                </h2>
+                <div id="collapseFileStructure" class="accordion-collapse collapse" aria-labelledby="headingFileStructure" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        <span data-translate="docs.fileStructure.body">Think of your website project like a big toy box. To keep things from getting messy, you put different kinds of toys in different smaller boxes. Feigniter does the same thing with its files!</span>
+                        <pre class="bg-light p-3 rounded mt-2"><code>feigniter/
+├── app/
+│   ├── controller/  (Brains go here)
+│   ├── model/       (Rule Checkers go here)
+│   ├── view/        (Faces go here)
+│   └── src/         (Decorations like CSS and JS go here)
+└── index.html       (The front door to your website)</code></pre>
+                    </div>
+                </div>
+            </div>
 
-            <h2 class="mt-4">Action Registry</h2>
-            <p>The action registry allows you to define and execute custom actions based on DOM elements with <code>data-feigniter-action-type</code> attributes.</p>
+            <!-- Models & Validation -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingModels">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseModels" aria-expanded="false" aria-controls="collapseModels">
+                        <strong>👮 What's a Model? (The Rule Checker)</strong>
+                    </button>
+                </h2>
+                <div id="collapseModels" class="accordion-collapse collapse" aria-labelledby="headingModels" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        A Model helps you manage your data. One of its most important jobs is to be a **Rule Checker**. Before you save any information (like a username or email), you give it to the Model with a list of rules. The Model checks if the data follows all the rules. If it doesn't, it tells you exactly what's wrong!
+                        <pre class="bg-light p-3 rounded mt-2"><code>// In your controller...
+const userData = { email: "not-an-email", age: 15 };
 
-            <h2 class="mt-4">Debugging</h2>
-            <p>Enable <code>debugMode</code> in the configuration to log debug messages and add a "Clear Cache" button for testing purposes.</p>
-        </section>
-    </div>
+const rules = {
+    email: { required: true, email: true },
+    age: { required: true, min: 18 }
+};
+
+const errors = Model.validateData(userData, rules);
+
+if (Object.keys(errors).length > 0) {
+    // Oops, there are errors!
+    // errors will be: { email: "Invalid email format", age: "age must be at least 18" }
+    Model.displayValidationErrors(errors);
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Translation -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        <strong>🌍 How does it speak different languages? (Translation)</strong>
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        Feigniter has a magic translator! You can create language files (like <code>en.json</code> for English and <code>pt.json</code> for Portuguese). When a user picks a language, Feigniter automatically looks in the right file and shows the correct words on the page.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Caching -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                        <strong>💾 Why is it so fast? (Caching)</strong>
+                    </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        Caching is like having a super-fast memory. The first time you visit a page, Feigniter saves a copy of it. The next time you come back, it just shows you the saved copy instantly instead of building it all over again. It's why pages load so quickly!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Production Settings -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingProduction">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduction" aria-expanded="false" aria-controls="collapseProduction">
+                        <strong>🚀 How do I get my website ready for everyone? (Production Settings)</strong>
+                    </button>
+                </h2>
+                <div id="collapseProduction" class="accordion-collapse collapse" aria-labelledby="headingProduction" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        Before you show your website to the whole world (this is called "going to production"), you want to make it as fast and safe as possible. It's like cleaning up your treehouse before your friends come over!
+                        <br><br>
+                        In your <strong><code>userConfig.js</code></strong> file, you should:
+                        <ul>
+                            <li>Turn off "easy mode" (<code>debugMode: false</code>) so no secret messages are shown.</li>
+                            <li>Turn on the "super-fast memory" (<code>useCache: true</code>) to make your site load instantly for visitors.</li>
+                        </ul>
+                        <pre class="bg-light p-3 rounded mt-2"><code>// In userConfig.js for production
+const userConfig = {
+    debugMode: false,
+    useCache: true
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testing -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTesting">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTesting" aria-expanded="false" aria-controls="collapseTesting">
+                        <strong>🤖 How do I make sure my code works? (Testing)</strong>
+                    </button>
+                </h2>
+                <div id="collapseTesting" class="accordion-collapse collapse" aria-labelledby="headingTesting" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        Before you show your treehouse to everyone, you want to make sure it's safe. You have a special robot helper (named Jest) that can test your code for you!
+                        <br><br>
+                        When you run the test command, the robot will automatically check all your special LEGO pieces to make sure they work correctly. If it finds a problem, it tells you exactly where it is so you can fix it.
+                        <pre class="bg-light p-3 rounded mt-2"><code>npm test</code></pre>
+                        To use this robot, you need Node.js installed on your computer (see the next topic!).
+                    </div>
+                </div>
+            </div>
+
+            <!-- What is Node.js for? -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingNodeJs">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNodeJs" aria-expanded="false" aria-controls="collapseNodeJs">
+                        <strong>🛠️ Why do I need Node.js?</strong>
+                    </button>
+                </h2>
+                <div id="collapseNodeJs" class="accordion-collapse collapse" aria-labelledby="headingNodeJs" data-bs-parent="#documentationAccordion">
+                    <div class="accordion-body">
+                        Think of Node.js as your personal workshop. Your website (the treehouse) doesn't need the workshop to stand and be used by your friends. But **you** need the workshop to use your cool power tools!
+                        <br><br>
+                        In this project, Node.js is used for two main power tools:
+                        <ul>
+                            <li><strong>Testing:</strong> It runs your test robot (Jest) to make sure your code is strong and bug-free.</li>
+                            <li><strong>Building for Production:</strong> It runs a "shrink-ray" that makes your code smaller and harder to copy before you put it on the internet.</li>
+                        </ul>
+                        So, you only need Node.js on your own computer to build and test the website. Your website's visitors don't need it at all!
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
 </div>

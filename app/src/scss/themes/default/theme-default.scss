@@ -3,6 +3,10 @@
 
 $text: map-get(colors.$default, dark);
 
+body {
+  background-color: lighten(map-get(colors.$default, light), 10%);
+}
+
 .theme-default {
   html,
   body,

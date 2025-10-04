@@ -9,7 +9,7 @@ class Model {
     static setLocalData(data) {
         let storage = this.getLocalData();
         try {
-            if(typeof data === "undefined" || data !== null) {
+            if (data != null) { // Use != null to check for both undefined and null
                 for(let key in data) {
                     storage[key] = data[key];
                 }
@@ -28,7 +28,7 @@ class Model {
             return data;
         } catch (error) {
             app.error("Error getting local data:", error);
-            return null;
+            return {}; // Return an empty object on failure to prevent downstream errors
         }
     }
 
@@ -40,106 +40,148 @@ class Model {
         }
     }
 
+    /**
+     * Displays validation errors on a form.
+     * Assumes a standard HTML structure where an error element exists with an ID of `[field]-error`.
+     * @param {object} errors - The errors object returned from `validateData`.
+     * @param {string} [errorClass='invalid-feedback'] - The CSS class to apply to the error message elements.
+     */
+    static displayValidationErrors(errors, errorClass = 'invalid-feedback') {
+        // First, clear all previous validation messages
+        $(`.${errorClass}`).html('').hide();
+
+        for (const field in errors) {
+            const errorElement = $(`#${field}-error`);
+            if (errorElement.length) {
+                errorElement.html(errors[field]).show();
+            }
+            else {
+                // As a fallback, log an error if the corresponding error element isn't found
+                if (typeof app !== 'undefined' && app.warn) {
+                    app.warn(`Validation error element not found for field: #${field}-error`);
+                }
+            }
+        }
+    }
+
     static validateData(formData, rules) {
         const errors = {};
     
         for (const field in rules) {
-            const value = formData[field];
             const fieldRules = rules[field];
     
-            for (const rule in fieldRules) {
-                const ruleValue = fieldRules[rule];
+            for (const ruleName in fieldRules) {
+                if (ruleName === 'messages') continue; // Skip the messages object itself
+                const ruleValue = fieldRules[ruleName];
+                const customMessage = fieldRules.messages?.[ruleName];
     
-                switch (rule) {
+                switch (ruleName) {
                     case "required":
-                        if (!value || (typeof value === "string" && value.trim() === "")) {
-                            errors[field] = `${field} is required`;
+                        // Use validator.isEmpty which handles various empty cases for strings
+                        if (validator.isEmpty(String(formData[field] || ''))) {
+                            errors[field] = customMessage || i18next.t('form.error.required', { field });
                         }
                         break;
     
                     case "minLength":
-                        if (value.length < ruleValue) {
-                            errors[field] = `${field} must be at least ${ruleValue} characters`;
+                        if (!validator.isLength(String(formData[field] || ''), { min: ruleValue })) {
+                            errors[field] = customMessage || i18next.t('form.error.tooShort', { field, min: ruleValue });
                         }
                         break;
     
                     case "maxLength":
-                        if (value.length > ruleValue) {
-                            errors[field] = `${field} must be at most ${ruleValue} characters`;
+                        if (!validator.isLength(String(formData[field] || ''), { max: ruleValue })) {
+                            errors[field] = customMessage || i18next.t('form.error.tooLong', { field, max: ruleValue });
                         }
                         break;
     
                     case "email":
-                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (!emailPattern.test(value)) {
-                            errors[field] = "Invalid email format";
+                        if (!validator.isEmail(String(formData[field] || ''))) {
+                            errors[field] = customMessage || i18next.t('form.error.invalidEmail', { field });
                         }
                         break;
     
                     case "number":
-                        if (isNaN(value)) {
-                            errors[field] = `${field} must be a number`;
+                        if (!validator.isNumeric(String(formData[field] || ''))) {
+                            errors[field] = customMessage || i18next.t('form.error.invalidNumber', { field });
                         }
                         break;
     
                     case "min":
-                        if (Number(value) < ruleValue) {
-                            errors[field] = `${field} must be at least ${ruleValue}`;
+                        if (!validator.isFloat(String(formData[field] || ''), { min: ruleValue })) {
+                            errors[field] = customMessage || i18next.t('form.error.min', { field, min: ruleValue });
                         }
                         break;
     
                     case "max":
-                        if (Number(value) > ruleValue) {
-                            errors[field] = `${field} must be at most ${ruleValue}`;
+                        if (!validator.isFloat(String(formData[field] || ''), { max: ruleValue })) {
+                            errors[field] = customMessage || i18next.t('form.error.max', { field, max: ruleValue });
                         }
                         break;
     
                     case "passwordStrength":
-                        const strongPasswordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
-                        if (!strongPasswordPattern.test(value)) {
-                            errors[field] = "Password must be at least 6 characters with at least 1 letter and 1 number";
+                        // validator.js has isStrongPassword, but a regex is more flexible here.
+                        const pattern = ruleValue instanceof RegExp ? ruleValue : /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
+                        if (!String(formData[field] || '').match(pattern)) {
+                            errors[field] = customMessage || i18next.t('form.error.weakPassword', { field });
                         }
                         break;
     
                     case "checked":
-                        if (!value) {
-                            errors[field] = `${field} must be checked`;
+                        // This rule is specific to form elements, not string values.
+                        // It checks for a truthy value (e.g., checkbox is checked).
+                        if (!formData[field]) {
+                            errors[field] = customMessage || i18next.t('form.error.checked', { field });
                         }
                         break;
     
                     case "file":
-                        if (!value || value.length === 0) {
-                            errors[field] = `Please upload a file`;
+                        const fileList = formData[field];
+                        if (!fileList || fileList.length === 0) {
+                            errors[field] = customMessage || i18next.t('form.error.file.required', { field });
                             break;
                         }
                         
-                        const file = value[0]; // Get the first file (assuming single file input)
+                        // This rule operates on a FileList object, not a string.
+                        const file = fileList[0]; // Get the first file (assuming single file input)
                         
                         if (fieldRules.allowedTypes && !fieldRules.allowedTypes.includes(file.type)) {
-                            errors[field] = `Invalid file type. Allowed types: ${fieldRules.allowedTypes.join(", ")}`;
+                            errors[field] = customMessage || i18next.t('form.error.file.invalidType', { field, types: fieldRules.allowedTypes.join(", ") });
                         }
     
-                        if (fieldRules.maxSize && file.size > ruleValue * 1024) {
-                            errors[field] = `${field} must be less than ${ruleValue} KB`;
+                        if (fieldRules.maxSize && file.size > fieldRules.maxSize * 1024) {
+                            errors[field] = customMessage || i18next.t('form.error.file.tooLarge', { field, size: fieldRules.maxSize });
                         }
     
-                        if (fieldRules.minSize && file.size < ruleValue * 1024) {
-                            errors[field] = `${field} must be at least ${ruleValue} KB`;
+                        if (fieldRules.minSize && file.size < fieldRules.minSize * 1024) {
+                            errors[field] = customMessage || i18next.t('form.error.file.tooSmall', { field, size: fieldRules.minSize });
                         }
                         break;
     
                     case "custom":
-                        if (typeof ruleValue === "function" && !ruleValue(value)) {
-                            errors[field] = `${field} is invalid`;
+                        if (typeof ruleValue === "function" && !ruleValue(formData[field])) {
+                            errors[field] = customMessage || i18next.t('form.error.custom', { field });
                         }
                         break;
                 }
+                if (errors[field]) break; // Stop validating this field on the first error
             }
         }
     
         return errors;
     }
     
+    /**
+     * Instance method to validate data against a set of rules.
+     * This is a convenience wrapper around the static validateData method,
+     * allowing you to call `this.validate()` from within a model instance.
+     * @param {object} formData The data to validate.
+     * @param {object} rules The validation rules.
+     * @returns {object} An object containing validation errors.
+     */
+    validate(formData, rules) {
+        return Model.validateData(formData, rules);
+    }
     
 
     //Example usage:

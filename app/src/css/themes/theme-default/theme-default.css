@@ -66,6 +66,10 @@ html, body {
   vertical-align: middle;
 }
 
+body {
+  background-color: white;
+}
+
 .theme-default html,
 .theme-default body,
 .theme-default section,

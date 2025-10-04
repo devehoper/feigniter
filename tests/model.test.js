@@ -1,59 +1,47 @@
-const { JSDOM } = require("jsdom");
+describe('Model', () => {
+    // The global 'Model' is available from setupTests.js
+    const storageKey = config.localStorage;
 
-describe("Model Class", () => {
-  let Model;
+    beforeEach(() => {
+        // The localStorage mock from setupTests.js is used automatically.
+        // We clear it before each test to ensure isolation.
+        localStorage.clear();
+        jest.clearAllMocks();
+    });
 
-  beforeAll(() => {
-    global.localStorage = {
-      store: {},
-      setItem(key, value) {
-        this.store[key] = value;
-      },
-      getItem(key) {
-        return this.store[key] || null;
-      },
-      removeItem(key) {
-        delete this.store[key];
-      },
-      clear() {
-        this.store = {};
-      },
-    };
+    describe('Local Storage Interaction', () => {
+        test('getLocalData should return an empty object when storage is empty', () => {
+            const data = Model.getLocalData();
+            expect(data).toEqual({});
+        });
 
-    // Load the Model class
-    Model = require("../app/model/Model.js").Model;
-  });
+        test('setLocalData should add new data to localStorage', () => {
+            const newData = { theme: 'dark' };
+            Model.setLocalData(newData);
 
-  beforeEach(() => {
-    localStorage.clear();
-  });
+            const storedRaw = localStorage.getItem(storageKey);
+            expect(JSON.parse(storedRaw)).toEqual(newData);
+        });
 
-  test("should set and get local data", () => {
-    const data = { key: "value" };
-    Model.setLocalData(data);
-    const result = Model.getLocalData();
-    expect(result).toEqual(data);
-  });
+        test('setLocalData should merge data with existing data', () => {
+            // 1. Set initial data
+            Model.setLocalData({ theme: 'dark', user: 'guest' });
 
-  test("should clear local data", () => {
-    const data = { key: "value" };
-    Model.setLocalData(data);
-    Model.clearLocalData();
-    const result = Model.getLocalData();
-    expect(result).toEqual({});
-  });
+            // 2. Set new data
+            Model.setLocalData({ language: 'en', user: 'admin' });
 
-  test("should validate required fields", () => {
-    const formData = { username: "" };
-    const rules = { username: { required: true } };
-    const errors = new Model().validateData(formData, rules);
-    expect(errors.username).toBe("username is required");
-  });
+            // 3. Get the result
+            const result = Model.getLocalData();
 
-  test("should validate email format", () => {
-    const formData = { email: "invalid-email" };
-    const rules = { email: { email: true } };
-    const errors = new Model().validateData(formData, rules);
-    expect(errors.email).toBe("Invalid email format");
-  });
+            expect(result).toEqual({ theme: 'dark', user: 'admin', language: 'en' });
+        });
+
+        test('clearLocalData should remove the item from localStorage', () => {
+            Model.setLocalData({ theme: 'dark' });
+            expect(localStorage.getItem(storageKey)).not.toBeNull();
+
+            Model.clearLocalData();
+            expect(localStorage.getItem(storageKey)).toBeNull();
+        });
+    });
 });

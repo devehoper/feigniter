@@ -66,6 +66,10 @@ html, body {
   vertical-align: middle;
 }
 
+body {
+  background-color: #343a40 !important;
+}
+
 .theme-dark html,
 .theme-dark body,
 .theme-dark section,
