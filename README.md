@@ -1,312 +1,227 @@
 # Feigniter
 
-Feigniter is a modern frontend project showcasing best practices, modular design, and performance optimization. It includes features like routing, caching, translation, and error handling.
-By default Feigniter uses Jquery, Jquery UI, bootstrap 5.3, fontawesome, DataTables 2.2.2, i18next.
-All the above libs are stored local, and will keep strict to its versions.
+**A lightweight, MVC-inspired frontend micro-framework built on jQuery.**
 
-# Mission
+Feigniter brings structure and modern development patterns to jQuery-based projects, making it ideal for "micro-websites" and single-page applications where a larger framework like React or Vue would be overkill.
 
-Keep it simple, clean and easy to use boosting development speed.
+It combines the simplicity and familiarity of jQuery with the organized, maintainable structure of a Model-View-Controller (MVC) architecture.
 
-## Features
+---
 
-- **Routing**: Dynamic routing with support for hash-based navigation.
-- **Caching**: Built-in caching for controllers, views, CSS, and JavaScript files.
-- **Translation**: Multi-language support using `i18next` (optional).
-- **Error Handling**: Centralized error logging and user-friendly notifications.
-- **Modular Design**: Organized structure with controllers, models, and views.
-- **Build Process**: Code obfuscation for production using `javascript-obfuscator`.
+## Table of Contents
 
-## Installation
+- [Feigniter](#feigniter)
+  - [Table of Contents](#table-of-contents)
+  - [Philosophy](#philosophy)
+  - [Core Concepts](#core-concepts)
+    - [Routing](#routing)
+    - [Controllers](#controllers)
+    - [Views](#views)
+    - [Models \& Validation](#models--validation)
+    - [Configuration](#configuration)
+  - [Key Features](#key-features)
+  - [File Structure](#file-structure)
+  - [Getting Started](#getting-started)
+  - [Development Workflow](#development-workflow)
+    - [Scaffolding](#scaffolding)
+    - [Testing](#testing)
+  - [Going to Production](#going-to-production)
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/feigniter.git
-   cd feigniter
-   ```
+---
 
-2. Install devDependencies, so you can use unity tests and obfuscate code for production environment:
-   ```bash
-   npm install
-   ```
+## Philosophy
 
-## Development
+The goal of Feigniter is to provide a structured, convention-over-configuration environment for frontend development without the steep learning curve or heavy dependencies of modern JavaScript frameworks.
 
-- Run tests:
-  ```bash
-  npm test
-  ```
+- **Low Barrier to Entry:** If you know jQuery, you're ready to use Feigniter.
+- **Structured & Organized:** Enforces a clean MVC pattern to prevent "spaghetti code."
+- **Lightweight:** No complex build tools or transpilers are required for development. It's just HTML, CSS, and JavaScript.
+- **Feature-Rich:** Includes routing, translation, validation, and caching out of the box.
 
-- Start development:
-  Open the project in your local server (e.g., XAMPP) and navigate to `http://localhost/feigniter`.
+---
 
-## Production Build
+## Core Concepts
 
-- Obfuscate code for production:
-  ```bash
-  npm run build
-  ```
-  This will generate an obfuscated version of the code in the `app-obfuscated` directory.
+Feigniter's architecture will be familiar to anyone who has worked with an MVC framework.
 
-## Configuration
+### Routing
 
-The application is configured via the `app/config.js` file. Key settings include:
+The framework uses a simple, hash-based routing system to navigate between pages and trigger controller methods. The URL structure is as follows:
 
-- `appName`: Name of the application.
-- `homeController`: Default controller.
-- `defaultMethod`: Default method.
-- `useNavigationBar`: Enable or disable hash-based navigation.
-- `useTranslation`: Enable or disable multi-language support.
-- `basePath`: Base path for the application.
+```
+#ControllerName?methodName=arg1,arg2,...
+```
 
+**Examples:**
 
-## File names
+- `index.html#HomeController?index`
+  - This will load `HomeController.js` and execute its `index()` method.
 
-Controller name should be NameController and file name NameController.js
-Model name should be NameModel and file name NameModel.js
+- `index.html#UserController?showProfile=123`
+  - This will load `UserController.js`, execute the `showProfile()` method, and pass `123` as an argument.
 
+The application's entry point is defined in `userConfig.js` via the `homeController` and `defaultMethod` properties.
+
+### Controllers
+
+Controllers are the "brains" of your application. They handle user input, manage application logic, and decide which view to render. Each controller is a JavaScript class that extends the base `Controller`.
+
+**Example `app/controller/MyPageController.js`:**
+
+```javascript
+export default class MyPageController extends Controller {
+    index() {
+        // The index method is the default entry point for a controller.
+        // It loads the corresponding view into the main app container.
+        this.loadView('app/view/mypage.html');
+    }
+
+    about() {
+        // This method would be triggered by the URL: #MyPageController?about
+        this.loadView('app/view/about.html');
+    }
+}
+```
+
+### Views
+
+Views are the "face" of your application. They are simple HTML files containing the structure and content of a page. Views are loaded and rendered by controllers.
+
+**Example `app/view/mypage.html`:**
+
+```html
+<div class="container py-5">
+    <h1>Welcome to My Page!</h1>
+    <p>This content is loaded from a view file.</p>
+</div>
+```
+
+### Models & Validation
+
+While Feigniter doesn't enforce a strict data-layer Model, it provides a powerful `Model` utility class primarily for **data validation**. This allows you to define rules and validate data objects before processing them (e.g., before an API call).
+
+The `Model.validateData(data, rules)` method is a static function that checks an object against a set of predefined rules.
+
+**Example (in a Controller):**
+
+```javascript
+const userData = {
+    email: "not-an-email",
+    age: 15
+};
+
+const rules = {
+    email: { required: true, email: true },
+    age: { required: true, min: 18 }
+};
+
+const errors = Model.validateData(userData, rules);
+
+if (Object.keys(errors).length > 0) {
+    // errors will be:
+    // {
+    //   email: "Invalid email format",
+    //   age: "age must be at least 18"
+    // }
+    Model.displayValidationErrors(errors); // Helper to show errors
+}
+```
+
+### Configuration
+
+Feigniter uses a simple and safe configuration system.
+
+- **`app/kernel/config.js`**: This file contains all the default framework settings. **You should never modify this file.**
+- **`app/userConfig.js`**: This is where you override the defaults. Any setting you define here will take precedence over the default `config.js`. This makes updates to the framework core safe and easy.
+
+**Example `app/userConfig.js`:**
+
+```javascript
+const userConfig = {
+    homeController: "MyCoolHomeController", // Sets the default controller
+    debugMode: true, // Enables console logs and error messages
+    useCache: false // Disables view/asset caching for development
+};
+```
+
+---
+
+## Key Features
+
+- **Translation:** Built-in support for multiple languages using `i18next`. Language files are stored as JSON in `app/locales/`.
+- **View Caching:** To improve performance, Feigniter caches view files after their first load. This can be disabled for development in `userConfig.js`.
+- **Centralized Error Handling:** A global error handler catches and logs issues, with detailed output in debug mode.
+- **DOM Action System:** Execute JavaScript functions on elements declaratively using the `data-feigniter-action-type` attribute.
+
+---
 
 ## File Structure
+
+Feigniter enforces a clean and predictable directory structure to keep your project organized.
 
 ```
 feigniter/
 ├── app/
-│   ├── actions/               # Action handlers
-│   ├── controller/            # Controllers
-│   ├── model/                 # Models
-│   ├── src/                   # Static assets (CSS, JS, etc.)
-│   ├── config.js              # Application configuration
-│   ├── error_handler.js       # Centralized error handling
-│   └── app.js                 # Main application logic
-├── tests/                     # Unit tests
-├── index.html                 # Entry point
-├── package.json               # Project dependencies and scripts
-└── README.md                  # Project documentation
+│   ├── controller/   (Your controller classes)
+│   ├── kernel/       (The core framework files)
+│   ├── locales/      (Translation files, e.g., en.json)
+│   ├── model/        (Your model classes)
+│   ├── src/          (CSS, JS, images, and other assets)
+│   └── view/         (Your HTML view files)
+├── index.html        (The main entry point for the application)
+└── README.md         (This file)
 ```
 
-## Key Highlights
+---
 
-- **Error Handling**: Centralized error handling is implemented in `app/error_handler.js`. Errors are logged to the console and displayed as notifications.
-- **Routing**: The `App` class in `app/app.js` handles dynamic routing and updates the URL based on the navigation state.
-- **Translation**: Multi-language support is powered by `i18next`. Configure available languages in `config.js`.
-- **Build Process**: The `npm run build` script uses `javascript-obfuscator` to secure the code for production.
+## Getting Started
 
-## DevDependencies (Optional, but i strongly recomend you to use them)
-Check package.json for more info
-- `javascript-obfuscator`: For code obfuscation.
-- `jest`: For unit testing.
-- `jest-environment-jsdom`: For simulating a browser environment in tests.
-- `util`: For polyfilling `TextEncoder` and `TextDecoder`.
+1.  Clone or download the Feigniter repository.
+2.  Open the `index.html` file in your browser.
+3.  Start building! Modify `app/userConfig.js` to set your default controller and begin creating your own controllers, models, and views.
 
+---
 
-## Why and when to use this lib?
+## Development Workflow
 
-1. Avoid dependencies
-2. Simple to use
-3. Its open source, everyone can contribute to improve this lib
-4. Ideal for micro websites
-5. Also can be used in more complex websites if functionalities are separated in subdomains
-6. If you're planing a big website that contains lots of content, you should use reactjs or vue.js
+### Scaffolding
 
+Feigniter includes helpful npm scripts to quickly create new files and maintain a consistent structure.
 
-## Routing system
+```bash
+# Create a new controller
+npm run new:controller --name=MyController
 
-The route will define the behavior of the app.
-base_path#controllerName?MethodName=arg1,arg2,arg3...
+# Create a new model
+npm run new:model --name=MyModel
 
-
-## Views dir app/view
-
-Contains the app views
-Add the needed javascript for the view in the directory app/src/js/...
-
-
-## Controllers app/controller
-Each controller should extend Controller and should add export default before the "class"
-Example:
-export default class HomeController extends Controller{...}
-
-## Models app/model
-AppModel.js handles the app state, change it according to your needs but don't remove what's already there;
-Example:
-class UserModel extends Model{...}
-app.models.UserModel = new UserModel();
-
-## DOM actions
-
-data-feigniter-type="actionName"
-
-
-## NOTE.: Dom Events
-
-Since the views are being added later in the DOM, according to user navigation,
-in controller to access the DOM must use this notation:
-
-```
-$(document).on('click', '#elementId', function() {
-    alert('clicked');
-});
+# Create a new view
+npm run new:view --name=my-view
 ```
 
-## Styling
+### Testing
 
-Directory "app/src/scss":
-This dir contains the scss needed files.
-variables.scss its where we define the needed vars and set wich theme to compile
-effects.scss contains animations to use
+The project is set up with Jest for unit testing. You can run all tests from the command line:
 
-Directory "app/src/css":
-This dir  its the output dir for scss
-
-
-## Available Commands
-
-### General Commands
-
-- **Run Tests**:  
-  Run all tests using Jest.  
-  ```bash
-  npm run test
-  ```
-
-- **Build Project**:  
-  Obfuscate the JavaScript files for production.  
-  ```bash
-  npm run build
-  ```
-
-### Create New Components
-
-- **Create a New Controller**:  
-  Generate a new controller file in the `app/controller` directory.  
-  ```bash
-  npm run new:controller -- ControllerName
-  ```
-
-- **Create a New Model**:  
-  Generate a new model file in the `app/model` directory.  
-  ```bash
-  npm run new:model -- ModelName
-  ```
-
-- **Create a New View**:  
-  Generate a new view directory and an `index.html` file inside it.  
-  ```bash
-  npm run new:view -- ViewName
-  ```
-
-- **Create a New JavaScript File**:  
-  Generate a new JavaScript file in the `app/src/js` directory.  
-  ```bash
-  npm run new:js -- ScriptName
-  ```
-
-- **Create a New SCSS File**:  
-  Generate a new SCSS file in the appropriate theme directory.  
-  ```bash
-  npm run new:scss -- ThemeName
-  ```
-
-## Project Structure
-
-```
-d:\xampp\htdocs\feigniter
-├── index.html
-├── app
-│   ├── app.js
-│   ├── config.js
-│   ├── error_handler.js
-│   ├── actions
-│   │   ├── action.js
-│   │   └── action_registry.js
-│   ├── controller
-│   │   ├── Controller.js
-│   │   ├── HomeController.js
-│   │   └── TestController.js
-│   ├── model
-│   │   ├── Model.js
-│   │   └── AppModel.js
-│   ├── src
-│   │   ├── css
-│   │   │   ├── lib
-│   │   │   │   ├── all.min.css
-│   │   │   │   ├── bootstrap.min.css
-│   │   │   │   └── jquery-ui.min.css
-│   │   │   ├── main.css
-│   │   │   └── themes
-│   │   │       ├── default
-│   │   │       │   ├── default.css
-│   │   │       │   ├── pages
-│   │   │       │   │   ├── content.css
-│   │   │       │   │   └── footer.css
-│   │   │       └── dark
-│   │   │           ├── dark.css
-│   │   │           ├── pages
-│   │   │           │   ├── content.css
-│   │   │           │   └── footer.css
-│   │   ├── js
-│   │   │   ├── lib
-│   │   │   │   ├── all.min.js
-│   │   │   │   ├── bootstrap.min.js
-│   │   │   │   ├── dataTables
-│   │   │   │   │   ├── datatables.css
-│   │   │   │   │   └── datatables.min.js
-│   │   │   │   ├── jquery-ui.min.js
-│   │   │   │   └── jquery.js
-│   │   │   ├── header.js
-│   │   │   └── home
-│   │   │       └── content.js
-│   └── view
-│       ├── footer.html
-│       └── home
-│           ├── about.html
-│           ├── compatibility.html
-│           ├── content.html
-│           ├── documentation.html
-│           ├── faq.html
-│           └── features.html
+```bash
+npm test
 ```
 
-## @TODO
+---
 
-Documentation:
+## Going to Production
 
-Create comprehensive documentation with examples, API references, and tutorials. This will make it easier for other developers to adopt your library.
-Customizable Themes:
+Before deploying your website, make sure to configure it for production for the best performance and security.
 
-Add support for customizable themes or templates to make it visually appealing and adaptable to different projects.
-Component System:
+In your **`app/userConfig.js`** file, set the following:
 
-Introduce a component-based architecture (similar to React or Vue) to allow developers to create reusable UI components.
-CLI Tool:
+```javascript
+const userConfig = {
+    debugMode: false, // Disables verbose console errors
+    useCache: true    // Enables view and asset caching
+};
+```
 
-Develop a command-line interface (CLI) tool to scaffold projects, generate controllers, and manage configurations.
-Plugin System:
+It is also recommended to minify your JavaScript and CSS assets for a production environment.
 
-Add a plugin system to allow developers to extend the library with custom features.
-Performance Optimization:
-
-Optimize the library for performance by lazy-loading resources and minimizing DOM manipulations.
-Testing Framework:
-
-Include a testing framework or guidelines for unit testing controllers, models, and actions.
-Community Engagement:
-
-Open-source the library on platforms like GitHub and encourage contributions from the developer community.
-Cross-Browser Compatibility:
-
-Ensure the library works seamlessly across all major browsers and devices.
-Examples and Use Cases:
-
-Provide real-world examples and use cases to demonstrate the library's capabilities.
-
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
-## Sponsor Me
-
-If you find this project helpful and want to support its development, consider sponsoring me:
-
-[![Sponsor](https://img.shields.io/badge/Sponsor-❤-red)](https://github.com/sponsors/devehoper)
+---
