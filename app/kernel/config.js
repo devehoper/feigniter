@@ -28,6 +28,7 @@ const config = {
     }, // Templates to load
     templateContentInsertIndex: 1, // Index to insert additional content views
     basePath: "https://localhost/feigniter/", // Base path for the application
+    backendPath: "https://api.devehoper.com/vi/", // Backend path for API calls
 
     //Begin Of Styling configs
     defaultTheme: "theme-default", // Default theme

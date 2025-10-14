@@ -1,3 +1,6 @@
+
+@use './colors.scss';
+@use './effects.scss';
 /* ==========================
    VARIABLES & THEMES
 ========================== */
@@ -69,7 +72,12 @@ html, body {
   vertical-align: middle;
 }
 
-
-
-
-
+/*
+ * Global styles for all validation error message containers.
+ * We target both the Bootstrap class and the ID pattern to increase specificity,
+ * ensuring these styles override broad theme colors.
+ */
+.invalid-feedback[id$="-error"] {
+  font-weight: 500;
+  color:  map-get(colors.$default, danger) !important; /* Bootstrap's danger color, with !important to win */
+}

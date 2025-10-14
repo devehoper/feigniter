@@ -316,41 +316,12 @@ async loadController(controller, method, args) {
     });
   }
 
-  // setLocalTheme(theme) {
-  //   let element = $(userConfig.appContainerSelector ?? config.appContainerSelector);
-  //   let themes = userConfig.themes ?? config.themes;
-  //   if(themes.includes(theme)) {
-  //       element.removeClass();
-  //       element.addClass(theme); // Set the theme class on the body element
-  //       app.data["theme"] = theme; // Update the theme in the data object
-  //       app.setLocalData({theme: theme});
-  //   }
-  // }
-
-    // setLocalLanguage() {
-    //     let navigatorLanguage =  userConfig.defaultLanguage ?? config.defaultLanguage;
-    //     let availableLanguages = userConfig.availableLanguages ?? config.availableLanguages;
-
-    //     let ln = Model.getLocalData() == null || typeof Model.getLocalData().language == "undefined"
-    //     ? {}
-    //     : Model.getLocalData().language;
-    //     if(userConfig.useTranslation ?? config.useTranslation) {
-    //         navigatorLanguage = (availableLanguages.includes(navigator.language) || availableLanguages.includes(navigator.userLanguage))
-    //         ? navigator.language || navigator.userLanguage : (userConfig.defaultLanguage ?? config.defaultLanguage);
-    //         //app.models.AppModel.language = ln || config.defaultLanguage;
-    //         this.language = ln;
-    //         // ? this.language = this.data.language
-    //         // : navigatorLanguage;
-    //     }
-    // }
-
-
   // Initialize the application
   async init() {
     $(document).ready(async () => {
       if(userConfig.useCache ?? config.useCache) {
         await app.startServiceWorker();
-      }      
+      }
       app.data = Model.getLocalData();
       let appContainerSelector = userConfig.appContainerSelector ?? config.appContainerSelector;
       let bp = userConfig.basePath ?? config.basePath;
@@ -361,22 +332,7 @@ async loadController(controller, method, args) {
       await this.routing();
       await this.setTheme();
       await $(window).trigger("hashchange");
-      // Deals with elements with data-feigniter-action-type attribute
-      //await this.handleDOMActions();
       await this.observeDOMChanges();
-
-      // Dynamically load translation scripts if useTranslation is enabled
-      // if (userConfig.useTranslation ?? config.useTranslation) {
-      //   try {
-      //     await Controller.loadJs([
-      //       "app/src/js/lib/i18next.js",
-      //       "app/src/js/lib/i18nextbackend.js"
-      //     ]);
-      //     await this.setLanguage(); // Initialize translation after scripts are loaded
-      //     app.translate(); // Initial translation
-      //   } catch (error) {
-      //   }
-      // }
       if (userConfig.useTranslation ?? config.useTranslation) {
         app.setLanguage();
         

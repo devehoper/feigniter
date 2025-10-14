@@ -64,6 +64,41 @@ class Model {
         }
     }
 
+    // displayValidationErrors(errors, displayMode, errorClass = 'invalid-feedback') {
+    //     switch (displayMode.toLowerCase()) {
+    //         case 'label':
+    //             for (const field in errors) {
+    //                 const label = $(`label[for="${field}"]`);
+    //                 if (label.length) {
+    //                     label.addClass('text-danger');
+    //                     label.append(` <span class="${errorClass}">${errors[field]}</span>`);
+    //                 }
+    //             }
+    //             break;
+    //         case 'tooltip':
+    //             for (const field in errors) {
+    //                 const input = $(`#${field}`);
+    //                 if (input.length) {
+    //                     input.addClass('is-invalid');
+    //                     input.attr('title', errors[field]);
+    //                 }
+    //             }
+    //             break;
+    //         case 'modal':
+    //             let errorMessages = Object.values(errors).join('<br>');
+    //             openGenericModal({
+    //                 title: 'Validation Error',
+    //                 html: `<div class="alert alert-danger">${errorMessages}</div>`,
+    //                 size: 'md'
+    //             });
+    //             break;
+    //         default:
+    //             this.displayValidationErrors(errors, errorClass);
+    //             break;
+    //     }
+    //     Model.displayValidationErrors(errors, errorClass);
+    // }
+
     static validateData(formData, rules) {
         const errors = {};
     

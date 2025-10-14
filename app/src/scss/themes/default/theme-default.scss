@@ -1,5 +1,6 @@
 @use "../../main.scss" as main;
-@use '../../colors.scss';
+@use '../../colors.scss' as colors;
+@use '../../effects.scss';
 
 $text: map-get(colors.$default, dark);
 
@@ -20,22 +21,11 @@ body {
   ul,
   ol,
   li,
-  table,
-  thead,
-  tbody,
-  tfoot,
-  tr,
-  td,
-  th,
   pre,
   code,
   blockquote,
   figure,
   figcaption,
-  input,
-  textarea,
-  select,
-  button,
   div  {
     background-color: map-get(colors.$default, light) !important;
     color: $text !important;
@@ -50,10 +40,41 @@ body {
     color: $text !important;
   }
 
-  input,
-  textarea,
-  select,
-  button {
-    border-color: darken(map-get(colors.$default, light), 10%) !important;
+    //table elements
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  td,
+  th {
+    background-color: map-get(colors.$default, light) !important;
+    color: $text !important;
+  }
+
+  //Form elements
+  form{
+    input,
+    textarea,
+    select,
+    button {
+      border-color: darken(map-get(colors.$default, dark), 10%) !important;
+    }
+  }
+
+  //generic components
+  #genericModal {
+    opacity: 0.9;
+    .modal-content {
+      background-color: map-get(colors.$default, light);
+      color: $text;
+      border: 2px solid $text;
+
+      .modal-header {
+        .btn-close {
+          background-color: $text;
+        }
+      }
+    }
   }
 }

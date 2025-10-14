@@ -1,49 +1,55 @@
 <div class="container mt-5" style="max-width: 400px;">
   <ul class="nav nav-tabs mb-3" id="authTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="signin-tab" data-bs-toggle="tab" data-bs-target="#signin" type="button" role="tab" aria-controls="signin" aria-selected="true">Sign In</button>
+      <button class="nav-link active" id="signin-tab" data-bs-toggle="tab" data-bs-target="#signin" type="button" role="tab" aria-controls="signin" aria-selected="true" data-translate="Sign In">Sign In</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
+      <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false" data-translate="Sign Up">Sign Up</button>
     </li>
   </ul>
 
   <div class="tab-content" id="authTabsContent">
     <!-- Sign In Form -->
     <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-      <form id="signinForm">
+      <form id="signinForm" novalidate>
         <div class="mb-3">
-          <label for="signinEmail" class="form-label">Email address</label>
+          <label for="signinEmail" class="form-label" data-translate="Email address">Email address</label>
           <input type="email" class="form-control" id="signinEmail" required>
+          <div class="invalid-feedback" id="email-error"></div>
         </div>
         <div class="mb-3">
-          <label for="signinPassword" class="form-label">Password</label>
+          <label for="signinPassword" class="form-label" data-translate="Password">Password</label>
           <input type="password" class="form-control" id="signinPassword" required>
+          <div class="invalid-feedback" id="password-error"></div>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Sign In</button>
+        <button type="button" class="btn btn-primary w-100 frm-sign-in" data-translate="Sign In">Sign In</button>
       </form>
     </div>
 
     <!-- Sign Up Form -->
     <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
-      <form id="signupForm">
+      <form id="signupForm" novalidate>
         <div class="mb-3">
-          <label for="signupName" class="form-label">Full Name</label>
+          <label for="signupName" class="form-label" data-translate="Full Name">Full Name</label>
           <input type="text" class="form-control" id="signupName" required>
+          <div class="invalid-feedback" id="name-error"></div>
         </div>
         <div class="mb-3">
-          <label for="signupEmail" class="form-label">Email address</label>
+          <label for="signupEmail" class="form-label" data-translate="Email address">Email address</label>
           <input type="email" class="form-control" id="signupEmail" required>
+          <div class="invalid-feedback" id="email-error"></div>
         </div>
         <div class="mb-3">
-          <label for="signupPassword" class="form-label">Password</label>
+          <label for="signupPassword" class="form-label" data-translate="Password">Password</label>
           <input type="password" class="form-control" id="signupPassword" required>
+          <div class="invalid-feedback" id="password-error"></div>
         </div>
         <div class="mb-3">
-          <label for="signupConfirmPassword" class="form-label">Retype Password</label>
+          <label for="signupConfirmPassword" class="form-label" data-translate="Retype Password">Retype Password</label>
           <input type="password" class="form-control" id="signupConfirmPassword" required>
+          <div class="invalid-feedback" id="confirmPassword-error"></div>
         </div>
-        <button type="submit" class="btn btn-success w-100" id="btnSignUp">Sign Up</button>
+        <button type="button" class="btn btn-success w-100" id="btnSignUp" data-translate="Sign Up">Sign Up</button>
       </form>
     </div>
   </div>

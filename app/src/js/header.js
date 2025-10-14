@@ -49,7 +49,33 @@ class Header {
                 });
             });
 
+            $(document).on('click', '.frm-sign-in', (e) => {
+                e.preventDefault();
+                this.login();
+
+            });
+
         });
+    }
+
+    login() {
+        const formData = {
+            email: $("#signinEmail").val(),
+            password: $("#signinPassword").val(),
+        };
+
+        const rules = {
+            email: { required: true, email: true },
+            password: { required: true, passwordStrength: true },
+        };
+
+        const errors = Model.validateData(formData, rules);
+        if (Object.keys(errors).length > 0) {
+            app.log(errors);
+            Model.displayValidationErrors(errors);
+        } else {
+            app.log("Form is valid! ✅");
+        }
     }
 
     setActiveMenuItem(index) {
