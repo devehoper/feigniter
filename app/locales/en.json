@@ -16,6 +16,10 @@
     "mission": "Mission",
     "mission description": "Keep it simple, clean and easy to use boosting development speed.",
     "whatsapp message": "Message Me on WhatsApp",
+    "password": "Password",
+    "retypePassword": "Retype Password",
+    "signin": "Sign In",
+    "signup": "Sign Up",
     "docs": {
         "title": "Feigniter Docs!",
         "subtitle": "Your guide to building awesome websites, made super simple!",

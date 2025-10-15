@@ -1,4 +1,10 @@
 class UserModel extends Model {
+  api = {
+    login: userConfig.backendPath + "login",
+    signup: userConfig.backendPath + "register",
+    // logout: config.backendPath + "auth/logout",
+    // profile: config.backendPath + "auth/profile",
+  };
 
   email = null;
   loginToken = null;
@@ -10,25 +16,25 @@ class UserModel extends Model {
     this.email = email || "";
   }
 
-  validateResponse(actual, expected) {
-    function deepCompare(obj, template) {
-      if (typeof template === "string") {
-        return typeof obj === template;
-      }
+  // validateResponse(actual, expected) {
+  //   function deepCompare(obj, template) {
+  //     if (typeof template === "string") {
+  //       return typeof obj === template;
+  //     }
 
-      if (typeof template === "object" && template !== null) {
-        for (let key in template) {
-          if (!(key in obj)) return false;
-          if (!deepCompare(obj[key], template[key])) return false;
-        }
-        return true;
-      }
+  //     if (typeof template === "object" && template !== null) {
+  //       for (let key in template) {
+  //         if (!(key in obj)) return false;
+  //         if (!deepCompare(obj[key], template[key])) return false;
+  //       }
+  //       return true;
+  //     }
 
-      return false;
-    }
+  //     return false;
+  //   }
 
-    return deepCompare(actual, expected);
-  }
+  //   return deepCompare(actual, expected);
+  // }
 
   toJson() {
     return {

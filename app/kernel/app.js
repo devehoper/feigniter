@@ -269,6 +269,37 @@ async loadController(controller, method, args) {
     }
   }
 
+  async request (data) {
+    const method = (data.method || "GET").toUpperCase();
+    let contentType = data.contentType;
+    let processData = data.processData;
+
+    // For POST/PUT, default to JSON content type and disable jQuery's data processing
+    // if we are sending a string (which we assume is JSON).
+    if (method === 'POST' || method === 'PUT') {
+      if (contentType === undefined) {
+        contentType = "application/json";
+      }
+      if (processData === undefined && typeof data.data === 'string') {
+        processData = false;
+      }
+    }
+
+    return $.ajax({
+      url: data.url,
+      method: method,
+      data: data.data || {},
+      headers: data.headers || {},
+      dataType: data.dataType || "json",
+      contentType: contentType,
+      processData: processData,
+      beforeSend: data.beforeSend || function() {},
+      success: data.success || function(response) {},
+      error: data.error || function(jqXHR, textStatus, errorThrown) {},
+      complete: data.complete || function() {},
+    });
+  }
+
   // Initialize the translation library
   setLanguage() {
     if(userConfig.useTranslation ?? config.useTranslation) {
@@ -353,6 +384,19 @@ async loadController(controller, method, args) {
       }
 
       //app.runSingletons();
+      //app.setLoader();
+    });
+  }
+
+  setLoader() {
+      // Show loader on any AJAX start
+    $(document).ajaxStart(function() {
+      $("#loader").show();
+    });
+
+    // Hide loader when all AJAX requests complete
+    $(document).ajaxStop(function() {
+      $("#loader").hide();
     });
   }
 
