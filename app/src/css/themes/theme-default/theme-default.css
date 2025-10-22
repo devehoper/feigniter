@@ -115,3 +115,6 @@ body {
 .theme-default button {
   border-color: rgb(218.25, 223.5, 228.75) !important;
 }
+.theme-default .accordion-button::after {
+  color: #343a40 !important; /* Change to your desired color */
+}

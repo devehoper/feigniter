@@ -56,4 +56,8 @@ body {
   button {
     border-color: darken(map-get(colors.$default, light), 10%) !important;
   }
+
+  .accordion-button::after {
+    color: map-get(colors.$default, dark) !important; /* Change to your desired color */
+  }
 }
