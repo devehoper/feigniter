@@ -1,7 +1,7 @@
 class UserModel extends Model {
   api = {
     login: userConfig.backendPath + "login",
-    signup: userConfig.backendPath + "register",
+    register: userConfig.backendPath + "register",
     // logout: config.backendPath + "auth/logout",
     // profile: config.backendPath + "auth/profile",
   };

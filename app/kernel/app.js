@@ -273,6 +273,7 @@ async loadController(controller, method, args) {
     const method = (data.method || "GET").toUpperCase();
     let contentType = data.contentType;
     let processData = data.processData;
+    data['ln'] = i18next.language;
 
     // For POST/PUT, default to JSON content type and disable jQuery's data processing
     // if we are sending a string (which we assume is JSON).
