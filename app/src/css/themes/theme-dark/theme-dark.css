@@ -156,6 +156,10 @@ html, body {
   flex-direction: column;
 }
 
+#loader {
+  display: none; /* Hidden by default */
+}
+
 #img-preview {
   background-color: rgba(0, 0, 0, 0.9);
   background-repeat: no-repeat;
