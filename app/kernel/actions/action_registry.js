@@ -16,4 +16,6 @@ class ActionRegistry {
       }
     }
   }
+
+window.ActionRegistry = ActionRegistry;
   

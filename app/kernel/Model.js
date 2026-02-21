@@ -263,3 +263,5 @@ class Model {
         
     }
 }
+
+window.Model = Model;

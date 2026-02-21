@@ -12,6 +12,7 @@ class App {
     this.jsCache = {}; // Cache for loaded JavaScript files
     this.cssCache = {}; // Cache for loaded CSS files
     this.models = {}; // Models used in the application
+    this.widgets = {}; // Widgets used in the application
     this.actionRegistry = new ActionRegistry(); // Initialize the ActionRegistry
     this.data = Model.getLocalData(); // Loads data from localstorage
     this.jsToLoad = []; // Object to hold JavaScript files to load
@@ -371,6 +372,7 @@ async loadController(controller, method, args) {
         
       }
 
+
       // Add a button to clear cache for debugging
       if (userConfig.debugMode ?? config.debugMode) {
         $("body").append('<button id="clearCache" class="btn btn-error">Clear Cache && Refresh</button>');
@@ -384,21 +386,9 @@ async loadController(controller, method, args) {
           });
         });
       }
-
+      // app.loadWidget("modal");
+      // app.loadWidget("spinner");
       //app.runSingletons();
-      //app.setLoader();
-    });
-  }
-
-  setLoader() {
-      // Show loader on any AJAX start
-    $(document).ajaxStart(function() {
-      $("#loader").show();
-    });
-
-    // Hide loader when all AJAX requests complete
-    $(document).ajaxStop(function() {
-      $("#loader").hide();
     });
   }
 
@@ -457,11 +447,24 @@ async loadController(controller, method, args) {
     });
   }
 
+  loadWidget(widgetName, config = {}) {
+    // Create a modal widget
+    const modal = WidgetFactory.create('modal');
+    // await modal.open({ title: 'My Modal', html: '<p>Hello World!</p>' });
+
+    // // Create a spinner widget
+    // const spinner = WidgetFactory.create('spinner');
+    // spinner.show(); // Show loading spinner
+    // // ... do something async ...
+    // spinner.hide(); // Hide spinner
+  }
+
 
 }
 
 // Example of registering actions
 let app = new App();
+window.app = app;
 // app.actionRegistry.registerAction('test');
 app.actionRegistry.registerAction('table');
 

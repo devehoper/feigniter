@@ -304,3 +304,5 @@ loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, s
     }
   }
 }
+
+window.Controller = Controller;

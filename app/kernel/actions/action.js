@@ -11,4 +11,6 @@ class Action {
       new DataTable('#' + element.id);
     }
   }
+
+window.Action = Action;
   

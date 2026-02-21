@@ -1,8 +1,6 @@
-let countdownDate;
-
-function startCountdown() {
+window.startCountdown = function() {
   // Get the date and time set by the user
-  countdownDate = new Date(document.getElementById("countdownDate")
+  let countdownDate = new Date(document.getElementById("countdownDate")
                            .value).getTime();
 
   // Show the countdown clock
@@ -38,4 +36,4 @@ function startCountdown() {
       document.getElementById("countdown").innerHTML = "EXPIRED";
     }
   }, 1000);
-}
+};

@@ -33,3 +33,5 @@ const userConfig = {
     //callbacks to call on each loadController(...).then(postHooks)
     postHooks: []
 };
+
+window.userConfig = userConfig;

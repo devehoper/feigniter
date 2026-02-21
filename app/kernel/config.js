@@ -41,3 +41,5 @@ const config = {
     //callbacks to call on each loadController(...).then(postHooks)
     postHooks: []
 };
+
+window.config = config;
