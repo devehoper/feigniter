@@ -350,8 +350,15 @@ async loadController(controller, method, args) {
   // Initialize the application
   async init() {
     $(document).ready(async () => {
-      if(userConfig.useCache ?? config.useCache) {
+      if((userConfig.useCache ?? config.useCache) && window.location.protocol === 'https:') {
         await app.startServiceWorker();
+      }
+
+      // if(userConfig.useCache ?? config.useCache) {
+      //   await app.startServiceWorker();
+      // }
+      if (window.location.protocol === 'https:') {
+        console.log("Secure connection (SSL/TLS)");
       }
       app.data = Model.getLocalData();
       let appContainerSelector = userConfig.appContainerSelector ?? config.appContainerSelector;
