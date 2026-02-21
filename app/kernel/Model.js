@@ -44,14 +44,15 @@ class Model {
      * Displays validation errors on a form.
      * Assumes a standard HTML structure where an error element exists with an ID of `[field]-error`.
      * @param {object} errors - The errors object returned from `validateData`.
-     * @param {string} [errorClass='invalid-feedback'] - The CSS class to apply to the error message elements.
+     * @param {string} [errorClass='invalid-feedback'] - The CSS class for error message elements.
+     * @param {string} [idPrefix=''] - A prefix to add to the error element ID selector.
      */
-    static displayValidationErrors(errors, errorClass = 'invalid-feedback') {
+    static displayValidationErrors(errors, errorClass = 'invalid-feedback', idPrefix = '') {
         // First, clear all previous validation messages
         $(`.${errorClass}`).html('').hide();
 
         for (const field in errors) {
-            const errorElement = $(`#${field}-error`);
+            const errorElement = $(`#${idPrefix}${field}-error`);
             if (errorElement.length) {
                 errorElement.html(errors[field]).show();
             }
@@ -63,6 +64,41 @@ class Model {
             }
         }
     }
+
+    // displayValidationErrors(errors, displayMode, errorClass = 'invalid-feedback') {
+    //     switch (displayMode.toLowerCase()) {
+    //         case 'label':
+    //             for (const field in errors) {
+    //                 const label = $(`label[for="${field}"]`);
+    //                 if (label.length) {
+    //                     label.addClass('text-danger');
+    //                     label.append(` <span class="${errorClass}">${errors[field]}</span>`);
+    //                 }
+    //             }
+    //             break;
+    //         case 'tooltip':
+    //             for (const field in errors) {
+    //                 const input = $(`#${field}`);
+    //                 if (input.length) {
+    //                     input.addClass('is-invalid');
+    //                     input.attr('title', errors[field]);
+    //                 }
+    //             }
+    //             break;
+    //         case 'modal':
+    //             let errorMessages = Object.values(errors).join('<br>');
+    //             openGenericModal({
+    //                 title: 'Validation Error',
+    //                 html: `<div class="alert alert-danger">${errorMessages}</div>`,
+    //                 size: 'md'
+    //             });
+    //             break;
+    //         default:
+    //             this.displayValidationErrors(errors, errorClass);
+    //             break;
+    //     }
+    //     Model.displayValidationErrors(errors, errorClass);
+    // }
 
     static validateData(formData, rules) {
         const errors = {};
@@ -127,6 +163,13 @@ class Model {
                         }
                         break;
     
+                    case "confirmPassword":
+                        // ruleValue should be the name of the field to compare with, e.g., 'password'
+                        if (formData[field] !== formData[ruleValue]) {
+                            errors[field] = customMessage || i18next.t('form.error.passwordMismatch');
+                        }
+                        break;
+
                     case "checked":
                         // This rule is specific to form elements, not string values.
                         // It checks for a truthy value (e.g., checkbox is checked).

@@ -218,43 +218,61 @@ html, body {
 }
 
 body {
-  background-color: white;
+  background-color: #343a40 !important;
 }
 
-.theme-default html,
-.theme-default body,
-.theme-default section,
-.theme-default article,
-.theme-default aside,
-.theme-default header,
-.theme-default footer,
-.theme-default main,
-.theme-default nav,
-.theme-default ul,
-.theme-default ol,
-.theme-default li,
-.theme-default pre,
-.theme-default code,
-.theme-default blockquote,
-.theme-default figure,
-.theme-default figcaption,
-.theme-default div {
-  background-color: #f8f9fa !important;
-  color: #343a40 !important;
+.theme-dark html,
+.theme-dark body,
+.theme-dark section,
+.theme-dark article,
+.theme-dark aside,
+.theme-dark header,
+.theme-dark footer,
+.theme-dark main,
+.theme-dark nav,
+.theme-dark ul,
+.theme-dark ol,
+.theme-dark li,
+.theme-dark pre,
+.theme-dark code,
+.theme-dark blockquote,
+.theme-dark figure,
+.theme-dark figcaption,
+.theme-dark div {
+  background-color: #343a40 !important;
+  color: #f8f9fa !important;
 }
-.theme-default a {
-  color: #343a40 !important;
+.theme-dark a {
+  color: #f8f9fa !important;
 }
-.theme-default ::selection {
-  background-color: white;
-  color: #343a40 !important;
+.theme-dark ::selection {
+  background-color: rgb(74.8620689655, 83.5, 92.1379310345);
+  color: #f8f9fa !important;
 }
-.theme-default input,
-.theme-default textarea,
-.theme-default select,
-.theme-default button {
+.theme-dark table,
+.theme-dark thead,
+.theme-dark tbody,
+.theme-dark tfoot,
+.theme-dark tr,
+.theme-dark td,
+.theme-dark th {
+  background-color: #343a40 !important;
+  color: #f8f9fa !important;
+}
+.theme-dark form input,
+.theme-dark form textarea,
+.theme-dark form select,
+.theme-dark form button {
   border-color: rgb(218.25, 223.5, 228.75) !important;
 }
-.theme-default .accordion-button::after {
-  color: #343a40 !important; /* Change to your desired color */
+.theme-dark #genericModal {
+  opacity: 0.9;
+}
+.theme-dark #genericModal .modal-content {
+  background-color: #343a40;
+  color: #f8f9fa;
+  border: 2px solid #f8f9fa;
+}
+.theme-dark #genericModal .modal-content .modal-header .btn-close {
+  background-color: #f8f9fa;
 }

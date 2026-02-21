@@ -249,12 +249,30 @@ body {
   background-color: white;
   color: #343a40 !important;
 }
-.theme-default input,
-.theme-default textarea,
-.theme-default select,
-.theme-default button {
-  border-color: rgb(218.25, 223.5, 228.75) !important;
+.theme-default table,
+.theme-default thead,
+.theme-default tbody,
+.theme-default tfoot,
+.theme-default tr,
+.theme-default td,
+.theme-default th {
+  background-color: #f8f9fa !important;
+  color: #343a40 !important;
 }
-.theme-default .accordion-button::after {
-  color: #343a40 !important; /* Change to your desired color */
+.theme-default form input,
+.theme-default form textarea,
+.theme-default form select,
+.theme-default form button {
+  border-color: rgb(29.1379310345, 32.5, 35.8620689655) !important;
+}
+.theme-default #genericModal {
+  opacity: 0.9;
+}
+.theme-default #genericModal .modal-content {
+  background-color: #f8f9fa;
+  color: #343a40;
+  border: 2px solid #343a40;
+}
+.theme-default #genericModal .modal-content .modal-header .btn-close {
+  background-color: #343a40;
 }

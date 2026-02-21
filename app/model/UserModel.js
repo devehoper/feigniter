@@ -1,63 +1,40 @@
 class UserModel extends Model {
   api = {
-    baseUrl: "https://www.devehoper.com/api/v1/user/",
-    login: {
-      url: "https://www.devehoper.com/api/v1/user/login",
-      success: {
-        token: "string",
-        user: {
-          name: "string",
-          email: "string",
-        },
-      },
-      error: {
-        message: "Invalid credentials",
-        code: 401,
-      },
-    },
-    register: {
-      url: "https://www.devehoper.com/api/v1/user/register",
-      success: {
-        user: {
-          name: "string",
-          email: "string",
-        },
-        confirmation: "email_sent",
-      },
-      error: {
-        message: "Email already exists",
-        code: 409,
-      },
-    },
+    login: userConfig.backendPath + "login",
+    signup: userConfig.backendPath + "register",
+    // logout: config.backendPath + "auth/logout",
+    // profile: config.backendPath + "auth/profile",
   };
 
-  email = "";
-  loginToken = "";
-  name = "";
+  email = null;
+  loginToken = null;
+  name = null;
 
-  constructor() {
+  constructor(name, email) {
     super();
+    this.name = name || "";
+    this.email = email || "";
   }
 
-  validateResponse(actual, expected) {
-    function deepCompare(obj, template) {
-      if (typeof template === "string") {
-        return typeof obj === template;
-      }
+  // validateResponse(actual, expected) {
+  //   function deepCompare(obj, template) {
+  //     if (typeof template === "string") {
+  //       return typeof obj === template;
+  //     }
 
-      if (typeof template === "object" && template !== null) {
-        for (let key in template) {
-          if (!(key in obj)) return false;
-          if (!deepCompare(obj[key], template[key])) return false;
-        }
-        return true;
-      }
+  //     if (typeof template === "object" && template !== null) {
+  //       for (let key in template) {
+  //         if (!(key in obj)) return false;
+  //         if (!deepCompare(obj[key], template[key])) return false;
+  //       }
+  //       return true;
+  //     }
 
-      return false;
-    }
+  //     return false;
+  //   }
 
-    return deepCompare(actual, expected);
-  }
+  //   return deepCompare(actual, expected);
+  // }
 
   toJson() {
     return {

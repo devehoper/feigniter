@@ -265,7 +265,12 @@ loadView(viewUrl, cssUrl = null, jsUrl = null, append = true, template = true, s
 }
 
 
-  static loadModel(modelName) {
+/**
+ * 
+ * @param {String} modelName
+ * @returns {Promise<Model>} Resolves with the loaded model instance
+ */
+  static async loadModel(modelName) {
     modelName = modelName.indexOf(".js") === -1 ? modelName : modelName.slice(0,modelName.length -3);
     return new Promise((resolve, reject) => {
       if (typeof app.models[modelName] !== 'undefined') {

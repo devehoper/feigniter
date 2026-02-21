@@ -54,29 +54,33 @@
 <body>
         <!-- Modal Container -->
     <div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="genericModalTitle"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="genericModalBody">
-            <div class="text-center text-muted"></div>
-        </div>
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="genericModalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="genericModalBody">
+                <div class="text-center text-muted"></div>
+            </div>
+            </div>
         </div>
     </div>
+
+    <div id="loader">
+        <i class="fas fa-spinner fa-spin fa-3x"></i>
     </div>
+
 
     <!-- JavaScript -->
     <!-- Importing JavaScript libraries and application scripts -->
-    <script src="app/src/js/lib/jquery.js?v=1.0" defer></script>
+    <script src="app/src/js/lib/dataTables/datatables.min.js?v=1.0" defer></script>
     <script src="app/src/js/lib/jquery-ui.min.js?v=1.0" defer></script>
     <script src="app/src/js/lib/validator.js?v=1.0" defer></script>
     <script src="app/src/js/lib/all.min.js?v=1.0" defer></script>
     <script src="app/src/js/lib/bootstrap.min.js?v=1.0" defer></script>
     <script src="app/src/js/lib/i18next.js?v=1.0" defer></script>
     <script src="app/src/js/lib/i18nextbackend.js?v=1.0" defer></script>
-    <script src="app/src/js/lib/dataTables/datatables.min.js?v=1.0" defer></script>
     <script src="app/src/js/modal.js?v=1.0" defer></script>
     <script src="app/src/js/img.js?v=1.0" defer></script>
     <script src="app/kernel/error_handler.js?v=1.0" defer></script>

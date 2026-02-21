@@ -3,6 +3,7 @@ class Header {
     constructor() {
         
         this.setEvents();
+        this.updateAuthUI();
     }
 
     //Runs on every page load
@@ -41,15 +42,36 @@ class Header {
                 }
             });
 
-            $(document).on('click', '.btn-signin', (e) => {
-                openGenericModal({
-                    title: 'User Sign In',
-                    localView: 'app/view/home/signin.html',
-                    size: 'lg'
-                });
+            // When a login is successful, AuthController will trigger this custom event
+            $(document).on('login-success', () => {
+                this.updateAuthUI();
             });
-
         });
+    }
+
+    updateAuthUI() {
+        const userData = Model.getLocalData();
+        const isSignedIn = userData && userData.userToken;
+
+        if (isSignedIn) {
+            // User is signed in: Show user name and sign out button
+            $('.btn-signin').hide();
+            $('.nav-item-user').remove(); // Clear previous user info to prevent duplicates
+            $('#main-nav .navbar-nav, #mobile-nav .navbar-nav').append(`
+                <li class="nav-item nav-item-user dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ${userData.userName || 'Account'}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
+                        <li><a class="dropdown-item btn-signout" href="#">Sign Out</a></li>
+                    </ul>
+                </li>
+            `);
+        } else {
+            // User is not signed in: Show sign in button
+            $('.btn-signin').show();
+            $('.nav-item-user').remove();
+        }
     }
 
     setActiveMenuItem(index) {
