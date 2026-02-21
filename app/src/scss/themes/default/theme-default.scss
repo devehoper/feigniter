@@ -77,4 +77,8 @@ body {
       }
     }
   }
+
+  .accordion-button::after {
+    color: map-get(colors.$default, dark) !important; /* Change to your desired color */
+  }
 }
