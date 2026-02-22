@@ -449,11 +449,11 @@ async loadController(controller, method, args) {
 
   loadWidget(widgetName, config = {}) {
     // Create a modal widget
-    const modal = WidgetFactory.create('modal');
+    WidgetFactory.create(widgetName, config);
     // await modal.open({ title: 'My Modal', html: '<p>Hello World!</p>' });
 
     // // Create a spinner widget
-    // const spinner = WidgetFactory.create('spinner');
+    //const spinner = WidgetFactory.create('spinner');
     // spinner.show(); // Show loading spinner
     // // ... do something async ...
     // spinner.hide(); // Hide spinner

@@ -61,6 +61,8 @@ class WidgetFactory {
                         $.get("app/widgets/modal/modal.html", function(data) {
                             $('body').append(data);
                         });
+                        Controller.loadCss("app/widgets/modal/modal.css");
+                        Controller.loadJs("app/widgets/modal/modal.js");
                     });
                     
                     return app.widgets['modal'];
@@ -70,7 +72,13 @@ class WidgetFactory {
             case 'spinner':
                 if(typeof app.widgets['spinner'] === "undefined") {
                     app.widgets['spinner'] = new Spinner(config);
-                    return app.widgets['spinner'];
+                    $(document).ready(() => {
+                        $.get("app/widgets/spinner/spinner.html", function(data) {
+                            $('body').append(data);
+                        });
+                        Controller.loadCss("app/widgets/spinner/spinner.css");
+                        Controller.loadJs("app/widgets/spinner/spinner.js");
+                    });
                 } else {
                     return app.widgets['spinner'];
                 }

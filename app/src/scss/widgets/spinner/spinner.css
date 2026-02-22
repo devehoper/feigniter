@@ -1,0 +1,10 @@
+#spinner {
+  margin: auto;
+  top: 50%;
+  left: 50%;
+  background-color: RED !important;
+  font-size: 36px;
+  opacity: 0.6;
+  padding: 0px 5px;
+  border-radius: 15px;
+}
