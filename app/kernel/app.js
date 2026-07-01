@@ -336,14 +336,13 @@ async loadController(controller, method, args) {
   setTheme(theme) {
     $(document).ready(() => {
       let themes = userConfig.themes ?? config.themes;
-      theme = theme || this.data?.theme || (userConfig.defaultTheme ?? config.defaultTheme);
-
-      Controller.unloadCSS();
-      Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
-
-      Model.setLocalData({ theme });
-
-      $("body").removeClass(themes.join(" ")).addClass(theme);
+      theme = userConfig.defaultTheme ?? config.defaultTheme;
+      if(themes.indexOf(theme) === 1) {
+        Controller.unloadCSS();
+        Controller.loadCss(`app/src/css/themes/${theme}/${theme}.css`);
+        Model.setLocalData({ theme });
+        $("body").removeClass(themes.join(" ")).addClass(theme);
+      }
     });
   }
 
