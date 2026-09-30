@@ -269,10 +269,11 @@ async loadController(controller, method, args) {
     }
   }
 
-  async request (data) {
+  async request (data, loader) {
     const method = (data.method || "GET").toUpperCase();
     let contentType = data.contentType;
     let processData = data.processData;
+    let showLoader = typeof(loader) === "undefined" ? false : loader;
 
     // For POST/PUT, default to JSON content type and disable jQuery's data processing
     // if we are sending a string (which we assume is JSON).
@@ -293,10 +294,14 @@ async loadController(controller, method, args) {
       dataType: data.dataType || "json",
       contentType: contentType,
       processData: processData,
-      beforeSend: data.beforeSend || function() {},
+      beforeSend: data.beforeSend || function() {
+        showLoader ? $("#loader").show() : null;
+      },
       success: data.success || function(response) {},
       error: data.error || function(jqXHR, textStatus, errorThrown) {},
-      complete: data.complete || function() {},
+      complete: data.complete || function() {
+        showLoader ? $("#loader").hide() : null;
+      },
     });
   }
 

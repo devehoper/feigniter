@@ -1,5 +1,8 @@
 class Controller {
   constructor(modelName) {
+    if(typeof(modelName) !== 'undefined' && typeof app.models[modelName] !== 'undefined') {
+      Model.restoreFromLocalData(modelName);
+    }
   }
 
 /**

@@ -3,6 +3,7 @@
     "about": "Sobre",
     "home": "Inicio",
     "features": "Funcionalidades",
+    "services": "Serviços",
     "browsers compatibility": "Compatibilidade com os browsers",
     "version": "Versão",
     "search": "Pesquisa",
@@ -10,41 +11,47 @@
     "where to find us": "Onde encontrar-nos",
     "contact": "Contato",
     "Select a theme": "Selecione um tema",
+    "language": "Idioma",
+    "about us": "Sobre nós",
+    "about devehoper": "Sobre a Devehoper e suas soluções inovadoras de TI",
     "documentation": "Documentação",
-    "feigniter": "Feigniter",
-    "feigniter description": "Feigniter é um projeto moderno de frontend que demonstra boas práticas, design modular e otimização de desempenho. Ele inclui recursos como roteamento, cache, tradução e tratamento de erros. Por padrão, o Feigniter utiliza jQuery, jQuery UI, Bootstrap 5.3, FontAwesome, DataTables 2.2.2 e i18next. Todas essas bibliotecas são armazenadas localmente e permanecerão estritamente nas versões especificadas.",
     "mission": "Missão",
-    "mission description": "Manter a biblioteca simples, limpa e fácil de usar, aumentando a velocidade de desenvolvimento.",
+    "mission description": "Desenvolvendo suas esperanças, para torná-las realidade.",
     "whatsapp message": "Envie-me uma mensagem no WhatsApp",
+    "password": "Palavra Passe",
+    "retypePassword": "Repetir Password",
     "signin": "Entrar",
+    "signout": "Sair",
     "signup": "Registar-se",
-    "docs": {
-        "title": "Documentação Feigniter!",
-        "subtitle": "O seu guia para construir websites fantásticos, de forma super simples!",
-        "whatIs": {
-            "title": "🤔 O que é o Feigniter?",
-            "body": "Imagine que quer construir uma casa na árvore super fixe. O Feigniter é como uma caixa gigante de LEGOs especiais só para construir websites! Em vez de começar do zero com madeira e pregos, recebe muitas peças prontas que se encaixam perfeitamente. Isto torna a construção do seu website mais rápida e muito mais divertida."
-        },
-        "routing": {
-            "title": "🗺️ Como é que o site sabe para onde ir? (Roteamento)",
-            "body": "O roteamento é como um mapa para o seu website. Quando escreve um URL com um símbolo #, o Feigniter olha para o mapa para ver que página lhe deve mostrar."
-        },
-        "controllers": {
-            "title": "🧠 O que é um Controller?",
-            "body": "Um Controller é o \"cérebro\" de cada página. Se a sua página web fosse um robô, o Controller seria o computador lá dentro que diz aos braços e pernas o que fazer. Ele trata de toda a lógica, como o que acontece quando clica num botão."
-        },
-        "views": {
-            "title": "🎨 O que é uma View?",
-            "body": "Uma View é a \"cara\" da página. É o código HTML que decide a aparência da página—onde vão as imagens, o que o texto diz e a cor dos botões. O Controller (o cérebro) carrega a View (a cara) para a mostrar ao utilizador."
-        },
-        "config": {
-            "title": "⚙️ Como altero as definições? (Configuração)",
-            "body": "O ficheiro `config.js` tem todas as definições padrão, como um novo videojogo acabado de sair da caixa. Nunca deve alterar este ficheiro! Em vez disso, faz as suas alterações no `userConfig.js`. Pense no `userConfig.js` como o seu ficheiro de definições especiais que diz ao jogo: \"Ei, quero jogar no modo difícil!\" ou \"Quero que a minha personagem use um chapéu azul!\". As suas definições no `userConfig.js` ganham sempre."
-        },
-        "fileStructure": {
-            "title": "📂 Onde vão todos os ficheiros? (Estrutura de Ficheiros)"
-        }
-    },
+    "user area": "Área do utilizador",
+    "logout": "Sair",
+    "business grow": "Nota : Nós ajudamos o seu negócio a crescer",
+    "have any questions": "Tem alguma pergunta?",
+    "call me": "Ligue: + 351 933 791 860",
+    "call us": "Ligue-nos",
+    "email us": "Envie-nos um e-mail",
+    "get in touch": "Entre em contato",
+    "contact for any query": "Contacte-nos para qualquer dúvida",
+    "it solutions": "Melhores soluções de TI",
+    "your it solution": "A sua solução inovadora de TI",
+    "it solution description": "soluções á medida dos seus negócios. Devehoper oferece soluções inovadoras de TI que impulsionam o crescimento e a eficiência da sua empresa.",
+    "quality services you need": "Serviços digitais de qualidade que você realmente precisa!",
+    "quality services you need description" : "Tornamos suas esperanças em realidade com nossos serviços digitais de primeira linha, projetados para atender às suas necessidades específicas.",
+    "About us": "Sobre nós",
+    "Contact us": "Contato",
+    "Our Services": "Nossos Serviços",
+    "Latest Blog": "Últimos Artigos",
+    "terms of use": "Termos de Uso",
+    "Privacy Policy": "Política de Privacidade",
+    "Helps": "Ajuda",
+    "FQAs": "Perguntas Frequentes",
+    "short link": "Link Curto",
+    "help link": "Link de Ajuda",
+    "Please wait before trying again or reset your password" : "Por favor, aguarde antes de tentar novamente ou redefinir sua senha",
+    "too many attempts" : "Muitas Tentativas",
+    "Full Name": "Nome Completo",
+    "Phone number": "Número de Telefone",
+
     "form": {
         "error": {
             "required": "{{field}} é obrigatório.",

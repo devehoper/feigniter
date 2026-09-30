@@ -156,6 +156,14 @@ html, body {
   flex-direction: column;
 }
 
+#loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none; /* Hidden by default */
+}
+
 #img-preview {
   background-color: rgba(0, 0, 0, 0.9);
   background-repeat: no-repeat;
@@ -275,4 +283,7 @@ body {
 }
 .theme-default #genericModal .modal-content .modal-header .btn-close {
   background-color: #343a40;
+}
+.theme-default .accordion-button::after {
+  color: #343a40 !important; /* Change to your desired color */
 }
