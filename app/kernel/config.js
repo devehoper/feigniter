@@ -27,9 +27,8 @@ const config = {
         ], // Template CSS files
     }, // Templates to load
     templateContentInsertIndex: 1, // Index to insert additional content views
-    basePath: "https://localhost/feigniter/", // Base path for the application
+    basePath: "", // Base path for the application
     backendPath: "", // Backend path for API calls
-
     //Begin Of Styling configs
     defaultTheme: "theme-default", // Default theme
     themes: ["theme-default", "theme-dark"], // Available themes

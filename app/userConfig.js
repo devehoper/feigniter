@@ -21,6 +21,7 @@ const userConfig = {
     templateContentInsertIndex: 1, // Index to insert additional content views
     // IMPORTANT: Change the basePath to your live domain when deploying to production!
     // Example: "https://www.yourwebsite.com/"
+    basePath: "https://localhost/feigniter/", // Base path for the application
     backendPath: "https://api.devehoper.com/v1/", // Backend path for API calls
     //Begin Of Styling configs
     defaultTheme: "theme-default", // Default theme
@@ -31,5 +32,7 @@ const userConfig = {
     //callbacks to call on each controller.contructor(preHooks)
     preHooks: [],
     //callbacks to call on each loadController(...).then(postHooks)
-    postHooks: []
+    postHooks: [],
+    //A file with environment name.js will be loaded if exists, for example: development.js or production.js and must be an object so userConfigs[environmentName]...[fileName]
+    environment: "development", // Set the environment to 'development' or 'test' or 'production'
 };

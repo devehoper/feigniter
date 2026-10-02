@@ -388,6 +388,12 @@ async loadController(controller, method, args) {
         });
       }
 
+      if (userConfig.environment ?? config.environment) {
+        Controller.loadJs(bp + "app/src/js/" + userConfig.environment + ".js").then(() => {
+          userConfig[userConfig.environment] = window[userConfig.environment];
+        });
+      }
+
       //app.runSingletons();
       //app.setLoader();
     });
